@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Analytics - Kinetic Intelligence</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Space+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-container": "#f0661b",
+                        "on-primary-container": "#00275e",
+                        "on-surface": "#e5e2e1",
+                        "on-tertiary-fixed": "#360f00",
+                        "primary-fixed-dim": "#aec6ff",
+                        "surface-tint": "#aec6ff",
+                        "tertiary-fixed-dim": "#ffb596",
+                        "surface-bright": "#3a3939",
+                        "on-primary-fixed-variant": "#004396",
+                        "surface": "#131313",
+                        "on-secondary-fixed": "#002022",
+                        "surface-container-low": "#1c1b1b",
+                        "surface-dim": "#131313",
+                        "secondary": "#ddfcff",
+                        "error-container": "#93000a",
+                        "primary-container": "#4f8eff",
+                        "background": "#131313",
+                        "inverse-on-surface": "#313030",
+                        "on-error": "#690005",
+                        "outline": "#8b90a1",
+                        "tertiary": "#ffb596",
+                        "on-tertiary": "#581e00",
+                        "inverse-surface": "#e5e2e1",
+                        "on-tertiary-container": "#4d1900",
+                        "on-surface-variant": "#c1c6d7",
+                        "on-background": "#e5e2e1",
+                        "on-primary": "#002e6a",
+                        "error": "#ffb4ab",
+                        "primary": "#aec6ff",
+                        "inverse-primary": "#005ac4",
+                        "on-primary-fixed": "#001a42",
+                        "surface-container": "#201f1f",
+                        "on-secondary-fixed-variant": "#004f54",
+                        "primary-fixed": "#d8e2ff",
+                        "outline-variant": "#414755",
+                        "surface-container-high": "#2a2a2a",
+                        "secondary-fixed-dim": "#00dbe7",
+                        "on-tertiary-fixed-variant": "#7d2d00",
+                        "on-secondary": "#00363a",
+                        "secondary-fixed": "#74f5ff",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-highest": "#353534",
+                        "on-secondary-container": "#006a70",
+                        "secondary-container": "#00f1fe",
+                        "surface-container-lowest": "#0e0e0e",
+                        "tertiary-fixed": "#ffdbcd",
+                        "surface-variant": "#353534"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {},
+                    "fontFamily": {
+                        "headline": ["Space Grotesk", "sans-serif"],
+                        "body": ["Manrope", "sans-serif"],
+                        "label": ["Manrope", "sans-serif"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(32, 31, 31, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .text-glow-primary {
+            text-shadow: 0 0 10px rgba(174, 198, 255, 0.5);
+        }
+        .box-glow-primary {
+            box-shadow: 0 0 15px rgba(79, 142, 255, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body antialiased min-h-screen flex overflow-hidden">
+<!-- SideNavBar -->
+<nav class="hidden md:flex h-screen w-64 fixed left-0 top-0 z-40 bg-zinc-950 flex-col h-full py-6">
+<div class="px-6 mb-8 flex items-center space-x-3">
+<span class="material-symbols-outlined text-blue-500 text-3xl" style="font-variation-settings: 'FILL' 1;">train</span>
+<div>
+<h1 class="font-['Space_Grotesk'] font-bold text-zinc-100 tracking-tighter text-xl">Conductor Hub</h1>
+<p class="font-['Manrope'] text-xs text-blue-500 font-medium">AI-Ready</p>
+</div>
+</div>
+<div class="px-4 mb-6">
+<button class="w-full bg-gradient-to-r from-primary to-primary-container text-on-primary-container font-headline font-bold py-3 px-4 rounded-DEFAULT flex items-center justify-center space-x-2 hover:shadow-[0_0_15px_rgba(174,198,255,0.4)] transition-all duration-300">
+<span class="material-symbols-outlined text-sm">add</span>
+<span>New Dispatch</span>
+</button>
+</div>
+<div class="flex-1 overflow-y-auto px-4 space-y-2">
+<a class="flex items-center space-x-3 px-4 py-3 rounded-lg text-zinc-500 hover:text-zinc-300 hover:bg-zinc-900/50 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-['Manrope'] text-sm tracking-tight font-medium">Network Overview</span>
+</a>
+<a class="flex items-center space-x-3 px-4 py-3 rounded-lg text-zinc-500 hover:text-zinc-300 hover:bg-zinc-900/50 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">train</span>
+<span class="font-['Manrope'] text-sm tracking-tight font-medium">Live Traffic</span>
+</a>
+<a class="flex items-center space-x-3 px-4 py-3 rounded-lg text-blue-400 font-bold bg-blue-500/10 border-r-2 border-blue-500 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">insights</span>
+<span class="font-['Manrope'] text-sm tracking-tight">Efficiency</span>
+</a>
+<a class="flex items-center space-x-3 px-4 py-3 rounded-lg text-zinc-500 hover:text-zinc-300 hover:bg-zinc-900/50 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">security</span>
+<span class="font-['Manrope'] text-sm tracking-tight font-medium">Safety Logs</span>
+</a>
+<a class="flex items-center space-x-3 px-4 py-3 rounded-lg text-zinc-500 hover:text-zinc-300 hover:bg-zinc-900/50 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">construction</span>
+<span class="font-['Manrope'] text-sm tracking-tight font-medium">Infrastructure</span>
+</a>
+</div>
+<div class="mt-auto px-4 pt-4 border-t border-zinc-900/30">
+<a class="flex items-center space-x-3 px-4 py-2 rounded-lg text-zinc-500 hover:text-zinc-300 hover:bg-zinc-900/50 transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-sm">contact_support</span>
+<span class="font-['Manrope'] text-sm tracking-tight">Support</span>
+</a>
+<a class="flex items-center space-x-3 px-4 py-2 rounded-lg text-zinc-500 hover:text-zinc-300 hover:bg-zinc-900/50 transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-sm">terminal</span>
+<span class="font-['Manrope'] text-sm tracking-tight">Logs</span>
+</a>
+<div class="mt-4 flex items-center px-4">
+<img alt="System Administrator" class="w-8 h-8 rounded-full border border-outline-variant object-cover" data-alt="Portrait of a professional man in dark futuristic setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJuQRG3A3y53JihOWG3Ndj_eA_LQ922WxFuot65hkeDq7s-EAOzXNfSaiWmPpASqV2uJ9z8j5DUTyCRDhvpxODF2n7mECreGafXAPyJ6GjuCllXYjQbTWFS4N2nmb-G2IyBZa_562ql2ftyWNBmrNkZ6fPgMgQMKvyah4lx-SINIdr2yuvJokuDrwmg_Vx7oBzb4g37mE59C-zHpCCcNhcBQVu1SitxlZtQwT2lS5jwX3K9QHthAKmvG_PXjJxXXrLRYmjIotKq6g"/>
+<div class="ml-3">
+<p class="text-xs font-medium text-zinc-300">Admin</p>
+</div>
+</div>
+</div>
+</nav>
+<!-- Main Content Wrapper -->
+<div class="flex-1 flex flex-col md:ml-64 relative min-h-screen">
+<!-- TopNavBar (Mobile Only for Shell Structure, hiding on desktop as instructed by layout anchor, though prompt says use both. Following shell logic: use full nav cluster in TopAppBar for Web if requested, but SideNav is present. I will implement TopNavBar for Web as a header/action bar) -->
+<header class="flex justify-between items-center h-16 px-8 w-full bg-zinc-950/80 backdrop-blur-2xl docked full-width top-0 z-50 shadow-[0_20px_50px_rgba(0,0,0,0.4)] border-b border-zinc-900/50 sticky">
+<div class="flex items-center space-x-4">
+<h2 class="font-['Space_Grotesk'] uppercase tracking-widest text-xs font-bold text-on-surface">Kinetic Intelligence</h2>
+</div>
+<!-- Search Bar (Left aligned per JSON) -->
+<div class="flex-1 ml-8 max-w-md hidden lg:flex">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 transform -translate-y-1/2 text-zinc-500 text-sm">search</span>
+<input class="w-full bg-surface-container-lowest border border-outline-variant/15 rounded-lg py-1.5 pl-9 pr-4 text-sm font-body text-on-surface placeholder-zinc-500 focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary transition-all" placeholder="Search logs, IDs..." type="text"/>
+</div>
+</div>
+<div class="flex items-center space-x-4 ml-auto">
+<button class="text-zinc-500 hover:text-blue-300 transition-colors duration-300 scale-95 active:scale-90 relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-0 right-0 w-2 h-2 bg-secondary-container rounded-full animate-pulse"></span>
+</button>
+<button class="text-zinc-500 hover:text-blue-300 transition-colors duration-300 scale-95 active:scale-90">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<button class="text-zinc-500 hover:text-blue-300 transition-colors duration-300 scale-95 active:scale-90">
+<span class="material-symbols-outlined">help</span>
+</button>
+<img alt="Operator Profile" class="w-8 h-8 rounded-full border border-outline-variant object-cover hidden md:block" data-alt="Portrait of a professional man in dark futuristic setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFYFQ8FUyWtuSa4hzaMzq24R281Xb-EGIqhB59EePZMh9elG8xQDOyf7NiyqGzuIIzgdzZGdLpbmjkFZL_Zg2Vogh0lN3McOXqEJrjX8aA3wkLhAJvri2YlyksJoV8CIgfwYZu6trVVzmE009dBd9Sm2sp7u5g0FFa02M4gCjNrogYqbVd7dXZ5bEggvZ3V5vznhw-fN7mBHhdihW5LMdKHMHQwA6_ym_2HVl9hUVzLchP5RvdmF3t5aAyJD1vomW9ZJJS4bMBccY"/>
+</div>
+</header>
+<!-- Page Content -->
+<main class="flex-1 overflow-y-auto p-6 lg:p-10 space-y-8 bg-surface">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+<div>
+<p class="font-label text-[0.6875rem] uppercase tracking-widest text-primary mb-2">Insight Module</p>
+<h1 class="font-headline text-4xl md:text-5xl font-bold text-on-surface text-glow-primary">System Analytics Overview</h1>
+</div>
+<button class="bg-surface-container-high/40 border border-secondary/15 text-on-surface font-body font-medium py-2.5 px-6 rounded-DEFAULT flex items-center justify-center space-x-2 hover:border-secondary/40 hover:bg-surface-container-high transition-all duration-300">
+<span class="material-symbols-outlined text-sm">download</span>
+<span>Download Report</span>
+</button>
+</div>
+<!-- Analytics Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Delay Trends (Spans 2 cols) -->
+<div class="lg:col-span-2 glass-panel rounded-xl p-6 relative overflow-hidden">
+<div class="flex justify-between items-start mb-6">
+<div>
+<h3 class="font-headline text-lg font-semibold text-on-surface">Delay Trends</h3>
+<p class="font-label text-xs text-on-surface-variant mt-1">Network-wide aggregate over 30 days</p>
+</div>
+<span class="material-symbols-outlined text-secondary opacity-50">trending_down</span>
+</div>
+<!-- Placeholder for High-Fidelity Area Chart -->
+<div class="h-64 w-full flex items-end justify-between space-x-2 relative">
+<!-- Abstract graph lines using div gradients -->
+<div class="absolute inset-0 bg-gradient-to-t from-primary/10 to-transparent bottom-0 h-3/4 rounded-b-lg"></div>
+<svg class="absolute inset-0 w-full h-full" preserveaspectratio="none" viewbox="0 0 100 100">
+<path d="M0,80 Q10,70 20,75 T40,50 T60,60 T80,30 T100,40 L100,100 L0,100 Z" fill="rgba(174, 198, 255, 0.05)"></path>
+<path d="M0,80 Q10,70 20,75 T40,50 T60,60 T80,30 T100,40" fill="none" stroke="#aec6ff" stroke-dasharray="2,2" stroke-width="0.5"></path>
+<path d="M0,60 Q15,40 30,50 T60,20 T80,35 T100,15" fill="none" stroke="#00f1fe" stroke-width="1.5" style="filter: drop-shadow(0 0 4px rgba(0,241,254,0.5));"></path>
+</svg>
+<!-- Grid lines -->
+<div class="absolute inset-0 flex flex-col justify-between opacity-10 pointer-events-none">
+<div class="border-t border-outline-variant w-full h-0"></div>
+<div class="border-t border-outline-variant w-full h-0"></div>
+<div class="border-t border-outline-variant w-full h-0"></div>
+<div class="border-t border-outline-variant w-full h-0"></div>
+</div>
+</div>
+</div>
+<!-- Monthly Punctuality -->
+<div class="glass-panel rounded-xl p-6 flex flex-col">
+<div class="flex justify-between items-start mb-6">
+<div>
+<h3 class="font-headline text-lg font-semibold text-on-surface">Monthly Punctuality</h3>
+<p class="font-label text-xs text-on-surface-variant mt-1">Target vs Actual</p>
+</div>
+<div class="flex items-center space-x-2">
+<div class="w-2 h-2 rounded-full bg-secondary-container animate-[pulse_2s_ease-in-out_infinite]"></div>
+<span class="font-label text-[0.6rem] uppercase tracking-wider text-secondary">Live</span>
+</div>
+</div>
+<div class="flex-1 flex items-end justify-around pb-2">
+<!-- Bar Groups -->
+<div class="flex space-x-1 items-end h-full">
+<div class="w-4 bg-surface-variant rounded-t-sm h-[80%] relative group">
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity text-[10px] font-label text-on-surface-variant">80%</div>
+</div>
+<div class="w-4 bg-gradient-to-t from-primary to-primary-container rounded-t-sm h-[75%] box-glow-primary"></div>
+</div>
+<div class="flex space-x-1 items-end h-full">
+<div class="w-4 bg-surface-variant rounded-t-sm h-[85%]"></div>
+<div class="w-4 bg-gradient-to-t from-primary to-primary-container rounded-t-sm h-[82%] box-glow-primary"></div>
+</div>
+<div class="flex space-x-1 items-end h-full">
+<div class="w-4 bg-surface-variant rounded-t-sm h-[90%]"></div>
+<div class="w-4 bg-gradient-to-t from-primary to-primary-container rounded-t-sm h-[94%] box-glow-primary relative">
+<div class="absolute -top-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-secondary"></div>
+</div>
+</div>
+<div class="flex space-x-1 items-end h-full">
+<div class="w-4 bg-surface-variant rounded-t-sm h-[88%]"></div>
+<div class="w-4 bg-gradient-to-t from-primary to-primary-container rounded-t-sm h-[85%] box-glow-primary"></div>
+</div>
+</div>
+<div class="flex justify-around text-[10px] font-label text-on-surface-variant border-t border-outline-variant/20 pt-2 mt-2">
+<span>WK1</span>
+<span>WK2</span>
+<span>WK3</span>
+<span>WK4</span>
+</div>
+</div>
+<!-- Peak Traffic Heatmap -->
+<div class="glass-panel rounded-xl p-6">
+<div class="mb-4">
+<h3 class="font-headline text-lg font-semibold text-on-surface">Peak Traffic Heatmap</h3>
+<p class="font-label text-xs text-on-surface-variant mt-1">Intensity by Node</p>
+</div>
+<div class="grid grid-cols-6 gap-1 h-48">
+<!-- Row 1 -->
+<div class="bg-primary/10 rounded-sm"></div>
+<div class="bg-primary/20 rounded-sm"></div>
+<div class="bg-primary/40 rounded-sm"></div>
+<div class="bg-secondary/60 rounded-sm shadow-[0_0_8px_rgba(0,241,254,0.3)]"></div>
+<div class="bg-primary/30 rounded-sm"></div>
+<div class="bg-primary/10 rounded-sm"></div>
+<!-- Row 2 -->
+<div class="bg-primary/5 rounded-sm"></div>
+<div class="bg-primary/10 rounded-sm"></div>
+<div class="bg-primary/50 rounded-sm"></div>
+<div class="bg-secondary/80 rounded-sm shadow-[0_0_10px_rgba(0,241,254,0.4)]"></div>
+<div class="bg-primary/40 rounded-sm"></div>
+<div class="bg-primary/20 rounded-sm"></div>
+<!-- Row 3 -->
+<div class="bg-primary/10 rounded-sm"></div>
+<div class="bg-primary/30 rounded-sm"></div>
+<div class="bg-secondary/90 rounded-sm shadow-[0_0_12px_rgba(0,241,254,0.5)] border border-secondary/50"></div>
+<div class="bg-primary/60 rounded-sm"></div>
+<div class="bg-primary/20 rounded-sm"></div>
+<div class="bg-primary/10 rounded-sm"></div>
+<!-- Row 4 -->
+<div class="bg-primary/5 rounded-sm"></div>
+<div class="bg-primary/10 rounded-sm"></div>
+<div class="bg-primary/40 rounded-sm"></div>
+<div class="bg-primary/30 rounded-sm"></div>
+<div class="bg-primary/10 rounded-sm"></div>
+<div class="bg-primary/5 rounded-sm"></div>
+</div>
+<div class="flex justify-between text-[10px] font-label text-on-surface-variant mt-2">
+<span>00:00</span>
+<span>12:00</span>
+<span>24:00</span>
+</div>
+</div>
+<!-- Route Efficiency Graph (Radar placeholder) -->
+<div class="lg:col-span-2 glass-panel rounded-xl p-6 flex flex-col md:flex-row items-center gap-8">
+<div class="flex-1 w-full">
+<div class="mb-6">
+<h3 class="font-headline text-lg font-semibold text-on-surface">Route Efficiency Matrix</h3>
+<p class="font-label text-xs text-on-surface-variant mt-1">Multi-vector performance index</p>
+</div>
+<div class="space-y-4">
+<!-- Metric 1 -->
+<div>
+<div class="flex justify-between text-xs font-label mb-1">
+<span class="text-on-surface">Energy Consumption</span>
+<span class="text-secondary font-mono">92%</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container-lowest rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-[92%] shadow-[0_0_8px_rgba(0,241,254,0.5)]"></div>
+</div>
+</div>
+<!-- Metric 2 -->
+<div>
+<div class="flex justify-between text-xs font-label mb-1">
+<span class="text-on-surface">Schedule Adherence</span>
+<span class="text-primary font-mono">87%</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container-lowest rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[87%] shadow-[0_0_8px_rgba(174,198,255,0.4)]"></div>
+</div>
+</div>
+<!-- Metric 3 -->
+<div>
+<div class="flex justify-between text-xs font-label mb-1">
+<span class="text-on-surface">Maintenance Proximity</span>
+<span class="text-tertiary font-mono">45%</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container-lowest rounded-full overflow-hidden">
+<div class="h-full bg-tertiary w-[45%]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Abstract Radar Hexagon -->
+<div class="relative w-48 h-48 flex-shrink-0 flex items-center justify-center">
+<svg class="w-full h-full transform -rotate-90" viewbox="0 0 100 100">
+<!-- Background Web -->
+<polygon fill="none" points="50,5 95,25 95,75 50,95 5,75 5,25" stroke="rgba(139, 144, 161, 0.1)" stroke-width="1"></polygon>
+<polygon fill="none" points="50,20 80,35 80,65 50,80 20,65 20,35" stroke="rgba(139, 144, 161, 0.1)" stroke-width="1"></polygon>
+<polygon fill="none" points="50,35 65,45 65,55 50,65 35,55 35,45" stroke="rgba(139, 144, 161, 0.1)" stroke-width="1"></polygon>
+<!-- Axes -->
+<line stroke="rgba(139, 144, 161, 0.1)" stroke-width="1" x1="50" x2="50" y1="50" y2="5"></line>
+<line stroke="rgba(139, 144, 161, 0.1)" stroke-width="1" x1="50" x2="95" y1="50" y2="25"></line>
+<line stroke="rgba(139, 144, 161, 0.1)" stroke-width="1" x1="50" x2="95" y1="50" y2="75"></line>
+<line stroke="rgba(139, 144, 161, 0.1)" stroke-width="1" x1="50" x2="50" y1="50" y2="95"></line>
+<line stroke="rgba(139, 144, 161, 0.1)" stroke-width="1" x1="50" x2="5" y1="50" y2="75"></line>
+<line stroke="rgba(139, 144, 161, 0.1)" stroke-width="1" x1="50" x2="5" y1="50" y2="25"></line>
+<!-- Data Polygon -->
+<polygon fill="rgba(0, 241, 254, 0.15)" points="50,15 85,30 70,65 50,85 25,60 15,35" stroke="#00f1fe" stroke-width="1.5" style="filter: drop-shadow(0 0 4px rgba(0,241,254,0.3));"></polygon>
+</svg>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="font-headline text-xs text-secondary font-bold">IDX 84</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Train Performance Data Table -->
+<div class="glass-panel rounded-xl mt-8 overflow-hidden">
+<div class="p-6 border-b border-outline-variant/15 flex justify-between items-center">
+<h3 class="font-headline text-xl font-bold text-on-surface">Live Train Performance</h3>
+<button class="text-xs font-label text-primary hover:text-secondary transition-colors">View All Logs</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-lowest/50 text-xs font-label text-on-surface-variant uppercase tracking-wider">
+<th class="py-4 px-6 font-medium">Train ID</th>
+<th class="py-4 px-6 font-medium">Route Vector</th>
+<th class="py-4 px-6 font-medium">Punctuality %</th>
+<th class="py-4 px-6 font-medium">Avg Speed</th>
+<th class="py-4 px-6 font-medium">Status</th>
+</tr>
+</thead>
+<tbody class="text-sm font-body text-on-surface divide-y divide-outline-variant/10">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container-low/30 transition-colors group">
+<td class="py-4 px-6 font-headline font-semibold text-primary group-hover:text-secondary transition-colors">AX-992</td>
+<td class="py-4 px-6 text-on-surface-variant text-xs">Sector 4 → Core Alpha</td>
+<td class="py-4 px-6 font-mono text-secondary">99.8%</td>
+<td class="py-4 px-6 font-mono text-on-surface-variant">245 km/h</td>
+<td class="py-4 px-6">
+<div class="inline-flex items-center space-x-2 bg-secondary-container/10 px-2 py-1 rounded border border-secondary/20">
+<div class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></div>
+<span class="text-[0.65rem] font-bold text-secondary uppercase tracking-wider">Optimal</span>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container-low/30 transition-colors group">
+<td class="py-4 px-6 font-headline font-semibold text-primary group-hover:text-secondary transition-colors">NX-401</td>
+<td class="py-4 px-6 text-on-surface-variant text-xs">Outer Ring → Sector 2</td>
+<td class="py-4 px-6 font-mono text-tertiary">84.2%</td>
+<td class="py-4 px-6 font-mono text-on-surface-variant">198 km/h</td>
+<td class="py-4 px-6">
+<div class="inline-flex items-center space-x-2 bg-tertiary/10 px-2 py-1 rounded border border-tertiary/20">
+<div class="w-1.5 h-1.5 rounded-full bg-tertiary"></div>
+<span class="text-[0.65rem] font-bold text-tertiary uppercase tracking-wider">Lagging</span>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container-low/30 transition-colors group">
+<td class="py-4 px-6 font-headline font-semibold text-primary group-hover:text-secondary transition-colors">CX-110</td>
+<td class="py-4 px-6 text-on-surface-variant text-xs">Core Beta → Junction X</td>
+<td class="py-4 px-6 font-mono text-primary">95.5%</td>
+<td class="py-4 px-6 font-mono text-on-surface-variant">220 km/h</td>
+<td class="py-4 px-6">
+<div class="inline-flex items-center space-x-2 bg-primary/10 px-2 py-1 rounded border border-primary/20">
+<div class="w-1.5 h-1.5 rounded-full bg-primary"></div>
+<span class="text-[0.65rem] font-bold text-primary uppercase tracking-wider">Stable</span>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</main>
+</div>
+</body></html>

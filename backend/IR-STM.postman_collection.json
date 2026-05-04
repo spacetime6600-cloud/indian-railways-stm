@@ -1,0 +1,373 @@
+{
+  "info": {
+    "name": "IR-STM API",
+    "_postman_id": "ir-stm-api-collection",
+    "description": "Indian Railways Traffic Management System — complete REST API collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:5000", "type": "string" },
+    { "key": "token",   "value": "",                      "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/auth/register", "host": ["{{baseUrl}}"], "path": ["api","auth","register"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Admin User\",\n  \"email\": \"admin@ir-stm.in\",\n  \"password\": \"Admin@1234\",\n  \"role\": \"admin\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": ["const r = pm.response.json();", "if (r.token) pm.collectionVariables.set('token', r.token);"],
+              "type": "text/javascript"
+            }
+          }],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/auth/login", "host": ["{{baseUrl}}"], "path": ["api","auth","login"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@ir-stm.in\",\n  \"password\": \"Admin@1234\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Profile",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/auth/profile", "host": ["{{baseUrl}}"], "path": ["api","auth","profile"] }
+          }
+        },
+        {
+          "name": "Update Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type",  "value": "application/json" }
+            ],
+            "url": { "raw": "{{baseUrl}}/api/auth/profile", "host": ["{{baseUrl}}"], "path": ["api","auth","profile"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Admin Updated\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/auth/logout", "host": ["{{baseUrl}}"], "path": ["api","auth","logout"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Trains",
+      "item": [
+        {
+          "name": "Get All Trains",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/trains?page=1&limit=50&sortBy=train_number&sortDir=asc",
+              "host": ["{{baseUrl}}"], "path": ["api","trains"],
+              "query": [
+                { "key": "page",    "value": "1" },
+                { "key": "limit",   "value": "50" },
+                { "key": "sortBy",  "value": "train_number" },
+                { "key": "sortDir", "value": "asc" },
+                { "key": "search",  "value": "", "disabled": true },
+                { "key": "status",  "value": "", "disabled": true },
+                { "key": "zone",    "value": "", "disabled": true },
+                { "key": "type",    "value": "", "disabled": true }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Train Stats",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/trains/stats", "host": ["{{baseUrl}}"], "path": ["api","trains","stats"] }
+          }
+        },
+        {
+          "name": "Get Train by ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/trains/:id", "host": ["{{baseUrl}}"], "path": ["api","trains",":id"], "variable": [{ "key": "id", "value": "" }] }
+          }
+        },
+        {
+          "name": "Create Train",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type",  "value": "application/json" }
+            ],
+            "url": { "raw": "{{baseUrl}}/api/trains", "host": ["{{baseUrl}}"], "path": ["api","trains"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"trainNumber\": \"12301\",\n  \"trainName\": \"Howrah Rajdhani Express\",\n  \"route\": \"HWH - NDLS\",\n  \"source\": \"Howrah Jn. (HWH)\",\n  \"destination\": \"New Delhi (NDLS)\",\n  \"speed\": 130,\n  \"status\": \"running\",\n  \"zone\": \"Eastern\",\n  \"trainType\": \"Rajdhani Express\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Train",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type",  "value": "application/json" }
+            ],
+            "url": { "raw": "{{baseUrl}}/api/trains/:id", "host": ["{{baseUrl}}"], "path": ["api","trains",":id"], "variable": [{ "key": "id", "value": "" }] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"delayed\",\n  \"delayMinutes\": 15,\n  \"speed\": 90,\n  \"currentLocation\": \"Kanpur Central\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Train",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/trains/:id", "host": ["{{baseUrl}}"], "path": ["api","trains",":id"], "variable": [{ "key": "id", "value": "" }] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Platforms",
+      "item": [
+        {
+          "name": "Get All Platforms",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/platforms", "host": ["{{baseUrl}}"], "path": ["api","platforms"] }
+          }
+        },
+        {
+          "name": "Create Platform",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type",  "value": "application/json" }
+            ],
+            "url": { "raw": "{{baseUrl}}/api/platforms", "host": ["{{baseUrl}}"], "path": ["api","platforms"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"platformNumber\": \"PF-1\",\n  \"stationName\": \"New Delhi (NDLS)\",\n  \"occupied\": false,\n  \"status\": \"active\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Platform",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type",  "value": "application/json" }
+            ],
+            "url": { "raw": "{{baseUrl}}/api/platforms/:id", "host": ["{{baseUrl}}"], "path": ["api","platforms",":id"], "variable": [{ "key": "id", "value": "" }] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"occupied\": true,\n  \"status\": \"active\",\n  \"assignedTrainId\": null\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Platform",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/platforms/:id", "host": ["{{baseUrl}}"], "path": ["api","platforms",":id"], "variable": [{ "key": "id", "value": "" }] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Alerts",
+      "item": [
+        {
+          "name": "Get All Alerts",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/alerts", "host": ["{{baseUrl}}"], "path": ["api","alerts"] }
+          }
+        },
+        {
+          "name": "Create Alert",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type",  "value": "application/json" }
+            ],
+            "url": { "raw": "{{baseUrl}}/api/alerts", "host": ["{{baseUrl}}"], "path": ["api","alerts"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"delay\",\n  \"severity\": \"critical\",\n  \"title\": \"Severe Delay — 12301\",\n  \"message\": \"Howrah Rajdhani delayed by 45 minutes due to signal failure.\",\n  \"stationName\": \"New Delhi (NDLS)\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Resolve Alert",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/alerts/:id/resolve", "host": ["{{baseUrl}}"], "path": ["api","alerts",":id","resolve"], "variable": [{ "key": "id", "value": "" }] }
+          }
+        },
+        {
+          "name": "Delete Alert",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/alerts/:id", "host": ["{{baseUrl}}"], "path": ["api","alerts",":id"], "variable": [{ "key": "id", "value": "" }] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Maintenance",
+      "item": [
+        {
+          "name": "Get All Maintenance",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/maintenance", "host": ["{{baseUrl}}"], "path": ["api","maintenance"] }
+          }
+        },
+        {
+          "name": "Create Maintenance Record",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type",  "value": "application/json" }
+            ],
+            "url": { "raw": "{{baseUrl}}/api/maintenance", "host": ["{{baseUrl}}"], "path": ["api","maintenance"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"assetType\": \"locomotive\",\n  \"assetId\": \"12301\",\n  \"condition\": \"fair\",\n  \"riskLevel\": \"medium\",\n  \"nextServiceDate\": \"2026-05-01T00:00:00.000Z\",\n  \"notes\": \"Scheduled wheel inspection\",\n  \"status\": \"scheduled\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Maintenance Record",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type",  "value": "application/json" }
+            ],
+            "url": { "raw": "{{baseUrl}}/api/maintenance/:id", "host": ["{{baseUrl}}"], "path": ["api","maintenance",":id"], "variable": [{ "key": "id", "value": "" }] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"condition\": \"good\",\n  \"riskLevel\": \"low\",\n  \"status\": \"completed\",\n  \"notes\": \"Inspection passed\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Maintenance Record",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/maintenance/:id", "host": ["{{baseUrl}}"], "path": ["api","maintenance",":id"], "variable": [{ "key": "id", "value": "" }] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Analytics",
+      "item": [
+        {
+          "name": "Get Analytics Overview",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/analytics/overview", "host": ["{{baseUrl}}"], "path": ["api","analytics","overview"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/users?page=1&limit=50",
+              "host": ["{{baseUrl}}"], "path": ["api","users"],
+              "query": [
+                { "key": "page",   "value": "1" },
+                { "key": "limit",  "value": "50" },
+                { "key": "search", "value": "", "disabled": true },
+                { "key": "role",   "value": "", "disabled": true }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get User by ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/users/:id", "host": ["{{baseUrl}}"], "path": ["api","users",":id"], "variable": [{ "key": "id", "value": "" }] }
+          }
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type",  "value": "application/json" }
+            ],
+            "url": { "raw": "{{baseUrl}}/api/users/:id", "host": ["{{baseUrl}}"], "path": ["api","users",":id"], "variable": [{ "key": "id", "value": "" }] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Updated Name\",\n  \"role\": \"dispatcher\",\n  \"assignedStation\": \"New Delhi (NDLS)\",\n  \"assignedZone\": \"Northern\",\n  \"status\": \"active\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete User",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/users/:id", "host": ["{{baseUrl}}"], "path": ["api","users",":id"], "variable": [{ "key": "id", "value": "" }] }
+          }
+        }
+      ]
+    }
+  ]
+}

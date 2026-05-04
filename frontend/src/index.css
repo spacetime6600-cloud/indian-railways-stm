@@ -1,0 +1,196 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/forms";
+@plugin "@tailwindcss/container-queries";
+
+/* ── Dark Theme (default) ────────────────────────────────────────────────────── */
+@theme {
+  --color-surface-container-low: #1c1b1b;
+  --color-inverse-on-surface: #313030;
+  --color-surface-container: #201f1f;
+  --color-error: #ffb4ab;
+  --color-on-secondary: #00363a;
+  --color-inverse-surface: #e5e2e1;
+  --color-primary-container: #4f8eff;
+  --color-on-tertiary-container: #4d1900;
+  --color-on-error: #690005;
+  --color-on-secondary-fixed-variant: #004f54;
+  --color-on-tertiary-fixed-variant: #7d2d00;
+  --color-outline-variant: #414755;
+  --color-tertiary-container: #f0661b;
+  --color-on-primary-fixed-variant: #004396;
+  --color-on-error-container: #ffdad6;
+  --color-primary-fixed-dim: #aec6ff;
+  --color-surface: #131313;
+  --color-primary: #aec6ff;
+  --color-on-primary: #002e6a;
+  --color-secondary-fixed-dim: #00dbe7;
+  --color-secondary: #ddfcff;
+  --color-on-surface: #e5e2e1;
+  --color-on-primary-container: #00275e;
+  --color-surface-variant: #353534;
+  --color-on-secondary-fixed: #002022;
+  --color-inverse-primary: #005ac4;
+  --color-surface-bright: #3a3939;
+  --color-outline: #8b90a1;
+  --color-on-primary-fixed: #001a42;
+  --color-background: #131313;
+  --color-on-tertiary: #581e00;
+  --color-tertiary: #ffb596;
+  --color-on-secondary-container: #006a70;
+  --color-surface-tint: #aec6ff;
+  --color-primary-fixed: #d8e2ff;
+  --color-tertiary-fixed-dim: #ffb596;
+  --color-secondary-fixed: #74f5ff;
+  --color-surface-container-highest: #353534;
+  --color-secondary-container: #00f1fe;
+  --color-on-surface-variant: #c1c6d7;
+  --color-error-container: #93000a;
+  --color-on-background: #e5e2e1;
+  --color-surface-container-high: #2a2a2a;
+  --color-surface-dim: #131313;
+  --color-tertiary-fixed: #ffdbcd;
+  --color-surface-container-lowest: #0e0e0e;
+  --color-on-tertiary-fixed: #360f00;
+
+  --font-headline: "Space Grotesk", sans-serif;
+  --font-body: "Manrope", sans-serif;
+  --font-label: "Manrope", sans-serif;
+
+  --radius: 0.125rem;
+  --radius-lg: 0.25rem;
+  --radius-xl: 0.5rem;
+  --radius-full: 0.75rem;
+}
+
+/* ── Light Theme ─────────────────────────────────────────────────────────────── */
+[data-theme="light"] {
+  --color-surface-container-low: #f0f0f0;
+  --color-surface-container: #e8e8e8;
+  --color-surface: #fafafa;
+  --color-background: #ffffff;
+  --color-on-surface: #1a1a1a;
+  --color-on-background: #1a1a1a;
+  --color-surface-variant: #e0e0e0;
+  --color-on-surface-variant: #4a4a4a;
+  --color-surface-container-high: #d8d8d8;
+  --color-surface-container-highest: #d0d0d0;
+  --color-surface-container-lowest: #f8f8f8;
+  --color-surface-bright: #ffffff;
+  --color-surface-dim: #e8e8e8;
+  --color-outline: #6a6a6a;
+  --color-outline-variant: #b0b0b0;
+  --color-primary: #005ac4;
+  --color-on-primary: #ffffff;
+  --color-primary-container: #d8e2ff;
+  --color-on-primary-container: #001a42;
+  --color-secondary: #006a70;
+  --color-on-secondary: #ffffff;
+  --color-secondary-container: #74f5ff;
+  --color-on-secondary-container: #002022;
+  --color-tertiary: #a84400;
+  --color-on-tertiary: #ffffff;
+  --color-tertiary-container: #ffdbcd;
+  --color-on-tertiary-container: #360f00;
+  --color-error: #ba1a1a;
+  --color-on-error: #ffffff;
+  --color-error-container: #ffdad6;
+  --color-on-error-container: #410002;
+}
+
+@layer components {
+  .glass-card {
+    background: rgba(28, 27, 27, 0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
+  .text-glow {
+    text-shadow: 0 0 15px rgba(174, 198, 255, 0.4);
+  }
+
+  * {
+    @apply transition-colors duration-200;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-surface-container-high rounded-full;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    @apply bg-outline;
+  }
+}
+
+/* ── Light theme: override hardcoded dark hex values ─────────────────────────── */
+[data-theme="light"] body,
+[data-theme="light"] #root {
+  background-color: #ffffff;
+  color: #1a1a1a;
+}
+
+/* Sidebar */
+[data-theme="light"] nav {
+  background: rgba(248, 248, 248, 0.97) !important;
+  border-right-color: rgba(0,0,0,0.08) !important;
+}
+
+/* TopNav */
+[data-theme="light"] header {
+  background: rgba(255,255,255,0.92) !important;
+  border-bottom-color: rgba(0,0,0,0.08) !important;
+}
+
+/* Cards / panels */
+[data-theme="light"] .bg-\[\#0a0a0a\],
+[data-theme="light"] .bg-\[\#0d0d0d\],
+[data-theme="light"] .bg-\[\#0f0f0f\],
+[data-theme="light"] .bg-\[\#131313\],
+[data-theme="light"] .bg-\[\#201f1f\]\/60,
+[data-theme="light"] .bg-\[\#201f1f\] {
+  background-color: #f5f5f5 !important;
+}
+
+/* Text overrides */
+[data-theme="light"] .text-white { color: #1a1a1a !important; }
+[data-theme="light"] .text-zinc-400 { color: #555 !important; }
+[data-theme="light"] .text-zinc-500 { color: #666 !important; }
+[data-theme="light"] .text-zinc-600 { color: #777 !important; }
+[data-theme="light"] .text-zinc-700 { color: #888 !important; }
+[data-theme="light"] .text-on-surface { color: #1a1a1a !important; }
+[data-theme="light"] .text-on-surface-variant { color: #4a4a4a !important; }
+
+/* Border overrides */
+[data-theme="light"] .border-white\/5  { border-color: rgba(0,0,0,0.07) !important; }
+[data-theme="light"] .border-white\/10 { border-color: rgba(0,0,0,0.10) !important; }
+[data-theme="light"] .border-white\/20 { border-color: rgba(0,0,0,0.15) !important; }
+
+/* Input fields */
+[data-theme="light"] input,
+[data-theme="light"] select,
+[data-theme="light"] textarea {
+  background-color: #f0f0f0 !important;
+  color: #1a1a1a !important;
+  border-color: rgba(0,0,0,0.15) !important;
+}
+[data-theme="light"] input::placeholder { color: #999 !important; }
+
+/* Map tile brightness in light mode */
+[data-theme="light"] .leaflet-tile-pane {
+  filter: brightness(1.05) saturate(0.9) !important;
+}
+
+/* Scrollbar in light mode */
+[data-theme="light"] .custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #ccc !important;
+}

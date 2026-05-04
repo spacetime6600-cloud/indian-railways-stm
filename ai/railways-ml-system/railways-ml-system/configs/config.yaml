@@ -1,0 +1,33 @@
+random_seed: 42
+
+data:
+  alert: data/raw/alert_data.csv
+  maintenance: data/raw/maintenance_data.csv
+  delay: data/raw/delay_data.csv
+  congestion: data/raw/congestion_data.csv
+  n_samples: 4000
+
+models:
+  alert:
+    rf_n_estimators: 100
+    xgb_n_estimators: 100
+    test_size: 0.2
+  maintenance:
+    rf_n_estimators: 100
+    test_size: 0.2
+  delay:
+    xgb_n_estimators: 100
+    test_size: 0.2
+  congestion:
+    rf_n_estimators: 100
+    kmeans_n_clusters: 3
+    test_size: 0.2
+
+paths:
+  models: models/
+  logs: logs/
+
+logging:
+  level: INFO
+  max_bytes: 10485760
+  backup_count: 5

@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Live Trains | Kinetic Intelligence</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Manrope:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface": "#131313",
+                    "on-secondary-container": "#006a70",
+                    "surface-container-high": "#2a2a2a",
+                    "tertiary-container": "#f0661b",
+                    "tertiary-fixed": "#ffdbcd",
+                    "secondary": "#ddfcff",
+                    "background": "#131313",
+                    "surface-dim": "#131313",
+                    "surface-bright": "#3a3939",
+                    "secondary-fixed-dim": "#00dbe7",
+                    "secondary-fixed": "#74f5ff",
+                    "secondary-container": "#00f1fe",
+                    "outline-variant": "#414755",
+                    "on-primary-fixed-variant": "#004396",
+                    "tertiary-fixed-dim": "#ffb596",
+                    "primary-fixed": "#d8e2ff",
+                    "primary-fixed-dim": "#aec6ff",
+                    "primary-container": "#4f8eff",
+                    "on-surface-variant": "#c1c6d7",
+                    "primary": "#aec6ff",
+                    "on-tertiary-fixed-variant": "#7d2d00",
+                    "on-error-container": "#ffdad6",
+                    "on-background": "#e5e2e1",
+                    "inverse-surface": "#e5e2e1",
+                    "surface-container-lowest": "#0e0e0e",
+                    "surface-container": "#201f1f",
+                    "on-secondary-fixed": "#002022",
+                    "on-secondary-fixed-variant": "#004f54",
+                    "on-primary": "#002e6a",
+                    "inverse-primary": "#005ac4",
+                    "inverse-on-surface": "#313030",
+                    "error-container": "#93000a",
+                    "on-secondary": "#00363a",
+                    "on-tertiary-fixed": "#360f00",
+                    "on-surface": "#e5e2e1",
+                    "on-primary-container": "#00275e",
+                    "surface-tint": "#aec6ff",
+                    "surface-container-low": "#1c1b1b",
+                    "on-tertiary-container": "#4d1900",
+                    "on-error": "#690005",
+                    "tertiary": "#ffb596",
+                    "surface-variant": "#353534",
+                    "on-primary-fixed": "#001a42",
+                    "surface-container-highest": "#353534",
+                    "outline": "#8b90a1",
+                    "error": "#ffb4ab",
+                    "on-tertiary": "#581e00"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Space Grotesk"],
+                    "body": ["Manrope"],
+                    "label": ["Manrope"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(19, 19, 19, 0.6);
+            backdrop-filter: blur(40px);
+        }
+        .glow-cyan {
+            text-shadow: 0 0 8px rgba(34, 211, 238, 0.5);
+        }
+        .pulse-dot {
+            box-shadow: 0 0 0 0 rgba(0, 241, 254, 0.7);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 241, 254, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(0, 241, 254, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 241, 254, 0); }
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body overflow-hidden">
+<div class="flex h-screen w-full">
+<!-- SideNavBar -->
+<aside class="h-screen w-64 sticky left-0 top-0 bg-[#131313] flex flex-col gap-2 py-6 border-r border-white/5 z-50">
+<div class="px-8 mb-8">
+<div class="font-['Space_Grotesk'] text-lg font-bold text-white mb-1">Control Center</div>
+<div class="font-['Manrope'] text-[0.6875rem] font-medium tracking-[0.05em] text-zinc-500 uppercase">AI Conductor v4.2</div>
+</div>
+<nav class="flex flex-col gap-1">
+<div class="flex items-center gap-3 px-8 py-3 text-zinc-500 hover:bg-white/5 transition-colors duration-200 cursor-pointer group">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-['Manrope'] text-[0.6875rem] font-medium tracking-[0.05em]">Dashboard</span>
+</div>
+<div class="flex items-center gap-3 px-8 py-3 bg-gradient-to-r from-cyan-500/10 to-transparent text-cyan-400 border-l-2 border-cyan-500 cursor-pointer">
+<span class="material-symbols-outlined">train</span>
+<span class="font-['Manrope'] text-[0.6875rem] font-medium tracking-[0.05em]">Live Trains</span>
+</div>
+<div class="flex items-center gap-3 px-8 py-3 text-zinc-500 hover:bg-white/5 transition-colors duration-200 cursor-pointer">
+<span class="material-symbols-outlined">layers</span>
+<span class="font-['Manrope'] text-[0.6875rem] font-medium tracking-[0.05em]">Platforms</span>
+</div>
+<div class="flex items-center gap-3 px-8 py-3 text-zinc-500 hover:bg-white/5 transition-colors duration-200 cursor-pointer">
+<span class="material-symbols-outlined">emergency</span>
+<span class="font-['Manrope'] text-[0.6875rem] font-medium tracking-[0.05em]">Alerts</span>
+</div>
+<div class="flex items-center gap-3 px-8 py-3 text-zinc-500 hover:bg-white/5 transition-colors duration-200 cursor-pointer">
+<span class="material-symbols-outlined">insights</span>
+<span class="font-['Manrope'] text-[0.6875rem] font-medium tracking-[0.05em]">Analytics</span>
+</div>
+<div class="flex items-center gap-3 px-8 py-3 text-zinc-500 hover:bg-white/5 transition-colors duration-200 cursor-pointer">
+<span class="material-symbols-outlined">construction</span>
+<span class="font-['Manrope'] text-[0.6875rem] font-medium tracking-[0.05em]">Maintenance</span>
+</div>
+<div class="flex items-center gap-3 px-8 py-3 text-zinc-500 hover:bg-white/5 transition-colors duration-200 cursor-pointer mt-auto">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-['Manrope'] text-[0.6875rem] font-medium tracking-[0.05em]">Settings</span>
+</div>
+</nav>
+<div class="px-8 mt-auto pt-6">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container-high border border-white/10 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Close-up portrait of a high-tech system operator wearing communication headset in a dark glowing environment" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAveMkOtv-xKPC2uT79xn1w7EVppIt7wMQU3usgdjOndrpi2h12f0j0bkOl4uyoN9xeZD8t2qKFKsecpsIyrpwNawTLxEkbywD-HmddwrklRgyHOlimWdc4RgqeL3JcemD_XcXZJpVEL4agftnxgrzqfbKlTBkP7F261oXdy8UiPRdFMYgQAFG0SaTQQtVJavC2X4L-wz5DGRzURn8yLz9k22Q5rZ1tS76FSxVawHQBVqzk_oQ7joE-iAJbG6e7x_OCC2AqMaHV-cI"/>
+</div>
+<div>
+<div class="text-[0.6875rem] font-bold text-white">System Operator</div>
+<div class="text-[0.5rem] text-cyan-500 uppercase tracking-widest">Active Duty</div>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Wrapper -->
+<main class="flex-1 flex flex-col relative overflow-hidden bg-surface">
+<!-- TopAppBar -->
+<header class="bg-zinc-900/50 backdrop-blur-md flex justify-between items-center px-8 h-16 w-full border-b border-white/5 z-50">
+<div class="flex items-center gap-6">
+<h1 class="text-xl font-bold tracking-tighter text-white dark:text-[#e5e2e1] font-headline uppercase">Kinetic Intelligence</h1>
+<div class="h-6 w-[1px] bg-white/10"></div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 px-3 py-1 bg-white/5 rounded-lg border border-white/5">
+<span class="material-symbols-outlined text-cyan-400 text-sm">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-xs font-label w-48 text-on-surface" placeholder="Search Train ID..." type="text"/>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-zinc-500 hover:text-cyan-300 transition-all cursor-pointer">notifications_active</span>
+<span class="material-symbols-outlined text-zinc-500 hover:text-cyan-300 transition-all cursor-pointer">account_circle</span>
+</div>
+</div>
+</header>
+<!-- Dashboard Content -->
+<div class="flex-1 p-8 overflow-y-auto space-y-8">
+<!-- Filters & Context -->
+<div class="flex justify-between items-end">
+<div class="space-y-1">
+<h2 class="font-headline text-3xl font-bold tracking-tight text-white uppercase glow-cyan">Live Tactical Overview</h2>
+<p class="font-label text-xs text-zinc-500 uppercase tracking-[0.2em]">Regional Sector 04 - Berlin Hub</p>
+</div>
+<div class="flex gap-4">
+<div class="flex flex-col gap-1">
+<label class="text-[0.6rem] font-bold text-zinc-500 uppercase tracking-widest ml-1">Route Sector</label>
+<select class="bg-surface-container border-none text-xs font-label px-4 py-2 rounded-lg text-on-surface focus:ring-1 focus:ring-cyan-500/50 cursor-pointer">
+<option>North-South Corridor</option>
+<option>East Expansion</option>
+<option>Central Orbital</option>
+</select>
+</div>
+<div class="flex flex-col gap-1">
+<label class="text-[0.6rem] font-bold text-zinc-500 uppercase tracking-widest ml-1">Status Filter</label>
+<select class="bg-surface-container border-none text-xs font-label px-4 py-2 rounded-lg text-on-surface focus:ring-1 focus:ring-cyan-500/50 cursor-pointer">
+<option>All Statuses</option>
+<option>Delayed Only</option>
+<option>On Time Only</option>
+</select>
+</div>
+<button class="bg-gradient-to-r from-primary to-primary-container px-6 py-2 h-10 rounded-lg text-on-primary font-bold text-xs uppercase tracking-widest flex items-center gap-2 hover:shadow-[0_0_20px_rgba(174,198,255,0.4)] transition-all">
+<span class="material-symbols-outlined text-sm">tune</span>
+                            Advanced Analytics
+                        </button>
+</div>
+</div>
+<!-- Bento Grid Content -->
+<div class="grid grid-cols-12 gap-6">
+<!-- Tactical Map Card -->
+<div class="col-span-12 lg:col-span-8 bg-surface-container-low rounded-xl overflow-hidden h-[450px] relative border border-white/5 group shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
+<div class="absolute inset-0 z-0 grayscale opacity-40 group-hover:opacity-60 transition-opacity duration-700 bg-cover bg-center" data-alt="Detailed dark satellite view of a complex urban railway network with glowing blue data paths overlaid" data-location="Berlin" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAB6iFSvIMfK0dXfwufMKc07BHpNNHbzulsXprpNkQ8BCcY_587eVQ3bSU16xS-jUMkSFcYSZxoNbd3gdsyycKUgRYChS542B-uf4wgvj_duYjpxCZtuB8njC2hUv6Y41-ibPrpIW3gLpRUVCMH09dQjvlhTWKa0jxycoks5pBl2IC-ZiOYI8-C3lErmeZb-iL7vLVyo_rsBQK3s2jcX1GQwL_fCzWh_WL1LnvdRXyvPKIb9eoiQ0tpwib_xsuQjW3Ci237WCDpqYA')"></div>
+<!-- Pulse Overlay -->
+<div class="absolute inset-0 z-10 pointer-events-none">
+<div class="absolute top-[20%] left-[30%]">
+<div class="pulse-dot w-3 h-3 bg-secondary-container rounded-full relative">
+<div class="absolute -top-10 -left-10 bg-surface-container-highest/80 backdrop-blur-md px-3 py-1 rounded-lg border border-cyan-500/30 text-[10px] font-headline text-white whitespace-nowrap">
+                                        ICE-782 <span class="text-cyan-400">240km/h</span>
+</div>
+</div>
+</div>
+<div class="absolute top-[60%] left-[55%]">
+<div class="pulse-dot w-3 h-3 bg-secondary-container rounded-full relative">
+<div class="absolute -top-10 -left-10 bg-surface-container-highest/80 backdrop-blur-md px-3 py-1 rounded-lg border border-cyan-500/30 text-[10px] font-headline text-white whitespace-nowrap">
+                                        RE-412 <span class="text-cyan-400">120km/h</span>
+</div>
+</div>
+</div>
+<div class="absolute top-[40%] left-[75%]">
+<div class="pulse-dot w-3 h-3 bg-tertiary rounded-full relative">
+<div class="absolute -top-10 -left-10 bg-surface-container-highest/80 backdrop-blur-md px-3 py-1 rounded-lg border border-tertiary/30 text-[10px] font-headline text-white whitespace-nowrap">
+                                        ICE-209 <span class="text-tertiary">+12m Delay</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Map Controls -->
+<div class="absolute bottom-4 right-4 z-20 flex flex-col gap-2">
+<button class="w-10 h-10 bg-surface-container-highest/90 backdrop-blur-md rounded-lg flex items-center justify-center text-white border border-white/10 hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined">add</span>
+</button>
+<button class="w-10 h-10 bg-surface-container-highest/90 backdrop-blur-md rounded-lg flex items-center justify-center text-white border border-white/10 hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined">remove</span>
+</button>
+</div>
+<div class="absolute top-4 left-4 z-20">
+<div class="bg-surface-container-highest/90 backdrop-blur-md px-4 py-2 rounded-lg border border-white/10 flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></div>
+<span class="text-[0.65rem] font-bold text-white uppercase tracking-widest">Live Feed Active</span>
+</div>
+</div>
+</div>
+<!-- Side Stats / AI Insights -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-6">
+<div class="bg-surface-container-low rounded-xl p-6 border border-white/5 flex-1 shadow-lg">
+<h3 class="font-headline text-sm font-bold text-zinc-400 uppercase tracking-widest mb-6">Network Health</h3>
+<div class="space-y-6">
+<div class="flex justify-between items-end">
+<div class="space-y-1">
+<div class="text-[0.6rem] text-zinc-500 font-bold uppercase tracking-widest">Arrival Reliability</div>
+<div class="text-3xl font-headline font-bold text-white">98.4%</div>
+</div>
+<div class="w-24 h-8 flex items-end gap-1 pb-1">
+<div class="w-2 h-[40%] bg-cyan-500/20 rounded-t-sm"></div>
+<div class="w-2 h-[60%] bg-cyan-500/40 rounded-t-sm"></div>
+<div class="w-2 h-[50%] bg-cyan-500/30 rounded-t-sm"></div>
+<div class="w-2 h-[80%] bg-cyan-500/60 rounded-t-sm"></div>
+<div class="w-2 h-[100%] bg-cyan-500 rounded-t-sm"></div>
+</div>
+</div>
+<div class="flex justify-between items-end">
+<div class="space-y-1">
+<div class="text-[0.6rem] text-zinc-500 font-bold uppercase tracking-widest">Active Fleet</div>
+<div class="text-3xl font-headline font-bold text-white">142</div>
+</div>
+<div class="text-xs font-bold text-cyan-400 flex items-center gap-1 pb-1">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+                                        +4 units
+                                    </div>
+</div>
+</div>
+</div>
+<div class="bg-surface-container rounded-xl p-6 border border-white/5 flex-1 relative overflow-hidden">
+<div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 blur-3xl"></div>
+<h3 class="font-headline text-sm font-bold text-zinc-400 uppercase tracking-widest mb-4">AI Conductor Insight</h3>
+<p class="text-xs text-on-surface-variant font-body leading-relaxed mb-6">
+                                Predictive analysis suggests a potential 4-minute delay for Sector 04 due to upcoming freight priority at Junction B-12. Rerouting ICE-782 is <span class="text-cyan-400 font-bold">Recommended</span>.
+                            </p>
+<button class="w-full bg-surface-container-highest text-white text-[0.65rem] font-bold uppercase tracking-widest py-3 rounded-lg border border-white/10 hover:border-cyan-500/50 transition-all">
+                                Execute Optimization
+                            </button>
+</div>
+</div>
+<!-- Live Train Table -->
+<div class="col-span-12 bg-surface-container-low rounded-xl border border-white/5 overflow-hidden shadow-2xl">
+<div class="px-8 py-6 border-b border-white/5 flex justify-between items-center">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-cyan-400">format_list_bulleted</span>
+<h3 class="font-headline text-sm font-bold text-white uppercase tracking-widest">Live Fleet Matrix</h3>
+</div>
+<div class="text-[0.65rem] text-zinc-500 font-bold uppercase tracking-widest">
+                                Last Updated: <span class="text-on-surface">14:24:31 GMT</span>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full border-collapse">
+<thead class="bg-surface-container-lowest">
+<tr class="text-left text-[0.6rem] font-bold text-zinc-500 uppercase tracking-widest">
+<th class="px-8 py-4">Train ID</th>
+<th class="px-8 py-4">Route</th>
+<th class="px-8 py-4">Speed</th>
+<th class="px-8 py-4 text-center">ETA</th>
+<th class="px-8 py-4">Delay</th>
+<th class="px-8 py-4 text-center">Platform</th>
+<th class="px-8 py-4 text-right">Status</th>
+</tr>
+</thead>
+<tbody class="text-sm font-label divide-y divide-white/5">
+<tr class="hover:bg-white/5 transition-colors group">
+<td class="px-8 py-4">
+<div class="flex items-center gap-2">
+<span class="text-white font-bold font-headline">ICE-782</span>
+</div>
+</td>
+<td class="px-8 py-4 text-on-surface-variant">Berlin Central — Munich Hbf</td>
+<td class="px-8 py-4">
+<span class="text-cyan-400 font-bold">240 <span class="text-[0.65rem] text-zinc-500">km/h</span></span>
+</td>
+<td class="px-8 py-4 text-center font-bold text-white">14:45</td>
+<td class="px-8 py-4 text-zinc-500">None</td>
+<td class="px-8 py-4 text-center">
+<span class="bg-surface-container-highest px-3 py-1 rounded text-xs font-bold text-white border border-white/5">P4</span>
+</td>
+<td class="px-8 py-4 text-right">
+<div class="inline-flex items-center gap-2 bg-cyan-500/10 text-cyan-400 px-3 py-1 rounded-full text-[0.65rem] font-bold uppercase tracking-widest border border-cyan-500/20">
+<div class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></div>
+                                                On Time
+                                            </div>
+</td>
+</tr>
+<tr class="hover:bg-white/5 transition-colors group">
+<td class="px-8 py-4">
+<div class="flex items-center gap-2">
+<span class="text-white font-bold font-headline">ICE-209</span>
+</div>
+</td>
+<td class="px-8 py-4 text-on-surface-variant">Hamburg — Zurich HB</td>
+<td class="px-8 py-4">
+<span class="text-cyan-400 font-bold">215 <span class="text-[0.65rem] text-zinc-500">km/h</span></span>
+</td>
+<td class="px-8 py-4 text-center font-bold text-white">15:12</td>
+<td class="px-8 py-4">
+<span class="text-tertiary font-bold">+12m</span>
+</td>
+<td class="px-8 py-4 text-center">
+<span class="bg-surface-container-highest px-3 py-1 rounded text-xs font-bold text-white border border-white/5">P11</span>
+</td>
+<td class="px-8 py-4 text-right">
+<div class="inline-flex items-center gap-2 bg-tertiary/10 text-tertiary px-3 py-1 rounded-full text-[0.65rem] font-bold uppercase tracking-widest border border-tertiary/20">
+<div class="w-1.5 h-1.5 rounded-full bg-tertiary"></div>
+                                                Delayed
+                                            </div>
+</td>
+</tr>
+<tr class="hover:bg-white/5 transition-colors group">
+<td class="px-8 py-4">
+<div class="flex items-center gap-2">
+<span class="text-white font-bold font-headline">RE-412</span>
+</div>
+</td>
+<td class="px-8 py-4 text-on-surface-variant">Berlin — Leipzig Hbf</td>
+<td class="px-8 py-4">
+<span class="text-cyan-400 font-bold">120 <span class="text-[0.65rem] text-zinc-500">km/h</span></span>
+</td>
+<td class="px-8 py-4 text-center font-bold text-white">14:58</td>
+<td class="px-8 py-4 text-zinc-500">None</td>
+<td class="px-8 py-4 text-center">
+<span class="bg-surface-container-highest px-3 py-1 rounded text-xs font-bold text-white border border-white/5">P2</span>
+</td>
+<td class="px-8 py-4 text-right">
+<div class="inline-flex items-center gap-2 bg-secondary-container/10 text-secondary-container px-3 py-1 rounded-full text-[0.65rem] font-bold uppercase tracking-widest border border-secondary-container/20">
+<div class="w-1.5 h-1.5 rounded-full bg-secondary-container"></div>
+                                                Approaching
+                                            </div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<!-- Floating Action Component (Only for Monitoring context) -->
+<div class="fixed bottom-8 right-8 z-[100]">
+<button class="bg-gradient-to-br from-cyan-400 to-primary-container p-4 rounded-full shadow-[0_10px_40px_rgba(34,211,238,0.4)] hover:scale-110 active:scale-95 transition-all group">
+<span class="material-symbols-outlined text-on-primary-container text-3xl font-bold">emergency_share</span>
+<div class="absolute right-16 top-1/2 -translate-y-1/2 bg-surface-container-highest border border-white/10 px-4 py-2 rounded-lg text-[0.65rem] font-bold text-white uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
+                        Broadcast Sector Alert
+                    </div>
+</button>
+</div>
+</main>
+</div>
+</body></html>

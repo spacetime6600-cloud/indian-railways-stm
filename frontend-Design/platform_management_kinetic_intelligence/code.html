@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Platform Management - Kinetic Intelligence</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "tertiary": "#ffb596",
+                        "on-tertiary": "#581e00",
+                        "surface-bright": "#3a3939",
+                        "outline": "#8b90a1",
+                        "on-primary-fixed": "#001a42",
+                        "background": "#131313",
+                        "on-secondary-container": "#006a70",
+                        "primary-fixed": "#d8e2ff",
+                        "surface-tint": "#aec6ff",
+                        "surface-container-highest": "#353534",
+                        "on-surface-variant": "#c1c6d7",
+                        "error-container": "#93000a",
+                        "secondary-container": "#00f1fe",
+                        "tertiary-fixed-dim": "#ffb596",
+                        "secondary-fixed": "#74f5ff",
+                        "surface-dim": "#131313",
+                        "on-tertiary-fixed": "#360f00",
+                        "tertiary-fixed": "#ffdbcd",
+                        "surface-container-lowest": "#0e0e0e",
+                        "surface-container-high": "#2a2a2a",
+                        "on-background": "#e5e2e1",
+                        "on-secondary": "#00363a",
+                        "inverse-surface": "#e5e2e1",
+                        "inverse-on-surface": "#313030",
+                        "surface-container-low": "#1c1b1b",
+                        "surface-container": "#201f1f",
+                        "error": "#ffb4ab",
+                        "on-tertiary-fixed-variant": "#7d2d00",
+                        "tertiary-container": "#f0661b",
+                        "outline-variant": "#414755",
+                        "primary-container": "#4f8eff",
+                        "on-tertiary-container": "#4d1900",
+                        "on-error": "#690005",
+                        "on-secondary-fixed-variant": "#004f54",
+                        "surface": "#131313",
+                        "primary": "#aec6ff",
+                        "primary-fixed-dim": "#aec6ff",
+                        "on-primary": "#002e6a",
+                        "on-primary-fixed-variant": "#004396",
+                        "on-error-container": "#ffdad6",
+                        "surface-variant": "#353534",
+                        "on-secondary-fixed": "#002022",
+                        "inverse-primary": "#005ac4",
+                        "secondary-fixed-dim": "#00dbe7",
+                        "secondary": "#ddfcff",
+                        "on-surface": "#e5e2e1",
+                        "on-primary-container": "#00275e"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    fontFamily: {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Manrope"],
+                        "label": ["Manrope"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        @layer utilities {
+            .glass-panel {
+                @apply bg-surface-container/60 backdrop-blur-[20px] shadow-[0_20px_50px_rgba(0,0,0,0.4)];
+            }
+            .ghost-border {
+                @apply border border-outline-variant/15;
+            }
+            .pulse-anim {
+                animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+            }
+            @keyframes pulse {
+                0%, 100% { opacity: 1; }
+                50% { opacity: .4; }
+            }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body min-h-screen flex overflow-hidden">
+<!-- SideNavBar -->
+<aside class="hidden md:flex flex-col h-full py-8 px-4 gap-y-2 bg-zinc-950/80 backdrop-blur-3xl docked left-0 w-72 bg-zinc-900/50 shadow-2xl z-40 relative flex-shrink-0">
+<div class="mb-8 px-4 flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden bg-surface-container-high border border-outline-variant/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-2xl">memory</span>
+</div>
+<div>
+<h1 class="text-lg font-black text-white font-headline tracking-tighter">Control Center</h1>
+<p class="text-xs text-on-surface-variant/70 font-label tracking-widest uppercase">AI Node: Active</p>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 rounded-DEFAULT text-zinc-500 hover:text-zinc-200 hover:bg-white/5 transition-colors font-['Manrope'] font-medium" href="#">
+<span class="material-symbols-outlined text-xl">dashboard</span>
+                Dashboard
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-DEFAULT text-zinc-500 hover:text-zinc-200 hover:bg-white/5 transition-colors font-['Manrope'] font-medium" href="#">
+<span class="material-symbols-outlined text-xl">train</span>
+                Live Trains
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-DEFAULT text-blue-400 bg-blue-500/10 border-r-2 border-blue-500 font-['Manrope'] font-medium" href="#">
+<span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">door_sliding</span>
+                Platforms
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-DEFAULT text-zinc-500 hover:text-zinc-200 hover:bg-white/5 transition-colors font-['Manrope'] font-medium" href="#">
+<span class="material-symbols-outlined text-xl">warning</span>
+                Alerts
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-DEFAULT text-zinc-500 hover:text-zinc-200 hover:bg-white/5 transition-colors font-['Manrope'] font-medium" href="#">
+<span class="material-symbols-outlined text-xl">insights</span>
+                Analytics
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-DEFAULT text-zinc-500 hover:text-zinc-200 hover:bg-white/5 transition-colors font-['Manrope'] font-medium" href="#">
+<span class="material-symbols-outlined text-xl">build</span>
+                Maintenance
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-DEFAULT text-zinc-500 hover:text-zinc-200 hover:bg-white/5 transition-colors font-['Manrope'] font-medium" href="#">
+<span class="material-symbols-outlined text-xl">settings</span>
+                Settings
+            </a>
+</nav>
+<div class="mt-auto pt-4 space-y-1 border-t border-outline-variant/10">
+<a class="flex items-center gap-3 px-4 py-3 rounded-DEFAULT text-zinc-500 hover:text-zinc-200 hover:bg-white/5 transition-colors font-['Manrope'] font-medium" href="#">
+<span class="material-symbols-outlined text-xl">help</span>
+                Help
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-DEFAULT text-zinc-500 hover:text-zinc-200 hover:bg-white/5 transition-colors font-['Manrope'] font-medium" href="#">
+<span class="material-symbols-outlined text-xl">history</span>
+                Logs
+            </a>
+<button class="w-full mt-4 bg-error-container/20 text-error hover:bg-error-container/40 transition-colors py-3 rounded-DEFAULT font-bold text-sm tracking-wide ghost-border">
+                Emergency Stop
+            </button>
+</div>
+</aside>
+<main class="flex-1 flex flex-col h-screen overflow-hidden relative">
+<!-- TopNavBar -->
+<header class="flex justify-between items-center w-full px-8 h-20 bg-zinc-950/60 backdrop-blur-2xl text-blue-500 font-['Space_Grotesk'] tracking-tight docked full-width top-0 z-50 bg-zinc-900/40 shadow-[0_20px_50px_rgba(0,0,0,0.4)] absolute">
+<div class="text-xl font-bold text-zinc-100 tracking-tighter flex items-center gap-2">
+                Kinetic Intelligence
+            </div>
+<div class="flex items-center gap-6">
+<div class="flex gap-4">
+<button class="text-zinc-400 hover:bg-blue-500/10 hover:text-blue-400 transition-all duration-300 p-2 rounded-full scale-95 duration-200 ease-out">
+<span class="material-symbols-outlined text-2xl">sensors</span>
+</button>
+<button class="text-zinc-400 hover:bg-blue-500/10 hover:text-blue-400 transition-all duration-300 p-2 rounded-full scale-95 duration-200 ease-out relative">
+<span class="material-symbols-outlined text-2xl">notifications</span>
+<span class="absolute top-1 right-1 w-2 h-2 bg-secondary rounded-full pulse-anim"></span>
+</button>
+<button class="text-zinc-400 hover:bg-blue-500/10 hover:text-blue-400 transition-all duration-300 p-2 rounded-full scale-95 duration-200 ease-out">
+<span class="material-symbols-outlined text-2xl">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Content Area -->
+<div class="flex-1 overflow-y-auto pt-28 pb-8 px-8 flex gap-8">
+<!-- Main Column: Platform Grid & Chart -->
+<div class="flex-1 flex flex-col gap-8 min-w-0">
+<div class="flex justify-between items-end mb-2">
+<div>
+<h2 class="text-4xl font-headline font-bold text-on-surface tracking-tight">Platform Overview</h2>
+<p class="text-on-surface-variant font-label text-sm mt-1 tracking-widest uppercase">Live Terminal Status</p>
+</div>
+</div>
+<!-- Platform Grid -->
+<div class="grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-6">
+<!-- Platform Card 1 -->
+<div class="glass-panel rounded-xl p-6 ghost-border relative overflow-hidden group">
+<div class="absolute top-0 left-0 w-1 h-full bg-secondary-container"></div>
+<div class="flex justify-between items-start mb-6">
+<div class="flex items-center gap-3">
+<h3 class="text-3xl font-headline font-bold">P1</h3>
+<div class="bg-secondary-container/20 text-secondary-container px-2 py-1 rounded-DEFAULT text-xs font-bold tracking-widest uppercase flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary-container pulse-anim"></span>
+                                    Occupied
+                                </div>
+</div>
+<span class="text-on-surface-variant text-sm font-label uppercase tracking-wider">In 4m</span>
+</div>
+<div class="space-y-4">
+<div class="bg-surface-container-lowest/50 rounded-lg p-4 ghost-border">
+<p class="text-xs text-on-surface-variant font-label uppercase tracking-widest mb-1">Assigned Train</p>
+<p class="font-headline font-bold text-lg text-primary">ICE-782 <span class="text-sm font-normal text-on-surface-variant ml-2">High-Speed</span></p>
+</div>
+<button class="w-full py-2.5 rounded-DEFAULT bg-surface-container-high/40 ghost-border text-primary hover:bg-primary/10 transition-colors font-medium text-sm">
+                                Manual Reassign
+                            </button>
+</div>
+</div>
+<!-- Platform Card 2 -->
+<div class="glass-panel rounded-xl p-6 ghost-border relative overflow-hidden group">
+<div class="absolute top-0 left-0 w-1 h-full bg-outline-variant"></div>
+<div class="flex justify-between items-start mb-6">
+<div class="flex items-center gap-3">
+<h3 class="text-3xl font-headline font-bold">P2</h3>
+<div class="bg-surface-container-high text-on-surface-variant px-2 py-1 rounded-DEFAULT text-xs font-bold tracking-widest uppercase">
+                                    Free
+                                </div>
+</div>
+<span class="text-on-surface-variant text-sm font-label uppercase tracking-wider">In 12m</span>
+</div>
+<div class="space-y-4">
+<div class="bg-surface-container-lowest/50 rounded-lg p-4 ghost-border">
+<p class="text-xs text-on-surface-variant font-label uppercase tracking-widest mb-1">Incoming Train</p>
+<p class="font-headline font-bold text-lg text-on-surface">RE-441 <span class="text-sm font-normal text-on-surface-variant ml-2">Regional</span></p>
+</div>
+<button class="w-full py-2.5 rounded-DEFAULT bg-surface-container-high/40 ghost-border text-primary hover:bg-primary/10 transition-colors font-medium text-sm">
+                                Manual Reassign
+                            </button>
+</div>
+</div>
+<!-- Platform Card 3 -->
+<div class="glass-panel rounded-xl p-6 ghost-border relative overflow-hidden group">
+<div class="absolute top-0 left-0 w-1 h-full bg-tertiary"></div>
+<div class="flex justify-between items-start mb-6">
+<div class="flex items-center gap-3">
+<h3 class="text-3xl font-headline font-bold">P3</h3>
+<div class="bg-tertiary/20 text-tertiary px-2 py-1 rounded-DEFAULT text-xs font-bold tracking-widest uppercase flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary pulse-anim"></span>
+                                    Delayed
+                                </div>
+</div>
+<span class="text-error text-sm font-label uppercase tracking-wider font-bold">In 28m</span>
+</div>
+<div class="space-y-4">
+<div class="bg-surface-container-lowest/50 rounded-lg p-4 ghost-border border-tertiary/30">
+<p class="text-xs text-on-surface-variant font-label uppercase tracking-widest mb-1">Assigned Train</p>
+<p class="font-headline font-bold text-lg text-tertiary">TGV-90 <span class="text-sm font-normal text-on-surface-variant ml-2">International</span></p>
+</div>
+<button class="w-full py-2.5 rounded-DEFAULT bg-surface-container-high/40 ghost-border text-primary hover:bg-primary/10 transition-colors font-medium text-sm">
+                                Manual Reassign
+                            </button>
+</div>
+</div>
+<!-- Platform Card 4 -->
+<div class="glass-panel rounded-xl p-6 ghost-border relative overflow-hidden group">
+<div class="absolute top-0 left-0 w-1 h-full bg-outline-variant"></div>
+<div class="flex justify-between items-start mb-6">
+<div class="flex items-center gap-3">
+<h3 class="text-3xl font-headline font-bold">P4</h3>
+<div class="bg-surface-container-high text-on-surface-variant px-2 py-1 rounded-DEFAULT text-xs font-bold tracking-widest uppercase">
+                                    Free
+                                </div>
+</div>
+<span class="text-on-surface-variant text-sm font-label uppercase tracking-wider">--</span>
+</div>
+<div class="space-y-4">
+<div class="bg-surface-container-lowest/50 rounded-lg p-4 ghost-border flex items-center justify-center h-[76px]">
+<p class="text-on-surface-variant font-label uppercase tracking-widest text-sm">No assignments</p>
+</div>
+<button class="w-full py-2.5 rounded-DEFAULT bg-surface-container-high/40 ghost-border text-primary hover:bg-primary/10 transition-colors font-medium text-sm">
+                                Manual Reassign
+                            </button>
+</div>
+</div>
+</div>
+<!-- Platform Usage Chart -->
+<div class="glass-panel rounded-xl p-6 ghost-border mt-auto flex-1 flex flex-col min-h-[300px]">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-headline font-bold text-xl">Hourly Utilization</h3>
+<div class="flex items-center gap-4 text-xs font-label uppercase tracking-widest text-on-surface-variant">
+<span class="flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-primary"></div> Actual</span>
+<span class="flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-outline-variant"></div> Predicted</span>
+</div>
+</div>
+<!-- Chart Placeholder (Stylized using divs) -->
+<div class="flex-1 flex items-end gap-2 relative">
+<!-- Horizontal Grid Lines -->
+<div class="absolute inset-0 flex flex-col justify-between pointer-events-none opacity-10">
+<div class="w-full h-px bg-on-surface"></div>
+<div class="w-full h-px bg-on-surface"></div>
+<div class="w-full h-px bg-on-surface"></div>
+<div class="w-full h-px bg-on-surface"></div>
+</div>
+<!-- Bars -->
+<div class="flex-1 bg-primary/80 rounded-t-sm h-[40%] hover:bg-primary transition-colors cursor-pointer relative group"></div>
+<div class="flex-1 bg-primary/80 rounded-t-sm h-[60%] hover:bg-primary transition-colors cursor-pointer"></div>
+<div class="flex-1 bg-primary/80 rounded-t-sm h-[85%] hover:bg-primary transition-colors cursor-pointer"></div>
+<div class="flex-1 bg-primary/80 rounded-t-sm h-[70%] hover:bg-primary transition-colors cursor-pointer"></div>
+<div class="flex-1 bg-outline-variant/50 rounded-t-sm h-[90%] hover:bg-outline-variant/80 transition-colors cursor-pointer"></div>
+<div class="flex-1 bg-outline-variant/50 rounded-t-sm h-[65%] hover:bg-outline-variant/80 transition-colors cursor-pointer"></div>
+<div class="flex-1 bg-outline-variant/50 rounded-t-sm h-[45%] hover:bg-outline-variant/80 transition-colors cursor-pointer"></div>
+<div class="flex-1 bg-outline-variant/50 rounded-t-sm h-[30%] hover:bg-outline-variant/80 transition-colors cursor-pointer"></div>
+</div>
+<div class="flex justify-between text-xs font-label text-on-surface-variant mt-3 px-2">
+<span>08:00</span>
+<span>10:00</span>
+<span>12:00</span>
+<span>14:00</span>
+<span>16:00</span>
+</div>
+</div>
+</div>
+<!-- Right Column: AI Recommendations -->
+<div class="w-96 flex-shrink-0 flex flex-col gap-6">
+<div class="glass-panel rounded-xl p-6 ghost-border bg-surface-container-highest/80 h-full flex flex-col">
+<div class="flex items-center gap-3 mb-8">
+<span class="material-symbols-outlined text-secondary-container text-3xl pulse-anim" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<div>
+<h3 class="font-headline font-bold text-xl text-on-surface">AI Optimizer</h3>
+<p class="text-xs text-on-surface-variant font-label tracking-widest uppercase">Live Suggestions</p>
+</div>
+</div>
+<div class="space-y-4 flex-1 overflow-y-auto pr-2">
+<!-- Suggestion 1 -->
+<div class="bg-surface-container-lowest p-5 rounded-lg ghost-border border-secondary-container/30 relative">
+<div class="absolute -left-1 top-1/2 -translate-y-1/2 w-2 h-8 bg-secondary-container rounded-r-full"></div>
+<h4 class="font-headline font-bold text-on-surface mb-2">Relocate ICE-782</h4>
+<p class="text-sm text-on-surface-variant font-body mb-4 leading-relaxed">
+                                Move ICE-782 from <span class="font-bold text-on-surface">P1</span> to <span class="font-bold text-on-surface">P4</span> to reduce cross-terminal congestion.
+                            </p>
+<div class="flex items-center justify-between">
+<div class="bg-secondary-container/10 text-secondary-container px-2 py-1 rounded text-xs font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">trending_up</span>
+                                    +12% Flow
+                                </div>
+<button class="text-primary hover:text-primary-container text-sm font-bold tracking-wide transition-colors uppercase">
+                                    Execute
+                                </button>
+</div>
+</div>
+<!-- Suggestion 2 -->
+<div class="bg-surface-container-lowest p-5 rounded-lg ghost-border relative">
+<div class="absolute -left-1 top-1/2 -translate-y-1/2 w-2 h-8 bg-outline-variant rounded-r-full"></div>
+<h4 class="font-headline font-bold text-on-surface mb-2">Hold TGV-90</h4>
+<p class="text-sm text-on-surface-variant font-body mb-4 leading-relaxed">
+                                Extend hold on <span class="font-bold text-on-surface">P3</span> by 4 mins to allow regional clear-out.
+                            </p>
+<div class="flex items-center justify-between">
+<div class="bg-surface-container-high text-on-surface-variant px-2 py-1 rounded text-xs font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">schedule</span>
+                                    Minor Impact
+                                </div>
+<button class="text-primary hover:text-primary-container text-sm font-bold tracking-wide transition-colors uppercase">
+                                    Review
+                                </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

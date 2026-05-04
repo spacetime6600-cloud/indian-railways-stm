@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Kinetic Intelligence - Real-Time Alerts</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&amp;family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-container-highest": "#353534",
+                        "on-tertiary-fixed-variant": "#7d2d00",
+                        "secondary": "#ddfcff",
+                        "tertiary-fixed-dim": "#ffb596",
+                        "surface-container": "#201f1f",
+                        "surface-dim": "#131313",
+                        "secondary-fixed": "#74f5ff",
+                        "outline": "#8b90a1",
+                        "on-tertiary-container": "#4d1900",
+                        "inverse-surface": "#e5e2e1",
+                        "on-primary-container": "#00275e",
+                        "background": "#131313",
+                        "secondary-fixed-dim": "#00dbe7",
+                        "error": "#ffb4ab",
+                        "primary-fixed": "#d8e2ff",
+                        "primary-container": "#4f8eff",
+                        "on-surface": "#e5e2e1",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-error-container": "#ffdad6",
+                        "on-tertiary-fixed": "#360f00",
+                        "inverse-on-surface": "#313030",
+                        "tertiary": "#ffb596",
+                        "primary": "#aec6ff",
+                        "on-secondary-fixed": "#002022",
+                        "surface-container-low": "#1c1b1b",
+                        "on-secondary": "#00363a",
+                        "tertiary-fixed": "#ffdbcd",
+                        "inverse-primary": "#005ac4",
+                        "on-error": "#690005",
+                        "outline-variant": "#414755",
+                        "on-primary": "#002e6a",
+                        "tertiary-container": "#f0661b",
+                        "on-secondary-container": "#006a70",
+                        "error-container": "#93000a",
+                        "on-primary-fixed": "#001a42",
+                        "on-surface-variant": "#c1c6d7",
+                        "on-secondary-fixed-variant": "#004f54",
+                        "surface-container-high": "#2a2a2a",
+                        "surface-bright": "#3a3939",
+                        "surface": "#131313",
+                        "on-background": "#e5e2e1",
+                        "surface-tint": "#aec6ff",
+                        "primary-fixed-dim": "#aec6ff",
+                        "surface-variant": "#353534",
+                        "on-tertiary": "#581e00",
+                        "on-primary-fixed-variant": "#004396",
+                        "secondary-container": "#00f1fe"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    fontFamily: {
+                        "headline": ["Space Grotesk", "sans-serif"],
+                        "body": ["Manrope", "sans-serif"],
+                        "label": ["Manrope", "sans-serif"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #131313;
+            color: #e5e2e1;
+        }
+    </style>
+</head>
+<body class="font-body bg-surface text-on-surface flex min-h-screen">
+<!-- SideNavBar -->
+<nav class="bg-zinc-950 font-['Manrope'] text-sm font-medium h-screen w-64 fixed left-0 top-0 shadow-2xl shadow-black/50 z-40 hidden md:flex flex-col py-8 gap-2 border-r-0">
+<div class="px-6 mb-8">
+<h1 class="text-xl font-black text-white font-headline tracking-tight">Control Center</h1>
+<p class="text-zinc-500 text-xs mt-1 uppercase tracking-widest">Sector 7-G Admin</p>
+</div>
+<div class="flex-1 flex flex-col gap-2">
+<a class="text-zinc-500 hover:text-zinc-300 flex items-center px-6 py-3 w-full hover:bg-zinc-900/80 transition-all duration-300 ease-in-out" href="#">
+<span class="material-symbols-outlined mr-4">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="text-zinc-500 hover:text-zinc-300 flex items-center px-6 py-3 w-full hover:bg-zinc-900/80 transition-all duration-300 ease-in-out" href="#">
+<span class="material-symbols-outlined mr-4">train</span>
+<span>Live Trains</span>
+</a>
+<a class="text-zinc-500 hover:text-zinc-300 flex items-center px-6 py-3 w-full hover:bg-zinc-900/80 transition-all duration-300 ease-in-out" href="#">
+<span class="material-symbols-outlined mr-4">departure_board</span>
+<span>Platforms</span>
+</a>
+<a class="bg-blue-500/10 text-blue-400 border-r-2 border-blue-500 flex items-center px-6 py-3 w-full transition-all duration-300 ease-in-out" href="#">
+<span class="material-symbols-outlined mr-4">notifications_active</span>
+<span>Alerts</span>
+</a>
+<a class="text-zinc-500 hover:text-zinc-300 flex items-center px-6 py-3 w-full hover:bg-zinc-900/80 transition-all duration-300 ease-in-out" href="#">
+<span class="material-symbols-outlined mr-4">leaderboard</span>
+<span>Analytics</span>
+</a>
+<a class="text-zinc-500 hover:text-zinc-300 flex items-center px-6 py-3 w-full hover:bg-zinc-900/80 transition-all duration-300 ease-in-out" href="#">
+<span class="material-symbols-outlined mr-4">build</span>
+<span>Maintenance</span>
+</a>
+</div>
+<div class="mt-auto px-6 flex flex-col gap-4">
+<a class="text-zinc-500 hover:text-zinc-300 flex items-center py-3 w-full hover:bg-zinc-900/80 transition-all duration-300 ease-in-out" href="#">
+<span class="material-symbols-outlined mr-4">settings</span>
+<span>Settings</span>
+</a>
+<button class="bg-gradient-to-r from-primary to-primary-container text-on-primary-container font-semibold py-3 px-4 rounded-DEFAULT w-full shadow-[0_0_15px_rgba(79,142,255,0.3)] hover:shadow-[0_0_25px_rgba(79,142,255,0.5)] transition-all duration-300">
+                Generate Report
+            </button>
+</div>
+</nav>
+<!-- Main Content Wrapper -->
+<div class="flex-1 flex flex-col md:ml-64 min-h-screen">
+<!-- TopNavBar -->
+<header class="bg-zinc-950/80 backdrop-blur-2xl font-['Space_Grotesk'] tracking-tight text-zinc-100 sticky top-0 w-full z-50 shadow-xl shadow-blue-500/5 flex justify-between items-center h-16 px-8 border-b-0">
+<div class="flex items-center gap-4">
+<div class="text-lg font-bold tracking-widest text-blue-500">KINETIC INTELLIGENCE</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="text-sm font-medium text-emerald-400 flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    System: Nominal
+                </div>
+<div class="flex items-center gap-4 text-zinc-400">
+<button class="hover:bg-blue-500/10 hover:text-blue-300 transition-colors p-2 rounded-full scale-95 active:scale-100 duration-200">
+<span class="material-symbols-outlined">sensors</span>
+</button>
+<button class="text-blue-400 font-bold hover:bg-blue-500/10 hover:text-blue-300 transition-colors p-2 rounded-full scale-95 active:scale-100 duration-200">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="hover:bg-blue-500/10 hover:text-blue-300 transition-colors p-2 rounded-full scale-95 active:scale-100 duration-200">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="flex-1 p-8 overflow-y-auto bg-surface relative">
+<!-- Decorative background elements -->
+<div class="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] pointer-events-none"></div>
+<div class="absolute bottom-0 left-0 w-[600px] h-[600px] bg-error/5 rounded-full blur-[150px] pointer-events-none"></div>
+<!-- Header Section -->
+<div class="flex justify-between items-end mb-8 relative z-10">
+<div>
+<h2 class="text-display-lg font-headline font-bold text-on-surface tracking-tight">Real-Time Alert Center</h2>
+<div class="flex items-center gap-3 mt-2">
+<div class="flex items-center gap-2 bg-surface-container-high px-3 py-1 rounded-full border border-outline-variant/15">
+<span class="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]"></span>
+<span class="font-label text-xs uppercase tracking-widest text-on-surface-variant">Live Feed Active</span>
+</div>
+<span class="font-label text-xs text-on-surface-variant">42 Active Alerts</span>
+</div>
+</div>
+<button class="bg-surface-container-high/40 border border-outline-variant/15 text-on-surface hover:text-secondary hover:border-secondary/50 font-label text-sm py-2 px-6 rounded-DEFAULT transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]">
+                    Clear All Resolved
+                </button>
+</div>
+<!-- Filters -->
+<div class="bg-surface-container-low rounded-xl p-4 mb-8 relative z-10 flex gap-4 items-center border border-outline-variant/15 backdrop-blur-[20px]">
+<div class="font-label text-xs uppercase tracking-widest text-on-surface-variant mr-4">Filter By</div>
+<div class="flex gap-2">
+<button class="bg-surface-container px-4 py-2 rounded-lg text-sm font-medium border border-outline-variant/15 hover:border-primary/50 transition-colors text-primary">All</button>
+<button class="bg-surface-container px-4 py-2 rounded-lg text-sm font-medium border border-outline-variant/15 hover:border-error/50 transition-colors text-error flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span> Critical
+                    </button>
+<button class="bg-surface-container px-4 py-2 rounded-lg text-sm font-medium border border-outline-variant/15 hover:border-tertiary-container/50 transition-colors text-tertiary-container flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary-container"></span> High
+                    </button>
+<button class="bg-surface-container px-4 py-2 rounded-lg text-sm font-medium border border-outline-variant/15 hover:border-secondary-fixed/50 transition-colors text-secondary-fixed flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary-fixed"></span> Medium
+                    </button>
+</div>
+<div class="ml-auto flex items-center gap-3">
+<div class="bg-surface-container-lowest border border-outline-variant/15 rounded-lg px-4 py-2 flex items-center gap-2 w-64 focus-within:border-secondary focus-within:shadow-[0_0_10px_rgba(221,252,255,0.2)] transition-all">
+<span class="material-symbols-outlined text-on-surface-variant text-sm">search</span>
+<input class="bg-transparent border-none text-sm w-full text-on-surface placeholder-on-surface-variant focus:ring-0 p-0" placeholder="Search ID or Location..." type="text"/>
+</div>
+</div>
+</div>
+<!-- Alert Feed Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 relative z-10">
+<!-- Critical Alert Card -->
+<div class="bg-surface-container rounded-xl p-6 border border-error/20 shadow-[0_20px_50px_rgba(0,0,0,0.4)] backdrop-blur-[20px] relative overflow-hidden group">
+<div class="absolute top-0 left-0 w-1 h-full bg-error shadow-[0_0_15px_rgba(255,180,171,0.6)]"></div>
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center gap-3">
+<span class="bg-error/10 text-error border border-error/30 px-2 py-1 rounded text-xs font-bold uppercase tracking-wider flex items-center gap-1 shadow-[0_0_10px_rgba(255,180,171,0.2)]">
+<span class="material-symbols-outlined text-[14px]">warning</span> Critical
+                            </span>
+<span class="font-label text-xs text-on-surface-variant uppercase tracking-widest">14:24:05 • 2m ago</span>
+</div>
+<span class="font-headline text-sm font-bold text-on-surface-variant">ID: #993-ALFA</span>
+</div>
+<h3 class="font-headline text-xl font-bold text-on-surface mb-2">Signal Failure: Sector 4 Alpha</h3>
+<p class="font-body text-sm text-on-surface-variant mb-6 leading-relaxed">Primary relay station R-44 unresponsive. Rerouting protocols engaged. Manual override required for localized switching.</p>
+<div class="flex justify-between items-center mt-auto">
+<button class="text-primary hover:text-primary-container text-sm font-medium flex items-center gap-1 transition-colors">
+<span class="material-symbols-outlined text-sm">location_on</span> View Location
+                        </button>
+<button class="bg-error/20 hover:bg-error/30 text-error border border-error/50 py-2 px-6 rounded-DEFAULT font-semibold text-sm transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]">
+                            Resolve
+                        </button>
+</div>
+</div>
+<!-- Emergency Stop Critical -->
+<div class="bg-surface-container rounded-xl p-6 border border-error/20 shadow-[0_20px_50px_rgba(0,0,0,0.4)] backdrop-blur-[20px] relative overflow-hidden group">
+<div class="absolute top-0 left-0 w-1 h-full bg-error shadow-[0_0_15px_rgba(255,180,171,0.6)]"></div>
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center gap-3">
+<span class="bg-error/10 text-error border border-error/30 px-2 py-1 rounded text-xs font-bold uppercase tracking-wider flex items-center gap-1 shadow-[0_0_10px_rgba(255,180,171,0.2)]">
+<span class="material-symbols-outlined text-[14px]">dangerous</span> Critical
+                            </span>
+<span class="font-label text-xs text-on-surface-variant uppercase tracking-widest">14:20:12 • 6m ago</span>
+</div>
+<span class="font-headline text-sm font-bold text-on-surface-variant">ID: #EMR-92</span>
+</div>
+<h3 class="font-headline text-xl font-bold text-on-surface mb-2">Emergency Stop Initiated</h3>
+<p class="font-body text-sm text-on-surface-variant mb-6 leading-relaxed">Train TX-409 triggered emergency braking. Track obstruction detected at coordinate 33.4N 12.1E.</p>
+<div class="flex justify-between items-center mt-auto">
+<button class="text-primary hover:text-primary-container text-sm font-medium flex items-center gap-1 transition-colors">
+<span class="material-symbols-outlined text-sm">location_on</span> View Location
+                        </button>
+<button class="bg-error/20 hover:bg-error/30 text-error border border-error/50 py-2 px-6 rounded-DEFAULT font-semibold text-sm transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]">
+                            Resolve
+                        </button>
+</div>
+</div>
+<!-- High Alert Card -->
+<div class="bg-surface-container rounded-xl p-6 border border-outline-variant/15 shadow-[0_20px_50px_rgba(0,0,0,0.4)] backdrop-blur-[20px] relative overflow-hidden group">
+<div class="absolute top-0 left-0 w-1 h-full bg-tertiary-container shadow-[0_0_10px_rgba(240,102,27,0.4)]"></div>
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center gap-3">
+<span class="text-tertiary-container border border-tertiary-container/30 bg-tertiary-container/5 px-2 py-1 rounded text-xs font-bold uppercase tracking-wider flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">storm</span> High
+                            </span>
+<span class="font-label text-xs text-on-surface-variant uppercase tracking-widest">14:15:00 • 11m ago</span>
+</div>
+<span class="font-headline text-sm font-bold text-on-surface-variant">ID: #WTH-88</span>
+</div>
+<h3 class="font-headline text-xl font-bold text-on-surface mb-2">Weather Issue: High Winds</h3>
+<p class="font-body text-sm text-on-surface-variant mb-6 leading-relaxed">Crosswinds exceeding safe operational parameters on elevated viaduct section V-9.</p>
+<div class="flex justify-between items-center mt-auto">
+<button class="text-primary hover:text-primary-container text-sm font-medium flex items-center gap-1 transition-colors">
+<span class="material-symbols-outlined text-sm">location_on</span> View Location
+                        </button>
+<button class="bg-surface-container-high border border-outline-variant hover:border-secondary hover:text-secondary text-on-surface py-2 px-6 rounded-DEFAULT font-semibold text-sm transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]">
+                            Acknowledge
+                        </button>
+</div>
+</div>
+<!-- Medium Alert Card - Congestion -->
+<div class="bg-surface-container rounded-xl p-6 border border-outline-variant/15 shadow-[0_20px_50px_rgba(0,0,0,0.4)] backdrop-blur-[20px] relative overflow-hidden group">
+<div class="absolute top-0 left-0 w-1 h-full bg-secondary-fixed"></div>
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center gap-3">
+<span class="text-secondary-fixed border border-secondary-fixed/30 bg-secondary-fixed/5 px-2 py-1 rounded text-xs font-bold uppercase tracking-wider flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">traffic</span> Medium
+                            </span>
+<span class="font-label text-xs text-on-surface-variant uppercase tracking-widest">13:50:22 • 35m ago</span>
+</div>
+<span class="font-headline text-sm font-bold text-on-surface-variant">ID: #CON-12</span>
+</div>
+<h3 class="font-headline text-xl font-bold text-on-surface mb-2">Congestion Warning</h3>
+<p class="font-body text-sm text-on-surface-variant mb-6 leading-relaxed">Platform 4 density approaching 85% capacity. Recommend adjusting inbound flow rate.</p>
+<div class="flex justify-between items-center mt-auto">
+<button class="text-primary hover:text-primary-container text-sm font-medium flex items-center gap-1 transition-colors">
+<span class="material-symbols-outlined text-sm">location_on</span> View Location
+                        </button>
+<button class="bg-surface-container-high border border-outline-variant hover:border-secondary hover:text-secondary text-on-surface py-2 px-6 rounded-DEFAULT font-semibold text-sm transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]">
+                            Acknowledge
+                        </button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Login | Kinetic Intelligence</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Manrope:wght@200;300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-low": "#1c1b1b",
+                        "inverse-on-surface": "#313030",
+                        "surface-container": "#201f1f",
+                        "error": "#ffb4ab",
+                        "on-secondary": "#00363a",
+                        "inverse-surface": "#e5e2e1",
+                        "primary-container": "#4f8eff",
+                        "on-tertiary-container": "#4d1900",
+                        "on-error": "#690005",
+                        "on-secondary-fixed-variant": "#004f54",
+                        "on-tertiary-fixed-variant": "#7d2d00",
+                        "outline-variant": "#414755",
+                        "tertiary-container": "#f0661b",
+                        "on-primary-fixed-variant": "#004396",
+                        "on-error-container": "#ffdad6",
+                        "primary-fixed-dim": "#aec6ff",
+                        "surface": "#131313",
+                        "primary": "#aec6ff",
+                        "on-primary": "#002e6a",
+                        "secondary-fixed-dim": "#00dbe7",
+                        "secondary": "#ddfcff",
+                        "on-surface": "#e5e2e1",
+                        "on-primary-container": "#00275e",
+                        "surface-variant": "#353534",
+                        "on-secondary-fixed": "#002022",
+                        "inverse-primary": "#005ac4",
+                        "surface-bright": "#3a3939",
+                        "outline": "#8b90a1",
+                        "on-primary-fixed": "#001a42",
+                        "background": "#131313",
+                        "on-tertiary": "#581e00",
+                        "tertiary": "#ffb596",
+                        "on-secondary-container": "#006a70",
+                        "surface-tint": "#aec6ff",
+                        "primary-fixed": "#d8e2ff",
+                        "tertiary-fixed-dim": "#ffb596",
+                        "secondary-fixed": "#74f5ff",
+                        "surface-container-highest": "#353534",
+                        "secondary-container": "#00f1fe",
+                        "on-surface-variant": "#c1c6d7",
+                        "error-container": "#93000a",
+                        "on-background": "#e5e2e1",
+                        "surface-container-high": "#2a2a2a",
+                        "surface-dim": "#131313",
+                        "tertiary-fixed": "#ffdbcd",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-tertiary-fixed": "#360f00"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Manrope"],
+                        "label": ["Manrope"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(28, 27, 27, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .text-glow {
+            text-shadow: 0 0 15px rgba(174, 198, 255, 0.4);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body min-h-screen flex overflow-hidden">
+<!-- Left Side: Visual Narrative -->
+<div class="hidden lg:flex lg:w-7/12 relative overflow-hidden bg-surface-container-lowest">
+<!-- Abstract Railway Map Background -->
+<div class="absolute inset-0 opacity-40 mix-blend-screen overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-tr from-primary/20 via-transparent to-secondary-container/10"></div>
+<img class="w-full h-full object-cover" data-alt="Futuristic command center with glowing digital maps showing railway networks and complex data visualizations in deep blue and cyan" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDmkUsmioKROL4RsHBNh7iiAvxjpMRaQK8pVj3do2Prcb_AEkilU5gzuX5zVeXNv1lURn44lnHt-TtMISqPq8rZOgCQOziWxP7GVGlCyxpHThmC22TQ1MFj6nRAc2VZs0hp-4QzpsUfR0bVxSF_tXK-8BxlFCH3ZBF7Pt4h996wwXMY84nLcaIEs36uGVYPRvUB6Vv2iDP-J-9HJIyp7nCuskO09XZkl7lohvXnKShCKU_tH8zTumeQBuLxkvLXEpWF30kGOu3xLTY"/>
+</div>
+<!-- Branding Overlay -->
+<div class="relative z-10 flex flex-col justify-between p-16 w-full">
+<div class="flex items-center space-x-3">
+<div class="w-10 h-10 bg-primary-container rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container" style="font-variation-settings: 'FILL' 1;">dataset</span>
+</div>
+<span class="font-headline font-bold text-2xl tracking-tighter text-primary uppercase">Kinetic Intelligence</span>
+</div>
+<div class="max-w-xl">
+<h1 class="font-headline text-5xl font-bold tracking-tight text-on-surface mb-6 leading-tight">
+                    The Kinetic <span class="text-primary-container">Conductor</span>
+</h1>
+<p class="text-on-surface-variant text-lg font-light leading-relaxed mb-8">
+                    Orchestrate high-speed railway networks with precision-tuned AI. Real-time telemetry, predictive maintenance, and autonomous flow control in one unified command interface.
+                </p>
+<!-- Signature Status Chip -->
+<div class="flex items-center gap-4">
+<div class="flex items-center bg-surface-container-high px-4 py-2 rounded-full border border-outline-variant/10">
+<span class="flex h-2 w-2 rounded-full bg-secondary-container mr-3 animate-pulse"></span>
+<span class="font-label text-[10px] uppercase tracking-[0.2em] text-secondary-fixed-dim">System Status: Optimal</span>
+</div>
+<div class="flex items-center bg-surface-container-high px-4 py-2 rounded-full border border-outline-variant/10">
+<span class="font-label text-[10px] uppercase tracking-[0.2em] text-on-surface-variant">Active Nodes: 1,242</span>
+</div>
+</div>
+</div>
+<div>
+<p class="font-label text-[10px] uppercase tracking-[0.2em] text-outline">Atmospheric AI Railway Systems © 2024</p>
+</div>
+</div>
+<!-- Decorative Glows -->
+<div class="absolute -bottom-24 -left-24 w-96 h-96 bg-primary/10 rounded-full blur-[120px]"></div>
+<div class="absolute top-1/4 -right-12 w-64 h-64 bg-secondary-container/10 rounded-full blur-[80px]"></div>
+</div>
+<!-- Right Side: Login Canvas -->
+<div class="w-full lg:w-5/12 flex flex-col items-center justify-center px-8 lg:px-16 bg-surface-container-lowest relative">
+<!-- Secure Access Badge -->
+<div class="mb-12 flex items-center space-x-2 bg-surface-container-low px-4 py-2 rounded-full border border-outline-variant/15">
+<span class="material-symbols-outlined text-[18px] text-secondary-fixed-dim" style="font-variation-settings: 'FILL' 1;">lock</span>
+<span class="font-label text-[10px] uppercase tracking-[0.15em] text-on-surface-variant">Secure Terminal Access</span>
+</div>
+<div class="w-full max-w-md">
+<div class="mb-10 text-center lg:text-left">
+<h2 class="font-headline text-3xl font-bold text-on-surface mb-2">Terminal Login</h2>
+<p class="text-on-surface-variant font-light">Enter your credentials to access the grid.</p>
+</div>
+<!-- Login Form -->
+<form action="#" class="space-y-6">
+<!-- Email Input -->
+<div class="space-y-2">
+<label class="font-label text-[11px] uppercase tracking-wider text-outline ml-1">Email Address</label>
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-secondary-fixed-dim transition-colors duration-300">alternate_email</span>
+<input class="w-full bg-surface-container-low border border-outline-variant/20 rounded px-12 py-4 text-on-surface placeholder:text-outline/40 focus:outline-none focus:border-secondary-fixed-dim/50 focus:ring-1 focus:ring-secondary-fixed-dim/20 transition-all duration-300 font-body" placeholder="user@kinetic.ai" type="email"/>
+</div>
+</div>
+<!-- Password Input -->
+<div class="space-y-2">
+<div class="flex justify-between items-end ml-1">
+<label class="font-label text-[11px] uppercase tracking-wider text-outline">Authentication Key</label>
+<a class="font-label text-[10px] uppercase tracking-wider text-primary hover:text-secondary-fixed-dim transition-colors" href="#">Forgot Access?</a>
+</div>
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-secondary-fixed-dim transition-colors duration-300">fingerprint</span>
+<input class="w-full bg-surface-container-low border border-outline-variant/20 rounded px-12 py-4 text-on-surface placeholder:text-outline/40 focus:outline-none focus:border-secondary-fixed-dim/50 focus:ring-1 focus:ring-secondary-fixed-dim/20 transition-all duration-300 font-body" placeholder="••••••••••••" type="password"/>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-outline cursor-pointer hover:text-on-surface transition-colors">visibility_off</span>
+</div>
+</div>
+<!-- Remember Me -->
+<div class="flex items-center space-x-3 py-2">
+<div class="relative flex items-center">
+<input class="w-4 h-4 bg-surface-container-low border-outline-variant/30 rounded text-primary focus:ring-offset-background focus:ring-primary/50" id="remember" type="checkbox"/>
+</div>
+<label class="font-label text-[12px] text-on-surface-variant cursor-pointer select-none" for="remember">Remember this terminal session</label>
+</div>
+<!-- Submit Button -->
+<button class="w-full group relative overflow-hidden bg-gradient-to-r from-primary to-primary-container py-4 rounded font-headline font-bold text-on-primary-container tracking-wider flex items-center justify-center space-x-2 shadow-[0_0_20px_rgba(79,142,255,0.2)] hover:shadow-[0_0_30px_rgba(79,142,255,0.4)] transition-all duration-300 transform active:scale-[0.98]" type="submit">
+<span>INITIALIZE SESSION</span>
+<span class="material-symbols-outlined text-[20px] transition-transform duration-300 group-hover:translate-x-1">arrow_forward</span>
+</button>
+</form>
+<!-- Secondary Action -->
+<div class="mt-10 text-center">
+<p class="text-outline text-sm">
+                    Unauthorized access is monitored. 
+                    <a class="text-on-surface hover:text-primary font-medium ml-1" href="#">Privacy Protocol</a>
+</p>
+</div>
+</div>
+<!-- Atmospheric Accents -->
+<div class="absolute bottom-10 flex space-x-8 opacity-40">
+<span class="font-label text-[9px] tracking-[0.3em] text-outline">ENCRYPTION: AES-256</span>
+<span class="font-label text-[9px] tracking-[0.3em] text-outline">PROTOCOL: QUANTUM-SYNC</span>
+</div>
+<!-- Corner Graphic -->
+<div class="absolute bottom-0 right-0 w-32 h-32 opacity-10 pointer-events-none">
+<svg class="w-full h-full fill-current text-primary" viewbox="0 0 100 100">
+<path d="M0,100 L100,100 L100,0 Z"></path>
+</svg>
+</div>
+</div>
+</body></html>

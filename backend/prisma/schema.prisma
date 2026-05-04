@@ -1,0 +1,123 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(uuid())
+  fullName     String
+  email        String   @unique
+  passwordHash String
+  role         String   @default("operator") 
+  profileImage String?
+  status       String   @default("active") 
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  logs         Log[]
+}
+
+model Train {
+  id                 String   @id @default(uuid())
+  trainNumber        String   @unique
+  trainName          String
+  route              String
+  source             String
+  destination        String
+  currentLocation    String   @default("Origin")
+  speed              Int      @default(0)
+  eta                DateTime?
+  delayMinutes       Int      @default(0)
+  assignedPlatformId String?
+  assignedPlatform   Platform? @relation("TrainAssignedPlatform", fields: [assignedPlatformId], references: [id])
+  status             String   @default("scheduled") 
+  
+  // AI fields
+  delayPredictions   Int      @default(0)
+  riskScores         Int      @default(0)
+
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  alerts             Alert[]  
+  
+  // Reverse relation for Platform's assignedTrain
+  platforms          Platform[] @relation("PlatformAssignedTrain")
+}
+
+model Platform {
+  id               String   @id @default(uuid())
+  platformNumber   String   @unique
+  stationName      String
+  occupied         Boolean  @default(false)
+  assignedTrainId  String?
+  assignedTrain    Train?   @relation("PlatformAssignedTrain", fields: [assignedTrainId], references: [id])
+  nextArrival      DateTime?
+  status           String   @default("active") 
+  
+  // AI fields
+  demandForecasts  Int      @default(0)
+
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  alerts           Alert[]  
+  
+  // Reverse relation for Train's assignedPlatform
+  trains           Train[]  @relation("TrainAssignedPlatform")
+}
+
+model Alert {
+  id               String   @id @default(uuid())
+  type             String   
+  severity         String   
+  title            String
+  message          String
+  relatedTrainId   String?
+  relatedTrain     Train?   @relation(fields: [relatedTrainId], references: [id])
+  relatedPlatformId String?
+  relatedPlatform  Platform? @relation(fields: [relatedPlatformId], references: [id])
+  resolved         Boolean  @default(false)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model Analytics {
+  id               String   @id @default(uuid())
+  date             DateTime @unique
+  totalTrains      Int      @default(0)
+  delayedTrains    Int      @default(0)
+  onTimeRate       Float    @default(100)
+  avgDelay         Float    @default(0)
+  platformUsage    Float    @default(0)
+  incidents        Int      @default(0)
+  
+  predictionResults Json?
+
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model Maintenance {
+  id               String   @id @default(uuid())
+  assetType        String   
+  assetId          String
+  condition        String   
+  riskLevel        String   
+  nextServiceDate  DateTime
+  notes            String?
+  status           String   @default("scheduled") 
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model Log {
+  id               String   @id @default(uuid())
+  userId           String
+  user             User     @relation(fields: [userId], references: [id])
+  action           String
+  module           String
+  metadata         Json?
+  timestamp        DateTime @default(now())
+}
