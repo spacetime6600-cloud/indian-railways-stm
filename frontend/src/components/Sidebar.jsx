@@ -30,7 +30,7 @@ export default function Sidebar() {
   return (
     <motion.nav
       initial={false}
-      className={`fixed left-0 top-0 h-screen flex flex-col z-40 bg-[#0a0a0a]/95 backdrop-blur-3xl w-64 border-r border-white/5 shadow-[0px_20px_50px_rgba(0,0,0,0.5)] font-['Space_Grotesk'] tracking-tight transition-transform duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] ${sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}
+      className={`sidebar flex flex-col bg-[#0a0a0a]/95 backdrop-blur-3xl border-r border-white/5 shadow-[0px_20px_50px_rgba(0,0,0,0.5)] font-['Space_Grotesk'] tracking-tight ${sidebarOpen ? 'open' : ''}`}
     >
       {/* Branding */}
       <div className="p-5 flex justify-between items-center border-b border-white/5">

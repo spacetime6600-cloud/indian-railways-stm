@@ -53,6 +53,22 @@ export const useStore = create((set, get) => ({
   touchLastUpdated:  ()  => set({ lastUpdatedAt: new Date().toISOString() }),
 
   // ── Socket store actions ───────────────────────────────────────────────────
+  batchUpdateTrainsFromSocket: (payloads) => set(state => {
+    const updatesMap = new Map(payloads.map(p => [p.id, p]));
+    const trains = state.trains.map(t => {
+      const payload = updatesMap.get(t.rawId);
+      if (!payload) return t;
+      return { ...t,
+        status:          payload.status ? payload.status.charAt(0).toUpperCase() + payload.status.slice(1) : t.status,
+        speed:           payload.speed           ?? t.speed,
+        delayMinutes:    payload.delay_minutes   ?? t.delayMinutes,
+        delay:           (payload.delay_minutes > 0) ? '+' + payload.delay_minutes + 'm' : 'None',
+        currentLocation: payload.current_location ?? t.currentLocation,
+      };
+    });
+    return { trains, analytics: recomputeAnalytics(trains), lastUpdatedAt: new Date().toISOString() };
+  }),
+
   updateTrainFromSocket: (payload) => set(state => {
     const trains = state.trains.map(t =>
       t.rawId === payload.id
@@ -187,7 +203,7 @@ export const useStore = create((set, get) => ({
 
       set({ trains: formatted, trainPagination: pagination, trainFilters: filters });
     } catch (err) {
-      console.error('fetchTrains:', err.message);
+      // silent
     }
   },
 
@@ -207,7 +223,7 @@ export const useStore = create((set, get) => ({
         },
       }));
     } catch (err) {
-      console.error('fetchTrainStats:', err.message);
+      // silent
     }
   },
 
@@ -232,7 +248,7 @@ export const useStore = create((set, get) => ({
       }));
       set({ platforms: formatted });
     } catch (err) {
-      console.error('fetchPlatforms:', err.message);
+      // silent
     }
   },
 
@@ -254,7 +270,7 @@ export const useStore = create((set, get) => ({
       }));
       set({ alerts: formatted });
     } catch (err) {
-      console.error('fetchAlerts:', err.message);
+      // silent
     }
   },
 
@@ -265,7 +281,7 @@ export const useStore = create((set, get) => ({
         alerts: state.alerts.map(a => a.id === alertId ? { ...a, active: false } : a),
       }));
     } catch (err) {
-      console.error('resolveAlert:', err.message);
+      // silent
     }
   },
 
@@ -306,7 +322,7 @@ export const useStore = create((set, get) => ({
         },
       }));
     } catch (err) {
-      console.error('fetchAnalytics:', err.message);
+      // silent
     }
   },
 
@@ -329,7 +345,7 @@ export const useStore = create((set, get) => ({
       }));
       set({ maintenance: formatted });
     } catch (err) {
-      console.error('fetchMaintenance:', err.message);
+      // silent
     }
   },
 

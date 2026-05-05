@@ -117,7 +117,7 @@ function FreePlatformsModal({ platforms, onClose }) {
 
 // ── Dashboard ─────────────────────────────────────────────────────────────────
 export default function Dashboard() {
-  const { alerts, analytics, platforms, trains, user } = useStore();
+  const { alerts, analytics, platforms, trains, user, sidebarOpen } = useStore();
   const lastUpdatedAt = useStore(s => s.lastUpdatedAt);
   const navigate = useNavigate();
 
@@ -297,7 +297,7 @@ export default function Dashboard() {
       <motion.div variants={iv} className="grid grid-cols-1 lg:grid-cols-12 gap-5">
 
         {/* Map — explicit height so Leaflet can measure */}
-        <div className="lg:col-span-8 bg-surface-container-low rounded-xl overflow-hidden relative shadow-2xl border border-white/5" style={{ height: '460px' }}>
+        <div className={`lg:col-span-8 bg-surface-container-low rounded-xl overflow-hidden shadow-2xl border border-white/5 map-container ${sidebarOpen ? 'disabled' : ''}`} style={{ height: '460px' }}>
 
           {/* ── Map Toolbar ── */}
           <div className="absolute top-0 left-0 right-0 z-[1001] flex items-center gap-2 px-3 py-2 bg-black/80 backdrop-blur-md border-b border-white/5 flex-wrap">

@@ -13,6 +13,7 @@ export function useSocket() {
   const {
     user,
     updateTrainFromSocket,
+    batchUpdateTrainsFromSocket,
     prependAlert,
     resolveAlertFromSocket,
     updatePlatformFromSocket,
@@ -55,7 +56,21 @@ export function useSocket() {
       setReconnecting(false); // give up — polling fallback takes over
     });
 
-    socket.on('train:updated',    (data) => updateTrainFromSocket(data));
+    let trainUpdateQueue = [];
+    let flushTimer = null;
+    socket.on('train:updated', (data) => {
+      trainUpdateQueue.push(data);
+      if (!flushTimer) {
+        flushTimer = setTimeout(() => {
+          if (trainUpdateQueue.length > 0) {
+            batchUpdateTrainsFromSocket(trainUpdateQueue);
+            trainUpdateQueue = [];
+          }
+          flushTimer = null;
+        }, 1000);
+      }
+    });
+
     socket.on('train:deleted',    (data) => deleteTrainFromSocket(data.id));
 
     socket.on('alert:new', (data) => {

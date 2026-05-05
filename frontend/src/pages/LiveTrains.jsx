@@ -40,7 +40,7 @@ const statusStyle = (s) => {
 const LIMIT = 50;
 
 // TrainRow sub-component - renders as a flex div styled like a table row
-function TrainRow({ train, idx, onEdit, onDelete }) {
+const TrainRow = React.memo(function TrainRow({ train, idx, onEdit, onDelete }) {
   return (
     <motion.div
       initial={{ opacity:0 }} animate={{ opacity:1 }} transition={{ delay: idx * 0.01 }}
@@ -127,7 +127,7 @@ function TrainRow({ train, idx, onEdit, onDelete }) {
       </div>
     </motion.div>
   );
-}
+});
 
 export default function LiveTrains() {
   const { trains, trainPagination, trainFilters, fetchTrains, fetchTrainStats, analytics } = useStore();
@@ -203,7 +203,7 @@ export default function LiveTrains() {
     }
   };
 
-  const handleDelete = async (train) => {
+  const handleDelete = useCallback(async (train) => {
     if (!window.confirm(`Delete train ${train.id} — ${train.name}? This cannot be undone.`)) return;
     try {
       await api.delete(`/trains/${train.rawId}`);
@@ -213,10 +213,10 @@ export default function LiveTrains() {
     } catch (err) {
       showToast({ title: 'Delete Failed', message: err.response?.data?.message || err.message, severity: 'critical' }, 5000);
     }
-  };
+  }, [doFetch, fetchTrainStats, showToast, trainPagination.page]);
 
-  const openAdd = () => { setIsEditMode(false); setFormData({ id:'', trainNumber:'', trainName:'', route:'', source:'', destination:'', speed:0, status:'scheduled', zone:'Northern', trainType:'Mail Express' }); setIsModalOpen(true); };
-  const openEdit = (t) => { setIsEditMode(true); setFormData({ id: t.rawId, trainNumber: t.id, trainName: t.name||'', route: t.route, source: t.source||'', destination: t.destination||'', speed: t.speed, status: t.status?.toLowerCase()||'running', zone: t.zone||'Northern', trainType: t.trainType||'Mail Express' }); setIsModalOpen(true); };
+  const openAdd = useCallback(() => { setIsEditMode(false); setFormData({ id:'', trainNumber:'', trainName:'', route:'', source:'', destination:'', speed:0, status:'scheduled', zone:'Northern', trainType:'Mail Express' }); setIsModalOpen(true); }, []);
+  const openEdit = useCallback((t) => { setIsEditMode(true); setFormData({ id: t.rawId, trainNumber: t.id, trainName: t.name||'', route: t.route, source: t.source||'', destination: t.destination||'', speed: t.speed, status: t.status?.toLowerCase()||'running', zone: t.zone||'Northern', trainType: t.trainType||'Mail Express' }); setIsModalOpen(true); }, []);
 
   const { page, totalPages, total } = trainPagination;
 

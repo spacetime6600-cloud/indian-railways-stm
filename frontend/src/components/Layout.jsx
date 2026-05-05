@@ -39,7 +39,7 @@ export default function Layout() {
       <Sidebar />
       {sidebarOpen && (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-black/50 z-30 md:hidden backdrop-blur-sm"
+          className="backdrop md:hidden backdrop-blur-sm"
           onClick={toggleSidebar} />
       )}
       <main className="md:ml-64 flex flex-col flex-1 relative h-screen bg-surface overflow-hidden w-full transition-all duration-300">

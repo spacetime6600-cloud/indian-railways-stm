@@ -146,6 +146,9 @@ CREATE INDEX IF NOT EXISTS idx_users_role          ON users(role);
 CREATE INDEX IF NOT EXISTS idx_trains_source       ON trains(source);
 CREATE INDEX IF NOT EXISTS idx_trains_destination  ON trains(destination);
 CREATE INDEX IF NOT EXISTS idx_trains_location     ON trains(current_location);
+-- ── Composite indexes for backend optimization ────────────────────────────────
+CREATE INDEX IF NOT EXISTS idx_trains_status_zone  ON trains(status, zone);
+CREATE INDEX IF NOT EXISTS idx_trains_route_speed  ON trains(route, speed);
 
 -- ── Data Integrity Constraints ────────────────────────────────────────────────
 -- Trains: valid status values, non-negative speed/delay

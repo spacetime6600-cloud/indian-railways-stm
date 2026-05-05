@@ -295,7 +295,7 @@ function clampIndia(pos) {
 }
 
 export { STATIONS, BY_CODE, resolveStation };
-export default function IndiaRailwayMap({ liveTrains = [], filterMode = 'all', filterStation = null, filterZone = null, filterTrain = null, onMapReady }) {
+const IndiaRailwayMap = React.memo(function IndiaRailwayMap({ liveTrains = [], filterMode = 'all', filterStation = null, filterZone = null, filterTrain = null, onMapReady }) {
   const containerRef = useRef(null);
   const mapRef       = useRef(null);
   const markersRef   = useRef([]);
@@ -395,7 +395,8 @@ export default function IndiaRailwayMap({ liveTrains = [], filterMode = 'all', f
     markersRef.current.forEach(m => m.remove());
     markersRef.current = [];
 
-    liveTrains.forEach((t, i) => {
+    const maxMarkers = filterMode === 'all' ? 150 : liveTrains.length;
+    liveTrains.slice(0, maxMarkers).forEach((t, i) => {
       const srcStation = resolveStation(t.source) || resolveStation(t.src);
       const dstStation = resolveStation(t.destination) || resolveStation(t.dst);
       const curStation = resolveStation(t.current_location);
@@ -522,4 +523,6 @@ export default function IndiaRailwayMap({ liveTrains = [], filterMode = 'all', f
       )}
     </div>
   );
-}
+});
+
+export default IndiaRailwayMap;
