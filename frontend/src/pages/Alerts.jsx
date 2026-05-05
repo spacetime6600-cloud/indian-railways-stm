@@ -7,42 +7,42 @@ import EmptyState from '../components/EmptyState';
 import Modal from '../components/Modal';
 
 const containerVariants = {
-  hidden:  { opacity: 0 },
+  hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { staggerChildren: 0.08 } },
 };
 const itemVariants = {
-  hidden:  { y: 20, opacity: 0 },
-  visible: { y: 0,  opacity: 1, transition: { duration: 0.4, ease: 'easeOut' } },
+  hidden: { y: 20, opacity: 0 },
+  visible: { y: 0, opacity: 1, transition: { duration: 0.4, ease: 'easeOut' } },
 };
 
 const ALERT_TYPE_META = {
-  fog:         { icon: 'foggy',         color: 'text-sky-300',    bar: 'bg-sky-400',    badge: 'bg-sky-400/10 text-sky-300 border-sky-400/30'       },
-  delay:       { icon: 'schedule',      color: 'text-[#FF9933]',  bar: 'bg-[#FF9933]',  badge: 'bg-[#FF9933]/10 text-[#FF9933] border-[#FF9933]/30' },
-  maintenance: { icon: 'construction',  color: 'text-red-400',    bar: 'bg-red-500',    badge: 'bg-red-500/10 text-red-400 border-red-500/30'        },
-  weather:     { icon: 'thunderstorm',  color: 'text-purple-400', bar: 'bg-purple-500', badge: 'bg-purple-500/10 text-purple-400 border-purple-500/30'},
-  signal:      { icon: 'traffic',       color: 'text-yellow-400', bar: 'bg-yellow-500', badge: 'bg-yellow-500/10 text-yellow-400 border-yellow-500/30'},
-  rush:        { icon: 'groups',        color: 'text-pink-400',   bar: 'bg-pink-500',   badge: 'bg-pink-500/10 text-pink-400 border-pink-500/30'     },
-  Critical:    { icon: 'bolt',          color: 'text-red-400',    bar: 'bg-red-500',    badge: 'bg-red-500/10 text-red-400 border-red-500/30'        },
-  Warning:     { icon: 'warning_amber', color: 'text-[#FF9933]',  bar: 'bg-[#FF9933]',  badge: 'bg-[#FF9933]/10 text-[#FF9933] border-[#FF9933]/30' },
-  Info:        { icon: 'info',          color: 'text-primary',    bar: 'bg-primary',    badge: 'bg-primary/10 text-primary border-primary/30'        },
+  fog: { icon: 'foggy', color: 'text-sky-300', bar: 'bg-sky-400', badge: 'bg-sky-400/10 text-sky-300 border-sky-400/30' },
+  delay: { icon: 'schedule', color: 'text-[#FF9933]', bar: 'bg-[#FF9933]', badge: 'bg-[#FF9933]/10 text-[#FF9933] border-[#FF9933]/30' },
+  maintenance: { icon: 'construction', color: 'text-red-400', bar: 'bg-red-500', badge: 'bg-red-500/10 text-red-400 border-red-500/30' },
+  weather: { icon: 'thunderstorm', color: 'text-purple-400', bar: 'bg-purple-500', badge: 'bg-purple-500/10 text-purple-400 border-purple-500/30' },
+  signal: { icon: 'traffic', color: 'text-yellow-400', bar: 'bg-yellow-500', badge: 'bg-yellow-500/10 text-yellow-400 border-yellow-500/30' },
+  rush: { icon: 'groups', color: 'text-pink-400', bar: 'bg-pink-500', badge: 'bg-pink-500/10 text-pink-400 border-pink-500/30' },
+  Critical: { icon: 'bolt', color: 'text-red-400', bar: 'bg-red-500', badge: 'bg-red-500/10 text-red-400 border-red-500/30' },
+  Warning: { icon: 'warning_amber', color: 'text-[#FF9933]', bar: 'bg-[#FF9933]', badge: 'bg-[#FF9933]/10 text-[#FF9933] border-[#FF9933]/30' },
+  Info: { icon: 'info', color: 'text-primary', bar: 'bg-primary', badge: 'bg-primary/10 text-primary border-primary/30' },
 };
 
 const FILTERS = [
-  { label: 'All',         value: 'All'         },
-  { label: 'Fog',         value: 'fog'         },
-  { label: 'Delay',       value: 'delay'       },
-  { label: 'Signal',      value: 'signal'      },
-  { label: 'Weather',     value: 'weather'     },
-  { label: 'Rush',        value: 'rush'        },
+  { label: 'All', value: 'All' },
+  { label: 'Fog', value: 'fog' },
+  { label: 'Delay', value: 'delay' },
+  { label: 'Signal', value: 'signal' },
+  { label: 'Weather', value: 'weather' },
+  { label: 'Rush', value: 'rush' },
   { label: 'Maintenance', value: 'maintenance' },
 ];
 
-const ALERT_TYPES     = ['fog','delay','maintenance','weather','signal','rush','derailment','fire','flood','other'];
-const ALERT_SEVERITIES = ['critical','high','medium','low'];
+const ALERT_TYPES = ['fog', 'delay', 'maintenance', 'weather', 'signal', 'rush', 'derailment', 'fire', 'flood', 'other'];
+const ALERT_SEVERITIES = ['critical', 'high', 'medium', 'low'];
 
 const getMeta = (alert) =>
   ALERT_TYPE_META[alert.alertType] ||
-  ALERT_TYPE_META[alert.type]      ||
+  ALERT_TYPE_META[alert.type] ||
   ALERT_TYPE_META['Info'];
 
 const EMPTY_FORM = { type: 'delay', severity: 'medium', title: '', message: '', stationName: '' };
@@ -57,16 +57,16 @@ export default React.memo(function Alerts() {
   })));
   const { showToast } = useToast();
 
-  const [filter,  setFilter]  = useState('All');
-  const [search,  setSearch]  = useState('');
+  const [filter, setFilter] = useState('All');
+  const [search, setSearch] = useState('');
   const [showResolved, setShowResolved] = useState(false);
 
   // Create modal
   const [createOpen, setCreateOpen] = useState(false);
-  const [form,       setForm]       = useState(EMPTY_FORM);
-  const [creating,   setCreating]   = useState(false);
+  const [form, setForm] = useState(EMPTY_FORM);
+  const [creating, setCreating] = useState(false);
 
-  const activeCount   = alerts.filter(a => a.active).length;
+  const activeCount = alerts.filter(a => a.active).length;
   const criticalCount = alerts.filter(a => a.type === 'Critical' && a.active).length;
 
   const filtered = alerts.filter(a => {
@@ -101,10 +101,10 @@ export default React.memo(function Alerts() {
     }
     setCreating(true);
     const res = await createAlert({
-      type:        form.type,
-      severity:    form.severity,
-      title:       form.title.trim(),
-      message:     form.message.trim(),
+      type: form.type,
+      severity: form.severity,
+      title: form.title.trim(),
+      message: form.message.trim(),
       stationName: form.stationName.trim() || null,
     });
     setCreating(false);
@@ -184,11 +184,10 @@ export default React.memo(function Alerts() {
           {FILTERS.map(f => (
             <motion.button key={f.value} onClick={() => setFilter(f.value)}
               whileHover={{ y: -1 }} whileTap={{ scale: 0.95 }}
-              className={`px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-widest border transition-all ${
-                filter === f.value
-                  ? 'bg-[#FF9933]/10 text-[#FF9933] border-[#FF9933]/30'
-                  : 'text-zinc-500 border-white/5 hover:text-white hover:border-white/10'
-              }`}
+              className={`px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-widest border transition-all ${filter === f.value
+                ? 'bg-[#FF9933]/10 text-[#FF9933] border-[#FF9933]/30'
+                : 'text-zinc-500 border-white/5 hover:text-white hover:border-white/10'
+                }`}
             >
               {f.label}
             </motion.button>
@@ -254,12 +253,11 @@ export default React.memo(function Alerts() {
                 </h3>
                 {alert.aiPriority && (
                   <div className="mb-2">
-                    <span className={`text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full border ${
-                      alert.aiPriority === 'Critical' ? 'bg-red-500/20 text-red-400 border-red-500/30' :
-                      alert.aiPriority === 'High'     ? 'bg-[#FF9933]/20 text-[#FF9933] border-[#FF9933]/30' :
-                      alert.aiPriority === 'Medium'   ? 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30' :
-                      'bg-emerald-500/20 text-emerald-400 border-emerald-500/30'
-                    }`}>🤖 AI: {alert.aiPriority}</span>
+                    <span className={`text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full border ${alert.aiPriority === 'Critical' ? 'bg-red-500/20 text-red-400 border-red-500/30' :
+                      alert.aiPriority === 'High' ? 'bg-[#FF9933]/20 text-[#FF9933] border-[#FF9933]/30' :
+                        alert.aiPriority === 'Medium' ? 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30' :
+                          'bg-emerald-500/20 text-emerald-400 border-emerald-500/30'
+                      }`}>🤖 AI: {alert.aiPriority}</span>
                   </div>
                 )}
                 <p className="text-xs text-zinc-400 mb-4 leading-relaxed">{alert.message}</p>
@@ -285,11 +283,10 @@ export default React.memo(function Alerts() {
                       <motion.button
                         onClick={() => handleResolve(alert.id, alert.type)}
                         whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}
-                        className={`border py-1.5 px-4 rounded-lg font-black text-[9px] uppercase tracking-widest transition-all ${
-                          alert.type === 'Critical'
-                            ? 'bg-red-500/10 text-red-400 border-red-500/30 hover:bg-red-500/20'
-                            : 'bg-white/5 text-white border-white/10 hover:border-[#FF9933]/40 hover:text-[#FF9933]'
-                        }`}
+                        className={`border py-1.5 px-4 rounded-lg font-black text-[9px] uppercase tracking-widest transition-all ${alert.type === 'Critical'
+                          ? 'bg-red-500/10 text-red-400 border-red-500/30 hover:bg-red-500/20'
+                          : 'bg-white/5 text-white border-white/10 hover:border-[#FF9933]/40 hover:text-[#FF9933]'
+                          }`}
                       >
                         {alert.type === 'Critical' ? '⚡ Resolve' : 'Acknowledge'}
                       </motion.button>
@@ -350,17 +347,17 @@ export default React.memo(function Alerts() {
           </div>
 
           {/* Severity preview */}
-          <div className={`rounded-lg p-3 text-xs font-bold border ${
-            form.severity === 'critical' ? 'bg-red-500/10 border-red-500/30 text-red-400' :
-            form.severity === 'high'     ? 'bg-[#FF9933]/10 border-[#FF9933]/30 text-[#FF9933]' :
-            'bg-white/5 border-white/10 text-zinc-400'
-          }`}>
+          <div className={`rounded-lg p-3 text-xs font-bold border ${form.severity === 'critical' ? 'bg-red-500/10 border-red-500/30 text-red-400' :
+            form.severity === 'high' ? 'bg-[#FF9933]/10 border-[#FF9933]/30 text-[#FF9933]' :
+              'bg-white/5 border-white/10 text-zinc-400'
+            }`}>
             {form.severity === 'critical' ? '⚡ Critical alert — will trigger toast notifications for all users' :
-             form.severity === 'high'     ? '⚠ High severity — will appear prominently in the alert feed' :
-             'ℹ Standard alert — will appear in the alert feed'}
+              form.severity === 'high' ? '⚠ High severity — will appear prominently in the alert feed' :
+                'ℹ Standard alert — will appear in the alert feed'}
           </div>
         </div>
       </Modal>
     </motion.div>
   );
-}
+});
+

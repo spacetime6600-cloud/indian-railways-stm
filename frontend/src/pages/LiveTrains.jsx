@@ -504,4 +504,4 @@ export default React.memo(function LiveTrains() {
       </Modal>
     </motion.div>
   );
-}
+});

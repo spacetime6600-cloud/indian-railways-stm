@@ -656,4 +656,4 @@ export default React.memo(function Platforms() {
 
     </div>
   );
-}
+});

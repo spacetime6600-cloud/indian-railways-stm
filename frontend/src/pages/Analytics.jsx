@@ -439,4 +439,4 @@ export default React.memo(function Analytics() {
       )}
     </motion.div>
   );
-}
+});

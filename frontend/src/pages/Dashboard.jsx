@@ -559,4 +559,4 @@ export default React.memo(function Dashboard() {
       )}
     </motion.div>
   );
-}
+});
