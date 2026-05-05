@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import StatCard from '../components/StatCard';
 import { useStore } from '../store/useStore';
+import { useShallow } from 'zustand/react/shallow';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import api from '../utils/api';
@@ -117,8 +118,14 @@ function FreePlatformsModal({ platforms, onClose }) {
 
 // ── Dashboard ─────────────────────────────────────────────────────────────────
 export default function Dashboard() {
-  const { alerts, analytics, platforms, trains, user, sidebarOpen } = useStore();
-  const lastUpdatedAt = useStore(s => s.lastUpdatedAt);
+  const { alerts, analytics, platforms, user, sidebarOpen, lastUpdatedAt } = useStore(useShallow(s => ({
+    alerts: s.alerts,
+    analytics: s.analytics,
+    platforms: s.platforms,
+    user: s.user,
+    sidebarOpen: s.sidebarOpen,
+    lastUpdatedAt: s.lastUpdatedAt
+  })));
   const navigate = useNavigate();
 
   const [showFreePlatforms, setShowFreePlatforms] = useState(false);

@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Sidebar from './Sidebar';
 import TopNav from './TopNav';
 import { useStore } from '../store/useStore';
+import { useShallow } from 'zustand/react/shallow';
 import { getPermissions } from '../utils/permissions';
 import { useSocket } from '../hooks/useSocket';
 
@@ -13,7 +14,15 @@ const ROUTE_PERMISSIONS = {
 };
 
 export default function Layout() {
-  const { isAuthenticated, sidebarOpen, toggleSidebar, initApp, user, socketConnected, fetchTrainStats } = useStore();
+  const { isAuthenticated, sidebarOpen, toggleSidebar, initApp, user, socketConnected, fetchTrainStats } = useStore(useShallow(s => ({
+    isAuthenticated: s.isAuthenticated,
+    sidebarOpen: s.sidebarOpen,
+    toggleSidebar: s.toggleSidebar,
+    initApp: s.initApp,
+    user: s.user,
+    socketConnected: s.socketConnected,
+    fetchTrainStats: s.fetchTrainStats
+  })));
   const location = useLocation();
 
   useSocket(); // mount socket connection

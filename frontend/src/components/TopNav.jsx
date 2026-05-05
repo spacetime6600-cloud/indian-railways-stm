@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from '../store/useStore';
+import { useShallow } from 'zustand/react/shallow';
 import { getScopeLabel, getRoleBadge, STATION_SCOPED } from '../utils/permissions';
 import { THEMES, getStoredTheme, applyTheme } from '../utils/theme';
 
@@ -13,7 +14,13 @@ const TYPE_META = {
 };
 
 export default function TopNav() {
-  const { toggleSidebar, trains, platforms, alerts, user } = useStore();
+  const { toggleSidebar, trains, platforms, alerts, user } = useStore(useShallow(s => ({
+    toggleSidebar: s.toggleSidebar,
+    trains: s.trains,
+    platforms: s.platforms,
+    alerts: s.alerts,
+    user: s.user
+  })));
   const isReconnecting = useStore(s => s.isReconnecting);
   const navigate = useNavigate();
 

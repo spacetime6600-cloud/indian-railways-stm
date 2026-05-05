@@ -105,6 +105,7 @@ export function useSocket() {
     socket.on('maintenance:ai_updated', () => fetchMaintenance());
 
     return () => {
+      if (flushTimer) clearTimeout(flushTimer);
       socket.disconnect();
       setSocketConnected(false);
     };

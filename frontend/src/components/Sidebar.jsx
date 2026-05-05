@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useStore } from '../store/useStore';
+import { useShallow } from 'zustand/react/shallow';
 import { NAV_CONFIG, getPermissions, getScopeLabel, getRoleBadge, STATION_SCOPED } from '../utils/permissions';
 
 const containerVariants = {
@@ -14,7 +15,12 @@ const itemVariants = {
 };
 
 export default function Sidebar() {
-  const { sidebarOpen, toggleSidebar, user, logout } = useStore();
+  const { sidebarOpen, toggleSidebar, user, logout } = useStore(useShallow(s => ({
+    sidebarOpen: s.sidebarOpen,
+    toggleSidebar: s.toggleSidebar,
+    user: s.user,
+    logout: s.logout
+  })));
 
   const perms          = getPermissions(user);
   const scopeLabel     = getScopeLabel(user);

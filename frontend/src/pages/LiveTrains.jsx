@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useStore } from '../store/useStore';
+import { useShallow } from 'zustand/react/shallow';
 import { motion, AnimatePresence } from 'framer-motion';
 import Modal from '../components/Modal';
 import api from '../utils/api';
@@ -130,7 +131,14 @@ const TrainRow = React.memo(function TrainRow({ train, idx, onEdit, onDelete }) 
 });
 
 export default function LiveTrains() {
-  const { trains, trainPagination, trainFilters, fetchTrains, fetchTrainStats, analytics } = useStore();
+  const { trains, trainPagination, trainFilters, fetchTrains, fetchTrainStats, analytics } = useStore(useShallow(s => ({
+    trains: s.trains,
+    trainPagination: s.trainPagination,
+    trainFilters: s.trainFilters,
+    fetchTrains: s.fetchTrains,
+    fetchTrainStats: s.fetchTrainStats,
+    analytics: s.analytics
+  })));
   const { showToast } = useToast();
 
   // Local filter state (debounced before sending to server)

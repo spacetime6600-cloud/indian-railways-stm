@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useStore } from '../store/useStore';
+import { useShallow } from 'zustand/react/shallow';
 import { useToast } from '../components/ToastProvider';
 import EmptyState from '../components/EmptyState';
 import Modal from '../components/Modal';
@@ -47,7 +48,13 @@ const getMeta = (alert) =>
 const EMPTY_FORM = { type: 'delay', severity: 'medium', title: '', message: '', stationName: '' };
 
 export default function Alerts() {
-  const { alerts, resolveAlert, createAlert, deleteAlert, fetchAlerts } = useStore();
+  const { alerts, resolveAlert, createAlert, deleteAlert, fetchAlerts } = useStore(useShallow(s => ({
+    alerts: s.alerts,
+    resolveAlert: s.resolveAlert,
+    createAlert: s.createAlert,
+    deleteAlert: s.deleteAlert,
+    fetchAlerts: s.fetchAlerts
+  })));
   const { showToast } = useToast();
 
   const [filter,  setFilter]  = useState('All');
