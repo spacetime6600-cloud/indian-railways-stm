@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useStore } from '../store/useStore';
+import { useShallow } from 'zustand/react/shallow';
 import api from '../utils/api';
 
 const containerVariants = {
@@ -46,8 +47,12 @@ function AIInsightCard({ title, icon, value, sub, color, loading, xai }) {
   );
 }
 
-export default function Analytics() {
-  const { analytics, fetchAnalytics, fetchTrainStats } = useStore();
+export default React.memo(function Analytics() {
+  const { analytics, fetchAnalytics, fetchTrainStats } = useStore(useShallow(s => ({
+    analytics: s.analytics,
+    fetchAnalytics: s.fetchAnalytics,
+    fetchTrainStats: s.fetchTrainStats
+  })));
   const [overview,   setOverview]   = useState(null);
   const [perfData,   setPerfData]   = useState([]);
   const [topTrains,  setTopTrains]  = useState([]);

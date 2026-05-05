@@ -130,7 +130,7 @@ const TrainRow = React.memo(function TrainRow({ train, idx, onEdit, onDelete }) 
   );
 });
 
-export default function LiveTrains() {
+export default React.memo(function LiveTrains() {
   const { trains, trainPagination, trainFilters, fetchTrains, fetchTrainStats, analytics } = useStore(useShallow(s => ({
     trains: s.trains,
     trainPagination: s.trainPagination,

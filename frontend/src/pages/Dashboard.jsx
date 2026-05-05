@@ -117,7 +117,7 @@ function FreePlatformsModal({ platforms, onClose }) {
 }
 
 // ── Dashboard ─────────────────────────────────────────────────────────────────
-export default function Dashboard() {
+export default React.memo(function Dashboard() {
   const { alerts, analytics, platforms, user, sidebarOpen, lastUpdatedAt } = useStore(useShallow(s => ({
     alerts: s.alerts,
     analytics: s.analytics,

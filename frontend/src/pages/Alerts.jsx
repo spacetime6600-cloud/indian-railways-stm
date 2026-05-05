@@ -47,7 +47,7 @@ const getMeta = (alert) =>
 
 const EMPTY_FORM = { type: 'delay', severity: 'medium', title: '', message: '', stationName: '' };
 
-export default function Alerts() {
+export default React.memo(function Alerts() {
   const { alerts, resolveAlert, createAlert, deleteAlert, fetchAlerts } = useStore(useShallow(s => ({
     alerts: s.alerts,
     resolveAlert: s.resolveAlert,

@@ -214,7 +214,7 @@ function StationTable({ stationName, platforms, onAction, highlightIds }) {
 }
 
 // ── Main Page ─────────────────────────────────────────────────────────────────
-export default function Platforms() {
+export default React.memo(function Platforms() {
   const { showToast } = useToast();
   const [rawPlatforms, setRawPlatforms] = useState([]);
   const [loading,      setLoading]      = useState(true);
