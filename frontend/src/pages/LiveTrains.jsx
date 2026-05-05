@@ -357,13 +357,32 @@ export default function LiveTrains() {
 
             {/* VirtualList replaces tbody */}
             <div style={{ height: '500px' }}>
-              <VirtualList
-                items={trains}
-                rowHeight={52}
-                renderRow={(train, idx) => (
-                  <TrainRow key={train.rawId || train.id || idx} train={train} idx={idx} onEdit={openEdit} onDelete={handleDelete} />
-                )}
-              />
+              {isLoading && trains.length === 0 ? (
+                <div className="flex flex-col">
+                  {Array.from({ length: 9 }).map((_, i) => (
+                    <div key={i} className="flex items-center border-b border-white/5 animate-pulse w-full" style={{ height: '52px' }}>
+                      <div className="px-4 w-[120px]"><div className="w-16 h-4 bg-white/10 rounded" /></div>
+                      <div className="px-4 w-[180px]"><div className="w-32 h-4 bg-white/10 rounded" /></div>
+                      <div className="px-4 w-[140px]"><div className="w-20 h-4 bg-white/10 rounded" /></div>
+                      <div className="px-4 w-[140px]"><div className="w-24 h-4 bg-white/10 rounded" /></div>
+                      <div className="px-4 w-[140px]"><div className="w-24 h-4 bg-white/10 rounded" /></div>
+                      <div className="px-4 w-[140px]"><div className="w-24 h-4 bg-white/10 rounded" /></div>
+                      <div className="px-4 w-[100px] flex justify-center"><div className="w-10 h-4 bg-white/10 rounded" /></div>
+                      <div className="px-4 w-[100px] flex justify-center"><div className="w-12 h-4 bg-white/10 rounded" /></div>
+                      <div className="px-4 w-[100px] flex justify-center"><div className="w-8 h-4 bg-white/10 rounded" /></div>
+                      <div className="px-4 w-[120px] flex justify-end"><div className="w-16 h-4 bg-white/10 rounded" /></div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <VirtualList
+                  items={trains}
+                  rowHeight={52}
+                  renderRow={(train, idx) => (
+                    <TrainRow key={train.rawId || train.id || idx} train={train} idx={idx} onEdit={openEdit} onDelete={handleDelete} />
+                  )}
+                />
+              )}
             </div>
           </div>
         </div>
