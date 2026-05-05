@@ -56,7 +56,7 @@ function StatusBadge({ status }) {
 }
 
 // ── StationTable ──────────────────────────────────────────────────────────────
-function StationTable({ stationName, platforms, onAction, highlightIds }) {
+const StationTable = React.memo(function StationTable({ stationName, platforms, onAction, highlightIds }) {
   const code = stationName.match(/\(([^)]+)\)/)?.[1] || stationName.slice(0, 4).toUpperCase();
   const cleanName = stationName.replace(/\s*\([^)]*\)/, '').trim();
 
@@ -211,7 +211,7 @@ function StationTable({ stationName, platforms, onAction, highlightIds }) {
       </div>
     </motion.div>
   );
-}
+});
 
 // ── Main Page ─────────────────────────────────────────────────────────────────
 export default React.memo(function Platforms() {
@@ -300,16 +300,16 @@ export default React.memo(function Platforms() {
   const mnt   = rawPlatforms.filter(p => p._status === 'Maintenance').length;
 
   // ── Actions ────────────────────────────────────────────────────────────────
-  const openManage = (p) => {
+  const openManage = useCallback((p) => {
     setModal({ platform: p });
     setModalForm({
       status:          p.status || 'active',
       occupied:        p.occupied || false,
       assignedTrainId: p.assigned_train_id || '',
     });
-  };
+  }, []);
 
-  const handleSave = async () => {
+  const handleSave = useCallback(async () => {
     if (!modal) return;
     setSaving(true);
     try {
@@ -328,9 +328,9 @@ export default React.memo(function Platforms() {
     } finally {
       setSaving(false);
     }
-  };
+  }, [modal, modalForm, fetchData, showToast]);
 
-  const handleAdd = async () => {
+  const handleAdd = useCallback(async () => {
     if (!addForm.platformNumber || !addForm.stationName) {
       showToast({ title: 'Validation Error', message: 'Platform number and station name are required.', severity: 'critical' }, 4000);
       return;
@@ -353,7 +353,7 @@ export default React.memo(function Platforms() {
     } finally {
       setAddSaving(false);
     }
-  };
+  }, [addForm, fetchData, showToast]);
 
   // ── Render ─────────────────────────────────────────────────────────────────
   return (

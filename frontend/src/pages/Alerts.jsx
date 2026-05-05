@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useStore } from '../store/useStore';
 import { useShallow } from 'zustand/react/shallow';
@@ -79,12 +79,12 @@ export default React.memo(function Alerts() {
   });
 
   // ── Handlers ────────────────────────────────────────────────────────────────
-  const handleResolve = async (alertId, alertType) => {
+  const handleResolve = useCallback(async (alertId, alertType) => {
     await resolveAlert(alertId);
     showToast({ title: 'Alert Resolved', message: 'Alert has been acknowledged and resolved.', severity: 'info' }, 3000);
-  };
+  }, [resolveAlert, showToast]);
 
-  const handleDelete = async (alertId) => {
+  const handleDelete = useCallback(async (alertId) => {
     if (!window.confirm('Permanently delete this alert?')) return;
     const res = await deleteAlert(alertId);
     if (res.ok) {
@@ -92,9 +92,9 @@ export default React.memo(function Alerts() {
     } else {
       showToast({ title: 'Delete Failed', message: res.message, severity: 'critical' }, 5000);
     }
-  };
+  }, [deleteAlert, showToast]);
 
-  const handleCreate = async () => {
+  const handleCreate = useCallback(async () => {
     if (!form.title.trim() || !form.message.trim()) {
       showToast({ title: 'Validation Error', message: 'Title and message are required.', severity: 'critical' }, 4000);
       return;
@@ -115,13 +115,13 @@ export default React.memo(function Alerts() {
     } else {
       showToast({ title: 'Create Failed', message: res.message, severity: 'critical' }, 5000);
     }
-  };
+  }, [form, createAlert, showToast]);
 
-  const handleClearResolved = async () => {
+  const handleClearResolved = useCallback(async () => {
     const resolved = alerts.filter(a => !a.active);
     await Promise.all(resolved.map(a => deleteAlert(a.id)));
     showToast({ title: 'Cleared', message: `${resolved.length} resolved alert(s) removed.`, severity: 'info' }, 3000);
-  };
+  }, [alerts, deleteAlert, showToast]);
 
   // ── Render ───────────────────────────────────────────────────────────────────
   return (
