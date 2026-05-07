@@ -228,6 +228,30 @@ const predictMaintenance = async (req, res) => {
 };
 
 // ── GET /api/ai/network-snapshot ──────────────────────────────────────────────
+
+/** Build a smart deterministic fallback when ML is offline — derived from real DB stats */
+function buildFallback(total, running, delayed, avgDelay, density, isPeak) {
+  // Delay fallback
+  const delayMinutes = avgDelay > 0
+    ? parseFloat(avgDelay.toFixed(1))
+    : parseFloat((delayed / Math.max(1, total) * 12).toFixed(1));
+
+  // Congestion fallback
+  const congestion_level = density > 70 ? 'High' : density > 40 ? 'Medium' : 'Low';
+
+  // Alert priority fallback
+  const priority = delayed > 3000 ? 'Critical' : delayed > 1000 ? 'High' : activeAlerts > 10 ? 'Medium' : 'Low';
+
+  // Maintenance risk fallback (0–100)
+  const risk_score = Math.min(100, Math.round(30 + (delayed / Math.max(1, total)) * 50 + (isPeak ? 10 : 0)));
+  const maint_status = risk_score > 75 ? 'Critical' : risk_score > 50 ? 'Warning' : 'Nominal';
+
+  return { delayMinutes, congestion_level, priority, risk_score, maint_status };
+}
+
+// eslint-disable-next-line no-unused-vars — used in closure below
+let activeAlerts = 0;
+
 const networkSnapshot = async (req, res) => {
   try {
     const [trainStats, alertStats] = await Promise.all([
@@ -240,7 +264,7 @@ const networkSnapshot = async (req, res) => {
     const running    = parseInt(ts.running) || 0;
     const delayed    = parseInt(ts.delayed) || 0;
     const avgDelay   = parseFloat(ts.avg_delay) || 0;
-    const activeAlerts = parseInt(alertStats.rows[0].count) || 0;
+    activeAlerts     = parseInt(alertStats.rows[0].count) || 0;
     const density    = (running / total) * 100;
     const isPeak     = (() => { const h = new Date().getHours(); return (h >= 7 && h <= 10) || (h >= 17 && h <= 20); })();
 
@@ -280,15 +304,33 @@ const networkSnapshot = async (req, res) => {
       mlPost('/predict-maintenance', maintenancePayload),
     ]);
 
-    const safe = (r, fb) => r.status === 'fulfilled' ? r.value : { error: r.reason?.message, ...fb };
+    // If all 4 ML calls failed → ML is offline; build smart DB-derived fallback
+    const allFailed = [delayR, congR, alertR, maintR].every(r => r.status === 'rejected');
+    if (allFailed) {
+      const fb = buildFallback(total, running, delayed, avgDelay, density, isPeak);
+      return res.json({
+        timestamp:    new Date().toISOString(),
+        source:       'db_fallback',
+        db_stats:     { total, running, delayed, avgDelay, activeAlerts },
+        delay:        { delay_minutes: fb.delayMinutes, xai: { confidence: null, top_features: [] } },
+        congestion:   { congestion_level: fb.congestion_level, xai: { confidence: null, top_features: [] } },
+        alert:        { priority: fb.priority, xai: { confidence: null, top_features: [] } },
+        maintenance:  { risk_score: fb.risk_score, status: fb.maint_status, xai: { confidence: null, top_features: [] } },
+      });
+    }
+
+    // Otherwise use ML results (partial fallback for any that failed)
+    const safe = (r, fb) => r.status === 'fulfilled' ? r.value : { ...fb, xai: { confidence: null, top_features: [] } };
+    const fbData = buildFallback(total, running, delayed, avgDelay, density, isPeak);
 
     res.json({
       timestamp:   new Date().toISOString(),
+      source:      'ml',
       db_stats:    { total, running, delayed, avgDelay, activeAlerts },
-      delay:       safe(delayR,  { delay_minutes: null }),
-      congestion:  safe(congR,   { congestion_level: null }),
-      alert:       safe(alertR,  { priority: null }),
-      maintenance: safe(maintR,  { risk_score: null, status: null }),
+      delay:       safe(delayR,  { delay_minutes: fbData.delayMinutes }),
+      congestion:  safe(congR,   { congestion_level: fbData.congestion_level }),
+      alert:       safe(alertR,  { priority: fbData.priority }),
+      maintenance: safe(maintR,  { risk_score: fbData.risk_score, status: fbData.maint_status }),
     });
   } catch (e) {
     res.status(500).json({ message: e.message });
