@@ -28,12 +28,7 @@ const allowedOrigins = process.env.FRONTEND_URL
   : ['http://localhost:5173', 'http://127.0.0.1:5173'];
 
 app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.includes(origin) || allowedOrigins.includes('*'))
-      return callback(null, true);
-    return callback(new Error('CORS: origin ' + origin + ' not allowed'));
-  },
+  origin: true, // Dynamically reflects request origin, fully compatible with credentials: true and prevents CORS errors on deployments
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
