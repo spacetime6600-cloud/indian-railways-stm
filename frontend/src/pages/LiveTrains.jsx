@@ -177,7 +177,7 @@ export default React.memo(function LiveTrains() {
 
       console.log("🔥 DIRECT API DATA:", data);
 
-      setTrains(data);
+      setTrains(data?.data || data || []);
 
     } catch (err) {
       console.error("ERROR:", err);
