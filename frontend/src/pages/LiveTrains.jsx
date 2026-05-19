@@ -140,13 +140,13 @@ export default React.memo(function LiveTrains() {
     fetchTrains,
     fetchTrainStats,
     analytics
-  } = useStore((s) => ({
+  } = useStore(useShallow((s) => ({
     trainPagination: s.trainPagination,
     trainFilters: s.trainFilters,
     fetchTrains: s.fetchTrains,
     fetchTrainStats: s.fetchTrainStats,
     analytics: s.analytics
-  }));
+  })));
   const { showToast } = useToast();
 
   // Local filter state (debounced before sending to server)
@@ -183,7 +183,7 @@ export default React.memo(function LiveTrains() {
 
       console.log("🔥 DIRECT API DATA:", data);
 
-      setTrains(data?.data || data || []);
+      setTrains(Array.isArray(data) ? data : data?.data || []);
 
     } catch (err) {
       console.error("ERROR:", err);
@@ -260,6 +260,8 @@ export default React.memo(function LiveTrains() {
   const openEdit = useCallback((t) => { setIsEditMode(true); setFormData({ id: t.rawId, trainNumber: t.id, trainName: t.name || '', route: t.route, source: t.source || '', destination: t.destination || '', speed: t.speed, status: t.status?.toLowerCase() || 'running', zone: t.zone || 'Northern', trainType: t.trainType || 'Mail Express' }); setIsModalOpen(true); }, []);
 
   const { page, totalPages, total } = trainPagination;
+
+  if (!Array.isArray(trains)) return null;
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-5">
@@ -420,13 +422,13 @@ export default React.memo(function LiveTrains() {
                   ))}
                 </div>
               ) : (
-                <VirtualList
-                  items={trains}
-                  rowHeight={52}
-                  renderRow={(train, idx) => (
+                Array.isArray(trains) && trains.length > 0 ? (
+                  trains.map((train, idx) => (
                     <TrainRow key={train.rawId || train.id || idx} train={train} idx={idx} onEdit={openEdit} onDelete={handleDelete} />
-                  )}
-                />
+                  ))
+                ) : (
+                  <div className="p-4 text-center text-zinc-500">No trains found</div>
+                )
               )}
             </div>
           </div>
