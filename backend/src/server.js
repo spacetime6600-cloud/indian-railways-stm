@@ -23,16 +23,17 @@ const app = express();
 // ── Security Middlewares ──────────────────────────────────────────────────────
 app.use(helmet());
 
-const allowedOrigins = process.env.FRONTEND_URL
-  ? process.env.FRONTEND_URL.split(',').map(o => o.trim())
-  : ['http://localhost:5173', 'http://127.0.0.1:5173'];
-
 app.use(cors({
-  origin: true, // Dynamically reflects request origin, fully compatible with credentials: true and prevents CORS errors on deployments
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true,
+  origin: [
+    "https://indian-railways-stm.vercel.app",
+    "https://indian-railways-qj7oye9fk-spacetime6600-1328s-projects.vercel.app",
+    "http://localhost:5173",
+    "http://127.0.0.1:5173"
+  ],
+  credentials: true
 }));
+
+app.options('*', cors());
 
 // ── Rate Limiting ─────────────────────────────────────────────────────────────
 const limiter = rateLimit({
