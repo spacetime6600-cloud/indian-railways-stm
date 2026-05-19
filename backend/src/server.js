@@ -1,13 +1,13 @@
 require('dotenv').config();
-const http    = require('http');
+const http = require('http');
 const express = require('express');
-const cors    = require('cors');
-const helmet  = require('helmet');
-const morgan  = require('morgan');
+const cors = require('cors');
+const helmet = require('helmet');
+const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
 const { notFound, errorHandler } = require('./middlewares/errorMiddleware');
 const cacheMiddleware = require('./middlewares/cacheMiddleware');
-const socketManager  = require('./socket/socketManager');
+const socketManager = require('./socket/socketManager');
 
 // ── Production guard ──────────────────────────────────────────────────────────
 if (process.env.NODE_ENV === 'production' && !process.env.JWT_SECRET) {
@@ -23,13 +23,16 @@ const app = express();
 // ── Security Middlewares ──────────────────────────────────────────────────────
 app.use(helmet());
 
+const allowedOrigins = process.env.CLIENT_URLS.split(",");
+
 app.use(cors({
-  origin: [
-    "https://indian-railways-stm.vercel.app",
-    "https://indian-railways-qj7oye9fk-spacetime6600-1328s-projects.vercel.app",
-    "http://localhost:5173",
-    "http://127.0.0.1:5173"
-  ],
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("CORS blocked: " + origin));
+    }
+  },
   credentials: true
 }));
 
@@ -62,14 +65,14 @@ app.get('/health', (req, res) => {
 });
 
 // ── Routes ────────────────────────────────────────────────────────────────────
-app.use('/api/auth',        authLimiter, require('./routes/authRoutes'));
-app.use('/api/trains',      require('./routes/trainRoutes'));
-app.use('/api/platforms',   require('./routes/platformRoutes'));
-app.use('/api/alerts',      require('./routes/alertRoutes'));
-app.use('/api/analytics',   require('./routes/analyticsRoutes'));
+app.use('/api/auth', authLimiter, require('./routes/authRoutes'));
+app.use('/api/trains', require('./routes/trainRoutes'));
+app.use('/api/platforms', require('./routes/platformRoutes'));
+app.use('/api/alerts', require('./routes/alertRoutes'));
+app.use('/api/analytics', require('./routes/analyticsRoutes'));
 app.use('/api/maintenance', require('./routes/maintenanceRoutes'));
-app.use('/api/users',       require('./routes/userRoutes'));
-app.use('/api/ai',          require('./routes/aiRoutes'));
+app.use('/api/users', require('./routes/userRoutes'));
+app.use('/api/ai', require('./routes/aiRoutes'));
 
 // ── Error Handling ────────────────────────────────────────────────────────────
 app.use(notFound);
