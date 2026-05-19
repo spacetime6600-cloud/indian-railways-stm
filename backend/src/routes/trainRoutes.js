@@ -7,6 +7,7 @@ const { authorize, stationScope } = require('../middlewares/roleMiddleware');
 // Apply auth + scope to all train routes
 router.use(protect);
 router.use(stationScope);
+router.get('/trains', protect, getTrains);
 
 router.get('/stats', getTrainStats);
 

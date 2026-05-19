@@ -1,34 +1,60 @@
 'use strict';
 const pool = require('../config/db');
-const sm   = require('../socket/socketManager');
+const sm = require('../socket/socketManager');
 const { writeAudit } = require('../utils/audit');
 
 // ── Param placeholder helper ──────────────────────────────────────────────────
-const getTrains = async (req, res) => {
+export const getTrains = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
-    const limit = Math.min(200, parseInt(req.query.limit) || 50);
+    const limit = parseInt(req.query.limit) || 50;
     const offset = (page - 1) * limit;
 
-    // Allow only safe sorting columns
-    const allowedSortFields = ['train_number', 'train_name', 'speed', 'delay_minutes', 'created_at'];
-    const sortBy = allowedSortFields.includes(req.query.sortBy) ? req.query.sortBy : 'created_at';
-    const sortDir = req.query.sortDir === 'asc' ? 'ASC' : 'DESC';
+    // ✅ safe sorting
+    const allowedSort = [
+      'train_number',
+      'train_name',
+      'speed',
+      'delay_minutes',
+      'created_at'
+    ];
 
-    const query = `
-      SELECT id, train_number, train_name, route, source, destination,
-             current_location, zone, train_type, speed, delay_minutes, status
+    let sortBy = req.query.sortBy || 'created_at';
+    let sortDir = req.query.sortDir === 'asc' ? 'ASC' : 'DESC';
+
+    if (!allowedSort.includes(sortBy)) {
+      sortBy = 'created_at';
+    }
+
+    const result = await pool.query(
+      `
+      SELECT 
+        id,
+        train_number,
+        train_name,
+        route,
+        source,
+        destination,
+        current_location,
+        zone,
+        train_type,
+        speed,
+        delay_minutes,
+        status
       FROM trains
       ORDER BY ${sortBy} ${sortDir}
-      LIMIT $1 OFFSET $2`;
-    const result = await pool.query(query, [limit, offset]);
-    res.json({ data: result.rows, pagination: { page, limit, total: result.rowCount, totalPages: Math.ceil(result.rowCount / limit) } });
-  } catch (e) {
-    console.error('TRAIN API ERROR:', e);
-    res.status(500).json({ error: e.message });
+      LIMIT $1 OFFSET $2
+      `,
+      [limit, offset]
+    );
+
+    res.json(result.rows);
+
+  } catch (err) {
+    console.error("🔥 TRAIN API ERROR:", err);
+    res.status(500).json({ error: err.message });
   }
 };
-
 // ── GET /api/trains/stats ─────────────────────────────────────────────────────
 const getTrainStats = async (req, res) => {
   try {
