@@ -43,6 +43,15 @@ const LIMIT = 50;
 
 // TrainRow sub-component - renders as a flex div styled like a table row
 const TrainRow = React.memo(function TrainRow({ train, idx, onEdit, onDelete }) {
+  const trainNo = train.train_number || train.id || '—';
+  const trainName = train.train_name || train.name || '—';
+  const type = train.train_type || train.trainType || '—';
+  const loc = train.current_location || train.currentLocation || '—';
+  const delayVal = train.delay_minutes ?? train.delayMinutes ?? 0;
+  const delayStr = delayVal > 0 ? `+${delayVal}m` : (train.delay || 'None');
+  const predDelay = train.predicted_delay ?? train.predictedDelay ?? 0;
+  const plat = train.platform_number || train.platform || '—';
+
   return (
     <motion.div
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: idx * 0.01 }}
@@ -52,18 +61,18 @@ const TrainRow = React.memo(function TrainRow({ train, idx, onEdit, onDelete }) 
     >
       {/* Train No. */}
       <div className="px-4 flex-shrink-0" style={{ width: '120px' }}>
-        <span className="text-[#FF9933] font-black font-headline text-sm group-hover:text-white transition-colors">{train.id}</span>
+        <span className="text-[#FF9933] font-black font-headline text-sm group-hover:text-white transition-colors">{trainNo}</span>
       </div>
 
       {/* Name */}
       <div className="px-4 flex-1 min-w-[180px] overflow-hidden">
-        <span className="text-white font-medium text-xs truncate block">{train.name || '—'}</span>
+        <span className="text-white font-medium text-xs truncate block">{trainName}</span>
       </div>
 
       {/* Type */}
       <div className="px-4 flex-shrink-0" style={{ width: '140px' }}>
-        <span className={`text-[9px] font-bold px-2 py-0.5 rounded border uppercase tracking-wide ${getTypeColor(train.trainType)}`}>
-          {train.trainType?.split(' ')[0] || '—'}
+        <span className={`text-[9px] font-bold px-2 py-0.5 rounded border uppercase tracking-wide ${getTypeColor(type)}`}>
+          {type.split(' ')[0] || '—'}
         </span>
       </div>
 
@@ -74,31 +83,31 @@ const TrainRow = React.memo(function TrainRow({ train, idx, onEdit, onDelete }) 
 
       {/* Route */}
       <div className="px-4 flex-1 min-w-[140px] overflow-hidden">
-        <span className="text-zinc-400 text-xs truncate block">{train.route}</span>
+        <span className="text-zinc-400 text-xs truncate block">{train.route || '—'}</span>
       </div>
 
       {/* Current Station */}
       <div className="px-4 flex-1 min-w-[140px] overflow-hidden">
-        <span className="text-zinc-400 text-xs truncate block">{train.currentLocation || '—'}</span>
+        <span className="text-zinc-400 text-xs truncate block">{loc}</span>
       </div>
 
       {/* Speed */}
       <div className="px-4 flex-shrink-0 text-center" style={{ width: '100px' }}>
-        <span className="text-primary font-bold text-xs">{train.speed} <span className="text-[9px] text-zinc-600">km/h</span></span>
+        <span className="text-primary font-bold text-xs">{train.speed ?? 0} <span className="text-[9px] text-zinc-600">km/h</span></span>
       </div>
 
       {/* Delay */}
       <div className="px-4 flex-shrink-0 text-center flex flex-col justify-center" style={{ width: '100px' }}>
-        <span className={train.delay === 'None' ? 'text-zinc-600 text-xs' : 'text-red-400 font-bold text-xs'}>{train.delay}</span>
-        {train.predictedDelay > 0 && (
-          <span className="text-[9px] text-[#FF9933] font-bold">🤖 +{Number(train.predictedDelay).toFixed(1)}m</span>
+        <span className={delayStr === 'None' ? 'text-zinc-600 text-xs' : 'text-red-400 font-bold text-xs'}>{delayStr}</span>
+        {predDelay > 0 && (
+          <span className="text-[9px] text-[#FF9933] font-bold">🤖 +{Number(predDelay).toFixed(1)}m</span>
         )}
       </div>
 
       {/* Platform */}
       <div className="px-4 flex-shrink-0 text-center" style={{ width: '100px' }}>
         <span className="bg-surface-container-highest px-2 py-0.5 rounded text-xs font-bold text-white border border-white/5 group-hover:border-[#FF9933]/30 transition-colors">
-          {train.platform}
+          {plat}
         </span>
       </div>
 
@@ -245,10 +254,13 @@ export default React.memo(function LiveTrains() {
   };
 
   const handleDelete = useCallback(async (train) => {
-    if (!window.confirm(`Delete train ${train.id} — ${train.name}? This cannot be undone.`)) return;
+    const tId = train.rawId || train.id;
+    const tNo = train.train_number || train.id;
+    const tName = train.train_name || train.name || '—';
+    if (!window.confirm(`Delete train ${tNo} — ${tName}? This cannot be undone.`)) return;
     try {
-      await api.delete(`/trains/${train.rawId}`);
-      showToast({ title: 'Train Deleted', message: `${train.id} removed from fleet.`, severity: 'info' }, 3000);
+      await api.delete(`/trains/${tId}`);
+      showToast({ title: 'Train Deleted', message: `${tNo} removed from fleet.`, severity: 'info' }, 3000);
       doFetch({ page: trainPagination.page });
       fetchTrainStats();
     } catch (err) {
@@ -257,7 +269,7 @@ export default React.memo(function LiveTrains() {
   }, [doFetch, fetchTrainStats, showToast, trainPagination.page]);
 
   const openAdd = useCallback(() => { setIsEditMode(false); setFormData({ id: '', trainNumber: '', trainName: '', route: '', source: '', destination: '', speed: 0, status: 'scheduled', zone: 'Northern', trainType: 'Mail Express' }); setIsModalOpen(true); }, []);
-  const openEdit = useCallback((t) => { setIsEditMode(true); setFormData({ id: t.rawId, trainNumber: t.id, trainName: t.name || '', route: t.route, source: t.source || '', destination: t.destination || '', speed: t.speed, status: t.status?.toLowerCase() || 'running', zone: t.zone || 'Northern', trainType: t.trainType || 'Mail Express' }); setIsModalOpen(true); }, []);
+  const openEdit = useCallback((t) => { setIsEditMode(true); setFormData({ id: t.rawId || t.id, trainNumber: t.train_number || t.id, trainName: t.train_name || t.name || '', route: t.route, source: t.source || '', destination: t.destination || '', speed: t.speed || 0, status: t.status?.toLowerCase() || 'running', zone: t.zone || 'Northern', trainType: t.train_type || t.trainType || 'Mail Express' }); setIsModalOpen(true); }, []);
 
   const { page, totalPages, total } = trainPagination;
 
