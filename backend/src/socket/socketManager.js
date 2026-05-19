@@ -6,7 +6,7 @@ let io = null;
 
 // ── Room helpers ──────────────────────────────────────────────────────────────
 const STATION_SCOPED = new Set(['station_master', 'dispatcher']);
-const ZONE_SCOPED    = new Set(['zone_admin']);
+const ZONE_SCOPED = new Set(['zone_admin']);
 
 function getRoomForUser(user) {
   if (STATION_SCOPED.has(user.role) && user.assigned_station)
@@ -18,9 +18,9 @@ function getRoomForUser(user) {
 
 // ── Init ──────────────────────────────────────────────────────────────────────
 function init(httpServer) {
-  const allowedOrigins = process.env.FRONTEND_URL
-    ? process.env.FRONTEND_URL.split(',').map(o => o.trim())
-    : ['http://localhost:5173', 'http://127.0.0.1:5173'];
+  const allowedOrigins = (process.env.CLIENT_URLS || "")
+    .split(',')
+    .map(o => o.trim());
 
   io = new Server(httpServer, {
     cors: {
@@ -71,25 +71,25 @@ function getIO() { return io; }
 function emitTrainUpdate(trainRow) {
   if (!io) return;
   io.emit('train:updated', {
-    id:               trainRow.id,
-    status:           trainRow.status,
-    speed:            trainRow.speed,
-    delay_minutes:    trainRow.delay_minutes,
+    id: trainRow.id,
+    status: trainRow.status,
+    speed: trainRow.speed,
+    delay_minutes: trainRow.delay_minutes,
     current_location: trainRow.current_location,
-    updated_at:       trainRow.updated_at,
+    updated_at: trainRow.updated_at,
   });
 }
 
 function emitAlertNew(alertRow) {
   if (!io) return;
   const payload = {
-    id:           alertRow.id,
-    type:         alertRow.type,
-    severity:     alertRow.severity,
-    title:        alertRow.title,
-    message:      alertRow.message,
+    id: alertRow.id,
+    type: alertRow.type,
+    severity: alertRow.severity,
+    title: alertRow.title,
+    message: alertRow.message,
     station_name: alertRow.station_name || null,
-    created_at:   alertRow.created_at,
+    created_at: alertRow.created_at,
     priority_level: alertRow.priority_level || null,
   };
   // Broadcast to national room (all high-privilege users)
@@ -109,12 +109,12 @@ function emitAlertResolved(id) {
 function emitPlatformUpdate(platformRow) {
   if (!io) return;
   io.emit('platform:updated', {
-    id:             platformRow.id,
-    platform_number:platformRow.platform_number,
-    station_name:   platformRow.station_name,
-    occupied:       platformRow.occupied,
-    status:         platformRow.status,
-    train_number:   platformRow.train_number || null,
+    id: platformRow.id,
+    platform_number: platformRow.platform_number,
+    station_name: platformRow.station_name,
+    occupied: platformRow.occupied,
+    status: platformRow.status,
+    train_number: platformRow.train_number || null,
   });
 }
 
