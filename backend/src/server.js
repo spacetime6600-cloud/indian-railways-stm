@@ -36,7 +36,7 @@ app.use(cors({
   credentials: true
 }));
 
-app.options('*', cors());
+app.options('/*path', cors());
 
 // ── Rate Limiting ─────────────────────────────────────────────────────────────
 const limiter = rateLimit({
@@ -75,7 +75,9 @@ app.use('/api/users', require('./routes/userRoutes'));
 app.use('/api/ai', require('./routes/aiRoutes'));
 
 // ── Error Handling ────────────────────────────────────────────────────────────
-app.use(notFound);
+app.use((req, res) => {
+  res.status(404).json({ message: "Route not found" });
+});
 app.use(errorHandler);
 
 // ── HTTP Server + Socket.IO ───────────────────────────────────────────────────

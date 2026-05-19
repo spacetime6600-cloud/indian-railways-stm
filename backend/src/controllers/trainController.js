@@ -4,7 +4,7 @@ const sm = require('../socket/socketManager');
 const { writeAudit } = require('../utils/audit');
 
 // ── Param placeholder helper ──────────────────────────────────────────────────
-export const getTrains = async (req, res) => {
+const getTrains = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 50;
