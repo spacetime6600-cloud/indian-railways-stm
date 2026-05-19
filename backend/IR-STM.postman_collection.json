@@ -94,7 +94,7 @@
                 { "key": "sortBy",  "value": "train_number" },
                 { "key": "sortDir", "value": "asc" },
                 { "key": "search",  "value": "", "disabled": true },
-                { "key": "status",  "value": "", "disabled": true },
+                { "key": "status",  "value": "", "disabled": true },                                        
                 { "key": "zone",    "value": "", "disabled": true },
                 { "key": "type",    "value": "", "disabled": true }
               ]

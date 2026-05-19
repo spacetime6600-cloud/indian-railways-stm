@@ -55,8 +55,8 @@ const TrainRow = React.memo(function TrainRow({ train, idx, onEdit, onDelete }) 
       </div>
       
       {/* Name */}
-      <div className="px-4 flex-shrink-0" style={{ width: '180px' }}>
-        <span className="text-white font-medium text-xs max-w-[160px] truncate block">{train.name || '—'}</span>
+      <div className="px-4 flex-1 min-w-[180px] overflow-hidden">
+        <span className="text-white font-medium text-xs truncate block">{train.name || '—'}</span>
       </div>
       
       {/* Type */}
@@ -72,13 +72,13 @@ const TrainRow = React.memo(function TrainRow({ train, idx, onEdit, onDelete }) 
       </div>
       
       {/* Route */}
-      <div className="px-4 flex-shrink-0" style={{ width: '140px' }}>
-        <span className="text-zinc-400 text-xs max-w-[120px] truncate block">{train.route}</span>
+      <div className="px-4 flex-1 min-w-[140px] overflow-hidden">
+        <span className="text-zinc-400 text-xs truncate block">{train.route}</span>
       </div>
       
       {/* Current Station */}
-      <div className="px-4 flex-shrink-0" style={{ width: '140px' }}>
-        <span className="text-zinc-400 text-xs max-w-[120px] truncate block">{train.currentLocation || '—'}</span>
+      <div className="px-4 flex-1 min-w-[140px] overflow-hidden">
+        <span className="text-zinc-400 text-xs truncate block">{train.currentLocation || '—'}</span>
       </div>
       
       {/* Speed */}
@@ -265,44 +265,44 @@ export default React.memo(function LiveTrains() {
       </div>
 
       {/* Filter Bar */}
-      <div className="bg-surface-container-low border border-white/5 rounded-xl p-4 flex flex-wrap gap-3 items-end">
+      <div className="bg-surface-container-low border border-white/5 rounded-xl p-4 flex flex-col sm:flex-row flex-wrap gap-3 sm:items-end overflow-visible">
         {/* Search */}
-        <div className="flex-1 min-w-[200px]">
+        <div className="flex-1 min-w-[200px] w-full sm:w-auto">
           <label className="text-[9px] font-bold text-zinc-500 uppercase tracking-widest block mb-1">Search</label>
           <div className="relative">
             <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 text-sm">search</span>
             <input value={search} onChange={e => setSearch(e.target.value)}
-              className="w-full bg-surface/50 border border-white/10 rounded-lg pl-9 pr-4 py-2 text-sm text-white placeholder:text-zinc-600 focus:border-[#FF9933]/50 outline-none"
+              className="w-full bg-surface/50 border border-white/10 rounded-lg pl-9 pr-4 h-10 text-sm text-white placeholder:text-zinc-600 focus:border-[#FF9933]/50 outline-none"
               placeholder="Train no., name, route, station..." />
             {search && <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white"><span className="material-symbols-outlined text-sm">close</span></button>}
           </div>
         </div>
 
         {/* Zone */}
-        <div>
+        <div className="flex-1 sm:flex-none">
           <label className="text-[9px] font-bold text-zinc-500 uppercase tracking-widest block mb-1">Zone</label>
           <select value={filterZone} onChange={e => setFilterZone(e.target.value)}
-            className="bg-surface/50 border border-white/10 text-xs px-3 py-2 rounded-lg text-on-surface focus:ring-1 focus:ring-[#FF9933]/50 outline-none cursor-pointer min-w-[140px]">
+            className="bg-surface/50 border border-white/10 text-xs px-3 h-10 rounded-lg text-on-surface focus:ring-1 focus:ring-[#FF9933]/50 outline-none cursor-pointer min-w-[140px] w-full sm:w-auto">
             <option value="">All Zones</option>
             {ZONES.map(z => <option key={z} value={z}>{z}</option>)}
           </select>
         </div>
 
         {/* Type */}
-        <div>
+        <div className="flex-1 sm:flex-none">
           <label className="text-[9px] font-bold text-zinc-500 uppercase tracking-widest block mb-1">Type</label>
           <select value={filterType} onChange={e => setFilterType(e.target.value)}
-            className="bg-surface/50 border border-white/10 text-xs px-3 py-2 rounded-lg text-on-surface focus:ring-1 focus:ring-[#FF9933]/50 outline-none cursor-pointer min-w-[160px]">
+            className="bg-surface/50 border border-white/10 text-xs px-3 h-10 rounded-lg text-on-surface focus:ring-1 focus:ring-[#FF9933]/50 outline-none cursor-pointer min-w-[160px] w-full sm:w-auto">
             <option value="">All Types</option>
             {TRAIN_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
           </select>
         </div>
 
         {/* Status */}
-        <div>
+        <div className="flex-1 sm:flex-none">
           <label className="text-[9px] font-bold text-zinc-500 uppercase tracking-widest block mb-1">Status</label>
           <select value={filterStatus} onChange={e => setFilterStatus(e.target.value)}
-            className="bg-surface/50 border border-white/10 text-xs px-3 py-2 rounded-lg text-on-surface focus:ring-1 focus:ring-[#FF9933]/50 outline-none cursor-pointer">
+            className="bg-surface/50 border border-white/10 text-xs px-3 h-10 rounded-lg text-on-surface focus:ring-1 focus:ring-[#FF9933]/50 outline-none cursor-pointer min-w-[140px] w-full sm:w-auto">
             <option value="">All Status</option>
             {STATUSES.map(s => <option key={s} value={s} className="capitalize">{s.charAt(0).toUpperCase()+s.slice(1)}</option>)}
           </select>
@@ -311,7 +311,7 @@ export default React.memo(function LiveTrains() {
         {/* Clear */}
         {(search || filterZone || filterType || filterStatus) && (
           <button onClick={() => { setSearch(''); setFilterZone(''); setFilterType(''); setFilterStatus(''); }}
-            className="self-end px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-zinc-400 hover:text-white text-xs font-bold uppercase tracking-widest transition-all">
+            className="w-full sm:w-auto self-start sm:self-end px-4 h-10 rounded-lg bg-white/5 border border-white/10 text-zinc-400 hover:text-white text-xs font-bold uppercase tracking-widest transition-all">
             Clear
           </button>
         )}
@@ -341,15 +341,15 @@ export default React.memo(function LiveTrains() {
               <div className="px-4 py-3 flex-shrink-0 cursor-pointer hover:text-white transition-colors flex items-center" style={{ width: '120px' }} onClick={() => handleSort('train_number')}>
                 Train No. <SortIcon col="train_number" />
               </div>
-              <div className="px-4 py-3 flex-shrink-0 cursor-pointer hover:text-white transition-colors flex items-center" style={{ width: '180px' }} onClick={() => handleSort('train_name')}>
+              <div className="px-4 py-3 flex-1 min-w-[180px] cursor-pointer hover:text-white transition-colors flex items-center" onClick={() => handleSort('train_name')}>
                 Name <SortIcon col="train_name" />
               </div>
               <div className="px-4 py-3 flex-shrink-0" style={{ width: '140px' }}>Type</div>
               <div className="px-4 py-3 flex-shrink-0 cursor-pointer hover:text-white transition-colors flex items-center" style={{ width: '140px' }} onClick={() => handleSort('zone')}>
                 Zone <SortIcon col="zone" />
               </div>
-              <div className="px-4 py-3 flex-shrink-0" style={{ width: '140px' }}>Route</div>
-              <div className="px-4 py-3 flex-shrink-0" style={{ width: '140px' }}>Current Station</div>
+              <div className="px-4 py-3 flex-1 min-w-[140px]">Route</div>
+              <div className="px-4 py-3 flex-1 min-w-[140px]">Current Station</div>
               <div className="px-4 py-3 flex-shrink-0 text-center cursor-pointer hover:text-white transition-colors flex items-center justify-center" style={{ width: '100px' }} onClick={() => handleSort('speed')}>
                 Speed <SortIcon col="speed" />
               </div>
@@ -369,12 +369,12 @@ export default React.memo(function LiveTrains() {
                 <div className="flex flex-col">
                   {Array.from({ length: 9 }).map((_, i) => (
                     <div key={i} className="flex items-center border-b border-white/5 animate-pulse w-full" style={{ height: '52px' }}>
-                      <div className="px-4 w-[120px]"><div className="w-16 h-4 bg-white/10 rounded" /></div>
-                      <div className="px-4 w-[180px]"><div className="w-32 h-4 bg-white/10 rounded" /></div>
-                      <div className="px-4 w-[140px]"><div className="w-20 h-4 bg-white/10 rounded" /></div>
-                      <div className="px-4 w-[140px]"><div className="w-24 h-4 bg-white/10 rounded" /></div>
-                      <div className="px-4 w-[140px]"><div className="w-24 h-4 bg-white/10 rounded" /></div>
-                      <div className="px-4 w-[140px]"><div className="w-24 h-4 bg-white/10 rounded" /></div>
+                      <div className="px-4 w-[120px] flex-shrink-0"><div className="w-16 h-4 bg-white/10 rounded" /></div>
+                      <div className="px-4 flex-1 min-w-[180px]"><div className="w-32 h-4 bg-white/10 rounded" /></div>
+                      <div className="px-4 w-[140px] flex-shrink-0"><div className="w-20 h-4 bg-white/10 rounded" /></div>
+                      <div className="px-4 w-[140px] flex-shrink-0"><div className="w-24 h-4 bg-white/10 rounded" /></div>
+                      <div className="px-4 flex-1 min-w-[140px]"><div className="w-24 h-4 bg-white/10 rounded" /></div>
+                      <div className="px-4 flex-1 min-w-[140px]"><div className="w-24 h-4 bg-white/10 rounded" /></div>
                       <div className="px-4 w-[100px] flex justify-center"><div className="w-10 h-4 bg-white/10 rounded" /></div>
                       <div className="px-4 w-[100px] flex justify-center"><div className="w-12 h-4 bg-white/10 rounded" /></div>
                       <div className="px-4 w-[100px] flex justify-center"><div className="w-8 h-4 bg-white/10 rounded" /></div>

@@ -394,7 +394,7 @@ export default React.memo(function Platforms() {
       {/* ── Summary KPI Cards ── */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
         {[
-          { label: 'Total',       value: total, color: 'text-white',        border: 'border-white/10',          icon: 'platform'      },
+          { label: 'Total',       value: total, color: 'text-white',        border: 'border-white/10',          icon: 'layers'      },
           { label: 'Occupied',    value: occ,   color: 'text-[#FF9933]',    border: 'border-[#FF9933]/30',      icon: 'train'         },
           { label: 'Free',        value: free,  color: 'text-emerald-400',  border: 'border-emerald-500/30',    icon: 'check_circle'  },
           { label: 'Incoming',    value: inc,   color: 'text-yellow-400',   border: 'border-yellow-500/30',     icon: 'arrow_forward' },
@@ -404,12 +404,14 @@ export default React.memo(function Platforms() {
             key={k.label}
             whileHover={{ y: -2 }}
             onClick={() => setFilterStatus(filterStatus === k.label && k.label !== 'Total' ? '' : k.label === 'Total' ? '' : k.label)}
-            className={`bg-surface-container-low border ${k.border} rounded-xl p-4 flex items-center gap-3 cursor-pointer transition-all ${filterStatus === k.label ? 'ring-1 ring-white/20' : ''}`}
+            className={`bg-surface-container-low border ${k.border} rounded-xl p-4 w-full flex items-center justify-between gap-2 overflow-hidden cursor-pointer transition-all ${filterStatus === k.label ? 'ring-1 ring-white/20' : ''}`}
           >
-            <span className={`material-symbols-outlined ${k.color} text-xl`}>{k.icon}</span>
-            <div>
-              <div className={`text-2xl font-black ${k.color}`}>{loading ? '—' : k.value}</div>
-              <div className="text-[9px] uppercase tracking-wider text-zinc-500">{k.label}</div>
+            <div className="flex flex-col items-start min-w-0">
+              <span className={`material-symbols-outlined ${k.color} text-xl mb-1`}>{k.icon}</span>
+              <div className="text-[9px] uppercase tracking-wider text-zinc-500 truncate w-full">{k.label}</div>
+            </div>
+            <div className={`text-2xl sm:text-3xl lg:text-4xl font-black shrink-0 ${k.color}`}>
+              {loading ? '—' : k.value}
             </div>
           </motion.div>
         ))}

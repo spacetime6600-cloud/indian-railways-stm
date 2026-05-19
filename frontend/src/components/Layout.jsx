@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, Suspense } from 'react';
 import { Outlet, Navigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import Sidebar from './Sidebar';
@@ -12,6 +12,15 @@ const ROUTE_PERMISSIONS = {
   '/maintenance': 'viewMaintenance',
   '/settings':    'viewSettings',
 };
+
+const ContentLoader = () => (
+  <div className="flex items-center justify-center h-full min-h-[50vh]">
+    <div className="flex flex-col items-center gap-4">
+      <div className="w-8 h-8 border-2 border-[#FF9933] border-t-transparent rounded-full animate-spin" />
+      <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-500">Loading Module...</span>
+    </div>
+  </div>
+);
 
 export default function Layout() {
   const { isAuthenticated, sidebarOpen, toggleSidebar, initApp, user, socketConnected, fetchTrainStats } = useStore(useShallow(s => ({
@@ -58,7 +67,9 @@ export default function Layout() {
             <motion.div key={location.pathname}
               initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.3, ease: 'easeOut' }}>
-              <Outlet />
+              <Suspense fallback={<ContentLoader />}>
+                <Outlet />
+              </Suspense>
             </motion.div>
           </AnimatePresence>
         </div>

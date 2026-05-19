@@ -151,16 +151,26 @@ export default function Landing() {
         </section>
 
         {/* Features Bento Grid */}
-        <section className="py-32 px-6 lg:px-12 bg-surface relative z-10">
-          <div className="max-w-7xl mx-auto">
+        <section className="py-32 px-6 lg:px-12 bg-surface relative z-10 overflow-hidden">
+          {/* Subtle radial glow behind the section */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[150px] pointer-events-none"></div>
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none"></div>
+
+          <div className="max-w-7xl mx-auto relative z-10">
             <motion.div 
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="mb-20"
+              className="mb-16 flex flex-col md:flex-row md:items-end justify-between gap-8"
             >
-              <h2 className="text-4xl md:text-6xl font-headline font-black text-white mb-6 uppercase tracking-tighter">Command <br /> Capabilities</h2>
-              <p className="text-on-surface-variant font-body max-w-xl text-lg opacity-70">Advanced modules built for Indian Railways — eliminating friction, predicting anomalies, and keeping 13,000+ daily trains on schedule.</p>
+              <div>
+                <div className="inline-flex items-center space-x-2 bg-white/5 border border-white/10 px-4 py-1.5 rounded-full mb-6 backdrop-blur-md">
+                  <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+                  <span className="text-[10px] font-black tracking-widest text-white uppercase">System Features</span>
+                </div>
+                <h2 className="text-5xl md:text-7xl font-headline font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-white/40 uppercase tracking-tighter">Command <br /> Capabilities</h2>
+              </div>
+              <p className="text-on-surface-variant font-body max-w-md text-base md:text-lg opacity-80 leading-relaxed border-l-2 border-primary/30 pl-6 py-2">Advanced modules built for Indian Railways — eliminating friction, predicting anomalies, and keeping 13,000+ daily trains on schedule.</p>
             </motion.div>
             
             <motion.div 
@@ -168,50 +178,95 @@ export default function Landing() {
               whileInView="visible"
               viewport={{ once: true }}
               variants={staggerContainer}
-              className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 auto-rows-[280px]"
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-auto lg:auto-rows-[280px]"
             >
-              <motion.div variants={fadeInUp} className="bg-surface-container-low border border-white/5 rounded-2xl p-10 col-span-1 md:col-span-2 lg:col-span-2 row-span-2 flex flex-col justify-end relative overflow-hidden group hover:border-primary/20 transition-all duration-500 shadow-2xl">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-[100px] -mr-32 -mt-32"></div>
-                <div className="absolute top-10 right-10 text-primary opacity-20 group-hover:opacity-100 transition-all duration-700 group-hover:scale-110">
-                  <span className="material-symbols-outlined text-6xl" style={{ fontVariationSettings: "'FILL' 1" }}>route</span>
+              <motion.div variants={fadeInUp} className="bg-gradient-to-br from-surface-container-low to-surface-container-lowest border border-white/10 rounded-3xl p-10 col-span-1 md:col-span-2 lg:col-span-2 lg:row-span-2 flex flex-col justify-between relative overflow-hidden group hover:border-primary/40 transition-all duration-500 shadow-2xl hover:shadow-[0_0_40px_rgba(174,198,255,0.1)] hover:-translate-y-1">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px] -mr-40 -mt-40 transition-all duration-700 group-hover:bg-primary/20"></div>
+                
+                <div className="flex justify-between items-start z-10">
+                  <div className="inline-flex items-center space-x-2 bg-primary/10 text-primary px-4 py-2 rounded-full border border-primary/20 backdrop-blur-md">
+                    <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse shadow-[0_0_10px_rgba(174,198,255,1)]"></span>
+                    <span className="text-[10px] font-black tracking-widest uppercase">Real-Time Core</span>
+                  </div>
+                  <div className="text-primary opacity-40 group-hover:opacity-100 transition-all duration-500 group-hover:scale-110 group-hover:rotate-12 bg-white/5 p-4 rounded-2xl border border-white/10 backdrop-blur-md">
+                    <span className="material-symbols-outlined text-4xl" style={{ fontVariationSettings: "'FILL' 1" }}>radar</span>
+                  </div>
                 </div>
-                <div className="z-10 mt-auto">
-                  <h3 className="text-3xl font-headline font-black text-white mb-4 uppercase tracking-tight">Live Fleet <br /> Matrix</h3>
-                  <p className="text-on-surface-variant text-sm font-medium leading-relaxed opacity-60">Pinpoint accuracy across the entire network. Millisecond latency data feeds integrated directly into the command map.</p>
+
+                <div className="z-10 mt-16 lg:mt-0">
+                  <h3 className="text-4xl md:text-5xl font-headline font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-white/70 uppercase tracking-tighter mb-4">Live Fleet <br /> Matrix</h3>
+                  <p className="text-on-surface-variant text-base md:text-lg font-medium leading-relaxed opacity-80 max-w-md">Pinpoint accuracy across the entire network. Millisecond latency data feeds integrated directly into the command map, giving operators a God-eye view of all assets.</p>
+                  
+                  <div className="mt-10 grid grid-cols-2 gap-4 max-w-sm">
+                    <div className="bg-black/30 rounded-2xl p-5 border border-white/5 backdrop-blur-md group-hover:border-white/10 transition-colors">
+                      <div className="text-3xl font-black text-white mb-1">13k+</div>
+                      <div className="text-[10px] text-on-surface-variant uppercase tracking-widest font-bold">Active Trains</div>
+                    </div>
+                    <div className="bg-black/30 rounded-2xl p-5 border border-white/5 backdrop-blur-md group-hover:border-[#138808]/30 transition-colors">
+                      <div className="text-3xl font-black text-[#138808] mb-1">{'<'}12ms</div>
+                      <div className="text-[10px] text-on-surface-variant uppercase tracking-widest font-bold">Data Latency</div>
+                    </div>
+                  </div>
                 </div>
               </motion.div>
 
               {[
-                { icon: 'train', title: 'Platform Optimizer', desc: 'Dynamic reassignment across NDLS, HWH, BCT, MAS to maximize terminal throughput.', color: 'text-secondary' },
-                { icon: 'update', title: 'Delay Forecasting', desc: 'AI predictive models trained on Indian Railways historical telemetry and weather data.', color: 'text-tertiary' },
-                { icon: 'warning', title: 'Zone Alerts', desc: 'Instant fog, signal, rush, and weather protocol activation across all 8 railway zones.', color: 'text-error' }
+                { icon: 'alt_route', title: 'Platform Optimizer', desc: 'Dynamic reassignment across NDLS, HWH, BCT to maximize throughput and reduce wait times.', color: 'from-[#FF9933]/20 to-transparent', text: 'text-[#FF9933]', border: 'group-hover:border-[#FF9933]/40', shadow: 'hover:shadow-[0_0_30px_rgba(255,153,51,0.15)]', tag: 'AI Powered', glow: 'bg-[#FF9933]' },
+                { icon: 'online_prediction', title: 'Delay Forecasting', desc: 'Predictive models trained on historical telemetry and weather data for early warnings.', color: 'from-[#138808]/20 to-transparent', text: 'text-[#138808]', border: 'group-hover:border-[#138808]/40', shadow: 'hover:shadow-[0_0_30px_rgba(19,136,8,0.15)]', tag: 'Machine Learning', glow: 'bg-[#138808]' },
+                { icon: 'warning', title: 'Zone Alerts', desc: 'Instant fog, signal, and rush protocol activation across all 8 railway zones automatically.', color: 'from-error/20 to-transparent', text: 'text-error', border: 'group-hover:border-error/40', shadow: 'hover:shadow-[0_0_30px_rgba(255,84,73,0.15)]', tag: 'Critical System', glow: 'bg-error' }
               ].map((feat, i) => (
                 <motion.div 
                   key={i} 
                   variants={fadeInUp} 
-                  whileHover={{ y: -5 }}
-                  className="bg-surface-container-low border border-white/5 rounded-2xl p-8 flex flex-col group hover:border-white/10 transition-all shadow-2xl"
+                  whileHover={{ y: -5, scale: 1.02 }}
+                  className={`bg-surface-container-low border border-white/5 rounded-3xl p-8 flex flex-col group transition-all duration-300 relative overflow-hidden ${feat.shadow} ${feat.border}`}
                 >
-                  <div className={`${feat.color} mb-6 group-hover:scale-110 transition-transform duration-500`}>
-                    <span className="material-symbols-outlined text-4xl">{feat.icon}</span>
+                  <div className={`absolute inset-0 bg-gradient-to-br ${feat.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}></div>
+                  <div className={`absolute -top-20 -right-20 w-40 h-40 ${feat.glow} rounded-full blur-[80px] opacity-10 group-hover:opacity-30 transition-opacity duration-500`}></div>
+                  
+                  <div className="relative z-10 flex justify-between items-start mb-8">
+                    <div className={`w-12 h-12 rounded-2xl bg-black/40 flex items-center justify-center border border-white/10 group-hover:scale-110 transition-transform duration-500 ${feat.text} backdrop-blur-md`}>
+                      <span className="material-symbols-outlined text-2xl" style={{ fontVariationSettings: "'FILL' 1" }}>{feat.icon}</span>
+                    </div>
+                    <div className="bg-black/40 px-3 py-1 rounded-full border border-white/5 backdrop-blur-md">
+                      <span className="text-[9px] font-black tracking-widest text-white/70 uppercase">{feat.tag}</span>
+                    </div>
                   </div>
-                  <h3 className="text-lg font-headline font-black text-white mb-2 uppercase tracking-tight">{feat.title}</h3>
-                  <p className="text-on-surface-variant text-xs font-medium mt-auto opacity-60 leading-relaxed">{feat.desc}</p>
+                  
+                  <div className="relative z-10 mt-auto">
+                    <h3 className="text-xl md:text-2xl font-headline font-black text-white mb-3 uppercase tracking-tight group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-white/50 transition-all">{feat.title}</h3>
+                    <p className="text-on-surface-variant text-sm font-medium opacity-70 leading-relaxed">{feat.desc}</p>
+                  </div>
+                  
+                  {/* Animated bottom line */}
+                  <div className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-transparent via-white/20 to-transparent w-0 group-hover:w-full transition-all duration-700"></div>
                 </motion.div>
               ))}
 
-              <motion.div variants={fadeInUp} className="bg-gradient-to-br from-primary/10 to-transparent border border-primary/20 rounded-2xl p-10 col-span-1 md:col-span-3 lg:col-span-4 relative overflow-hidden group flex flex-col md:flex-row items-center justify-between shadow-2xl">
-                <div className="max-w-2xl relative z-10">
-                  <div className="inline-flex items-center space-x-2 text-primary mb-6">
-                    <span className="material-symbols-outlined text-2xl">engineering</span>
-                    <span className="font-headline font-black text-[10px] tracking-[0.3em] uppercase">Core Intelligence Module</span>
+              <motion.div variants={fadeInUp} className="bg-gradient-to-r from-primary/10 via-surface-container-low to-surface-container-lowest border border-white/10 hover:border-primary/40 rounded-3xl p-8 md:p-10 col-span-1 md:col-span-2 lg:col-span-2 relative overflow-hidden group flex flex-col md:flex-row items-center justify-between shadow-2xl hover:shadow-[0_0_40px_rgba(174,198,255,0.15)] transition-all duration-500 hover:-translate-y-1">
+                
+                {/* Background patterns */}
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_left_center,rgba(174,198,255,0.1),transparent_70%)] group-hover:bg-[radial-gradient(circle_at_left_center,rgba(174,198,255,0.2),transparent_70%)] transition-colors duration-700"></div>
+                <div className="absolute right-0 top-0 bottom-0 w-1/2 bg-gradient-to-l from-black/40 to-transparent z-0"></div>
+
+                <div className="max-w-xl relative z-10 flex-1 w-full">
+                  <div className="inline-flex items-center space-x-3 mb-6">
+                    <div className="bg-primary/20 p-2 rounded-xl border border-primary/30 backdrop-blur-md">
+                      <span className="material-symbols-outlined text-primary text-xl group-hover:animate-spin" style={{ animationDuration: '3s' }}>settings_suggest</span>
+                    </div>
+                    <span className="font-headline font-black text-[10px] tracking-[0.3em] text-primary uppercase">Core Intelligence Module</span>
                   </div>
-                  <h3 className="text-3xl md:text-4xl font-headline font-black text-white mb-4 uppercase tracking-tighter">Predictive Maintenance</h3>
-                  <p className="text-on-surface-variant text-sm font-medium opacity-70 leading-relaxed">Analyze rolling stock telemetry to schedule repairs before critical failures occur, saving millions in operational downtime through preemptive logic.</p>
+                  
+                  <h3 className="text-3xl md:text-4xl font-headline font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-white/50 mb-4 uppercase tracking-tighter">Predictive Maintenance</h3>
+                  
+                  <p className="text-on-surface-variant text-sm md:text-base font-medium opacity-80 leading-relaxed mb-6 md:mb-0">Analyze rolling stock telemetry to schedule repairs before critical failures occur, saving millions in operational downtime through preemptive logic and real-time sensor processing.</p>
                 </div>
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="mt-8 md:mt-0 relative z-10">
-                  <button className="bg-white text-black px-10 py-4 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-primary transition-all shadow-2xl">
-                    View Systems
+                
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="mt-8 md:mt-0 relative z-10 w-full md:w-auto flex-shrink-0 md:ml-8">
+                  <button className="w-full md:w-auto bg-gradient-to-r from-white to-white/90 text-black px-8 py-4 rounded-xl font-black text-[11px] uppercase tracking-widest hover:shadow-[0_0_30px_rgba(255,255,255,0.4)] transition-all flex items-center justify-center space-x-3 group/btn">
+                    <span>View Systems</span>
+                    <span className="material-symbols-outlined text-sm group-hover/btn:translate-x-1 transition-transform">arrow_forward</span>
                   </button>
                 </motion.div>
               </motion.div>

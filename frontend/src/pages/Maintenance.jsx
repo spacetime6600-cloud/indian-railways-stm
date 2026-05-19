@@ -73,10 +73,10 @@ export default function Maintenance() {
       initial="hidden"
       animate="visible"
       variants={containerVariants}
-      className="flex flex-col lg:flex-row gap-8 w-full min-w-0"
+      className="flex flex-col xl:flex-row w-full gap-6 max-w-full"
     >
       {/* Left Column: Core Dashboard */}
-      <div className="flex-1 flex flex-col gap-8 min-w-0">
+      <div className="flex-1 min-w-0 flex flex-col gap-8 w-full">
         {/* Header Status */}
         <motion.section variants={itemVariants} className="flex items-end justify-between border-b border-white/5 pb-6">
           <div>
@@ -94,7 +94,7 @@ export default function Maintenance() {
           <motion.h3 variants={itemVariants} className="font-headline text-sm font-black text-primary mb-6 flex items-center gap-3 uppercase tracking-widest">
             <span className="material-symbols-outlined text-[20px]">train</span> High-Risk Assets
           </motion.h3>
-          <motion.div variants={containerVariants} className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <motion.div variants={containerVariants} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {(maintenance.filter(m => m.risk === 'critical' || m.risk === 'high').slice(0, 3).length > 0
               ? maintenance.filter(m => m.risk === 'critical' || m.risk === 'high').slice(0, 3)
               : maintenance.slice(0, 3)
@@ -143,7 +143,7 @@ export default function Maintenance() {
         </section>
 
         {/* Split Section: Track Map & Faults */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 min-h-[24rem]">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 min-h-[24rem]">
           {/* Track Map (Bento wide) */}
           <motion.div variants={itemVariants} className="lg:col-span-2 bg-[#201f1f]/60 backdrop-blur-[20px] border border-white/5 rounded-xl p-0 relative overflow-hidden flex flex-col shadow-2xl">
             <div className="p-6 border-b border-white/5 flex justify-between items-center bg-surface/30 z-10 backdrop-blur-md">
@@ -286,7 +286,7 @@ export default function Maintenance() {
       </div>
 
       {/* Right Sidebar: Real reliability from maintenance data */}
-      <aside className="w-full lg:w-80 flex-shrink-0 flex flex-col gap-6">
+      <aside className="w-full xl:w-[300px] xl:shrink-0 flex flex-col gap-6 min-w-0">
         {/* Reliability Score — computed from real data */}
         <motion.div variants={itemVariants} whileHover={{ scale: 1.02 }}
           className="bg-[#201f1f]/60 backdrop-blur-[20px] border border-white/5 rounded-xl p-6 flex flex-col items-center justify-center text-center relative overflow-hidden shadow-2xl"

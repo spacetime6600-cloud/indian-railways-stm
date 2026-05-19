@@ -47,44 +47,89 @@ function AIInsightCard({ title, icon, value, sub, color, loading, xai }) {
   );
 }
 
+// ── Module-Level Cache ────────────────────────────────────────────────────────
+let cache = {
+  overview: null,
+  perfData: null,
+  topTrains: null,
+  aiSnapshot: null,
+  aiUnavailable: false,
+};
+
 export default React.memo(function Analytics() {
   const { analytics, fetchAnalytics, fetchTrainStats } = useStore(useShallow(s => ({
     analytics: s.analytics,
     fetchAnalytics: s.fetchAnalytics,
     fetchTrainStats: s.fetchTrainStats
   })));
-  const [overview,   setOverview]   = useState(null);
-  const [perfData,   setPerfData]   = useState([]);
-  const [topTrains,  setTopTrains]  = useState([]);
-  const [loading,    setLoading]    = useState(true);
+  
+  const [overview,   setOverview]   = useState(cache.overview);
+  const [perfData,   setPerfData]   = useState(cache.perfData || []);
+  const [topTrains,  setTopTrains]  = useState(cache.topTrains || []);
+  // Only show global loading if we have absolutely no data to show
+  const [loading,    setLoading]    = useState(!cache.overview);
   const [error,      setError]      = useState(null);
 
   // AI predictions state
-  const [aiSnapshot,    setAiSnapshot]    = useState(null);
-  const [aiLoading,     setAiLoading]     = useState(true);
-  const [aiUnavailable, setAiUnavailable] = useState(false);
+  const [aiSnapshot,    setAiSnapshot]    = useState(cache.aiSnapshot);
+  const [aiLoading,     setAiLoading]     = useState(!cache.aiSnapshot && !cache.aiUnavailable);
+  const [aiUnavailable, setAiUnavailable] = useState(cache.aiUnavailable);
 
-  useEffect(() => {
-    setLoading(true);
+  const refreshData = async (isInitialMount = false) => {
+    if (isInitialMount && cache.overview && cache.perfData) {
+      // Do not refetch on mount if we already have data
+      return;
+    }
+    
+    if (!cache.overview) setLoading(true);
+    
     Promise.allSettled([
       api.get('/analytics/overview'),
       api.get('/analytics/performance'),
       api.get('/trains?limit=4&sortBy=delay_minutes&sortDir=desc'),
     ]).then(([ovRes, perfRes, trainRes]) => {
-      if (ovRes.status === 'fulfilled')    setOverview(ovRes.value.data);
-      if (perfRes.status === 'fulfilled')  setPerfData(perfRes.value.data);
-      if (trainRes.status === 'fulfilled') setTopTrains(trainRes.value.data.data || []);
+      if (ovRes.status === 'fulfilled') {
+        cache.overview = ovRes.value.data;
+        setOverview(cache.overview);
+      }
+      if (perfRes.status === 'fulfilled') {
+        cache.perfData = perfRes.value.data;
+        setPerfData(cache.perfData);
+      }
+      if (trainRes.status === 'fulfilled') {
+        cache.topTrains = trainRes.value.data.data || [];
+        setTopTrains(cache.topTrains);
+      }
       setLoading(false);
     }).catch(e => { setError(e.message); setLoading(false); });
+  };
+
+  useEffect(() => {
+    refreshData(true);
   }, []);
 
   // Fetch AI network snapshot
-  useEffect(() => {
-    setAiLoading(true);
+  const refreshAIData = async (isInitialMount = false) => {
+    if (isInitialMount && (cache.aiSnapshot || cache.aiUnavailable)) return;
+    
+    if (!cache.aiSnapshot && !cache.aiUnavailable) setAiLoading(true);
+    
     api.get('/ai/network-snapshot')
-      .then(r => { setAiSnapshot(r.data); setAiUnavailable(false); })
-      .catch(() => setAiUnavailable(true))
+      .then(r => {
+        cache.aiSnapshot = r.data;
+        cache.aiUnavailable = false;
+        setAiSnapshot(cache.aiSnapshot);
+        setAiUnavailable(false);
+      })
+      .catch(() => {
+        cache.aiUnavailable = true;
+        setAiUnavailable(true);
+      })
       .finally(() => setAiLoading(false));
+  };
+
+  useEffect(() => {
+    refreshAIData(true);
   }, []);
 
   const ov = overview || analytics;
@@ -123,7 +168,7 @@ export default React.memo(function Analytics() {
         </div>
         <motion.button
           whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
-          onClick={() => { fetchAnalytics(); fetchTrainStats(); }}
+          onClick={() => { fetchAnalytics(); fetchTrainStats(); refreshData(); refreshAIData(); }}
           className="bg-surface-container-high/40 border border-white/10 text-on-surface font-body font-medium py-2.5 px-6 rounded-lg flex items-center justify-center space-x-2 hover:border-primary/40 hover:bg-surface-container-high transition-all shadow-xl"
         >
           <span className="material-symbols-outlined text-sm">refresh</span>
@@ -139,11 +184,13 @@ export default React.memo(function Analytics() {
           { label: 'Delayed',        value: delayedTrains.toLocaleString(),  icon: 'schedule',     color: 'text-red-400' },
           { label: 'Active Alerts',  value: activeAlerts.toLocaleString(),   icon: 'warning',      color: 'text-[#FF9933]' },
         ].map(k => (
-          <div key={k.label} className="bg-[#201f1f]/60 border border-white/5 rounded-xl p-5 flex items-center gap-3">
-            <span className={`material-symbols-outlined ${k.color} text-2xl`}>{k.icon}</span>
-            <div>
-              <div className={`text-2xl font-black ${k.color}`}>{loading ? '—' : k.value}</div>
-              <div className="text-[9px] uppercase tracking-wider text-zinc-500">{k.label}</div>
+          <div key={k.label} className="bg-[#201f1f]/60 border border-white/5 rounded-xl p-4 w-full flex items-center justify-between gap-2 overflow-hidden shadow-lg">
+            <div className="flex flex-col items-start min-w-0">
+              <span className={`material-symbols-outlined ${k.color} text-xl mb-1`}>{k.icon}</span>
+              <div className="text-[9px] uppercase tracking-wider text-zinc-500 truncate w-full">{k.label}</div>
+            </div>
+            <div className={`text-2xl sm:text-3xl lg:text-4xl font-black shrink-0 ${k.color}`}>
+              {loading ? '—' : k.value}
             </div>
           </div>
         ))}
@@ -233,15 +280,22 @@ export default React.memo(function Analytics() {
           </div>
           <div className="h-64 w-full flex items-end justify-between space-x-2 relative">
             <div className="absolute inset-0 bg-gradient-to-t from-primary/5 to-transparent bottom-0 h-3/4 rounded-b-lg" />
-            <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 100">
-              <motion.path variants={pathVariants}
-                d={`M0,${100 - onTimeRate} Q25,${100 - onTimeRate * 0.9} 50,${100 - onTimeRate * 0.95} T100,${100 - onTimeRate}`}
-                fill="rgba(174,198,255,0.05)" />
-              <motion.path variants={pathVariants}
-                d={`M0,${100 - onTimeRate} Q25,${100 - onTimeRate * 0.9} 50,${100 - onTimeRate * 0.95} T100,${100 - onTimeRate}`}
-                fill="none" stroke="#00f1fe" strokeWidth="1.5"
-                style={{ filter: 'drop-shadow(0 0 4px rgba(0,241,254,0.5))' }} />
-            </svg>
+            {(() => {
+              // Clamp to [5, 95] so the path always stays inside the viewBox
+              const rate = Math.min(95, Math.max(5, Number(onTimeRate) || 50));
+              const y0   = 100 - rate;
+              const yQ   = 100 - rate * 0.9;
+              const yM   = 100 - rate * 0.95;
+              const d    = `M0,${y0} Q25,${yQ} 50,${yM} T100,${y0}`;
+              return (
+                <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 100">
+                  <motion.path variants={pathVariants} d={d} fill="rgba(174,198,255,0.05)" />
+                  <motion.path variants={pathVariants} d={d}
+                    fill="none" stroke="#00f1fe" strokeWidth="1.5"
+                    style={{ filter: 'drop-shadow(0 0 4px rgba(0,241,254,0.5))' }} />
+                </svg>
+              );
+            })()}
             <div className="absolute inset-0 flex flex-col justify-between opacity-5 pointer-events-none">
               {[...Array(5)].map((_, i) => <div key={i} className="border-t border-white w-full h-0" />)}
             </div>

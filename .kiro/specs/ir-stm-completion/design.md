@@ -537,3 +537,4 @@ Tag format for each property test:
 ```js
 // Feature: ir-stm-completion, Property N: <property_text>
 ```
+ 

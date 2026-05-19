@@ -45,7 +45,7 @@ const getTrains = async (req, res) => {
       pool.query(
         `SELECT t.id,t.train_number,t.train_name,t.route,t.source,t.destination,
                 t.current_location,t.zone,t.train_type,t.speed,t.eta,t.delay_minutes,
-                t.status,t.predicted_delay,t.risk_scores,t.created_at,t.updated_at,
+                t.status,t.delay_predictions,t.risk_scores,t.created_at,t.updated_at,
                 p.platform_number,p.station_name
          FROM trains t
          LEFT JOIN platforms p ON t.assigned_platform_id = p.id
@@ -153,45 +153,11 @@ const updateTrain = async (req, res) => {
       [trainName, status, delayMinutes, speed, assignedPlatformId, zone, trainType, currentLocation, route, req.params.id]
     );
     if (!r.rows.length) return res.status(404).json({ message: 'Train not found' });
-    const train = r.rows[0];
 
-    // ── AI delay prediction (non-blocking, fire-and-forget) ──────────────────
-    const toTrainType = (t) => {
-      const l = (t || '').toLowerCase();
-      if (l.includes('freight') || l.includes('goods') || l.includes('coal')) return 'freight';
-      if (l.includes('passenger') || l.includes('memu') || l.includes('demu') || l.includes('local')) return 'passenger';
-      return 'express';
-    };
-    (async () => {
-      try {
-        const ML_URL = (process.env.ML_SERVICE_URL || 'http://localhost:8000').replace(/\/$/, '');
-        const mlRes = await fetch(`${ML_URL}/predict-delay`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            distance:         500,
-            weather:          'clear',
-            congestion_level: 'Medium',
-            previous_delay:   train.delay_minutes ?? 0,
-            train_type:       toTrainType(train.train_type),
-          }),
-          signal: AbortSignal.timeout(3000),
-        });
-        if (mlRes.ok) {
-          const mlData = await mlRes.json();
-          const predicted = parseFloat((mlData.delay_minutes ?? 0).toFixed(2));
-          await pool.query('UPDATE trains SET predicted_delay=$1 WHERE id=$2', [predicted, train.id]);
-          // Emit updated train with AI prediction
-          const io = sm.getIO();
-          if (io) io.emit('train:ai_updated', { id: train.id, predicted_delay: predicted });
-        }
-      } catch (_) { /* ML offline — non-blocking */ }
-    })();
-
-    await writeAudit({ userId: req.user?.id, role: req.user?.role, action: 'UPDATE', entityType: 'train', entityId: train.id, oldValue: old.rows[0], newValue: train });
-    sm.emitTrainUpdate(train);
+    await writeAudit({ userId: req.user?.id, role: req.user?.role, action: 'UPDATE', entityType: 'train', entityId: r.rows[0].id, oldValue: old.rows[0], newValue: r.rows[0] });
+    sm.emitTrainUpdate(r.rows[0]);
     sm.emitStatsRefresh();
-    res.json(train);
+    res.json(r.rows[0]);
   } catch (e) { res.status(400).json({ message: e.message }); }
 };
 
