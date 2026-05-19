@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useStore } from '../store/useStore';
 import { useShallow } from 'zustand/react/shallow';
 import api from '../utils/api';
+import { Helmet } from 'react-helmet-async';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -159,6 +160,10 @@ export default React.memo(function Analytics() {
 
   return (
     <motion.div initial="hidden" animate="visible" variants={containerVariants} className="space-y-8">
+      <Helmet>
+        <title>Analytics | Indian Railways AI</title>
+        <meta name="description" content="AI network intelligence and performance analytics for Indian Railways." />
+      </Helmet>
 
       {/* Header */}
       <motion.div variants={itemVariants} className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">

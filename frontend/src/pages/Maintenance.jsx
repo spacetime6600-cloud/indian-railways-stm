@@ -5,6 +5,7 @@ import EmptyState from '../components/EmptyState';
 import Modal from '../components/Modal';
 import api from '../utils/api';
 import { useToast } from '../components/ToastProvider';
+import { Helmet } from 'react-helmet-async';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -75,6 +76,11 @@ export default function Maintenance() {
       variants={containerVariants}
       className="flex flex-col xl:flex-row w-full gap-6 max-w-full"
     >
+      <Helmet>
+        <title>Maintenance | Indian Railways AI</title>
+        <meta name="description" content="Manage asset maintenance and fleet health for Indian Railways." />
+      </Helmet>
+
       {/* Left Column: Core Dashboard */}
       <div className="flex-1 min-w-0 flex flex-col gap-8 w-full">
         {/* Header Status */}

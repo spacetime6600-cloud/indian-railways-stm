@@ -23,14 +23,15 @@ const ContentLoader = () => (
 );
 
 export default function Layout() {
-  const { isAuthenticated, sidebarOpen, toggleSidebar, initApp, user, socketConnected, fetchTrainStats } = useStore(useShallow(s => ({
+  const { isAuthenticated, sidebarOpen, toggleSidebar, initApp, user, socketConnected, fetchTrainStats, isInitialized } = useStore(useShallow(s => ({
     isAuthenticated: s.isAuthenticated,
     sidebarOpen: s.sidebarOpen,
     toggleSidebar: s.toggleSidebar,
     initApp: s.initApp,
     user: s.user,
     socketConnected: s.socketConnected,
-    fetchTrainStats: s.fetchTrainStats
+    fetchTrainStats: s.fetchTrainStats,
+    isInitialized: s.isInitialized
   })));
   const location = useLocation();
 
@@ -47,6 +48,7 @@ export default function Layout() {
   }, [isAuthenticated, socketConnected, initApp, fetchTrainStats]);
 
   if (!isAuthenticated) return <Navigate to="/login" replace />;
+  if (!isInitialized) return <ContentLoader />;
 
   const perms        = getPermissions(user);
   const requiredPerm = ROUTE_PERMISSIONS[location.pathname];

@@ -7,6 +7,7 @@ import api from '../utils/api';
 import EmptyState from '../components/EmptyState';
 import VirtualList from '../components/VirtualList';
 import { useToast } from '../components/ToastProvider';
+import { Helmet } from 'react-helmet-async';
 
 const ZONES = ['Northern','North Eastern','North Western','North Central','Eastern','East Central','East Coast','Western','West Central','Southern','South Central','South Eastern','South East Central','South Western','Central'];
 const TRAIN_TYPES = ['Vande Bharat Express','Rajdhani Express','Shatabdi Express','Duronto Express','Tejas Express','Superfast Express','Mail Express','Intercity Express','MEMU','DEMU','Passenger','Suburban Local','Container Freight','Coal Freight','Parcel Train','Goods Train','Tanker Freight','Festival Special','Military Special','Medical Relief Train'];
@@ -230,6 +231,10 @@ export default React.memo(function LiveTrains() {
 
   return (
     <motion.div initial={{ opacity:0 }} animate={{ opacity:1 }} className="space-y-5">
+      <Helmet>
+        <title>Live Trains | Indian Railways AI</title>
+        <meta name="description" content="Real-time live train tracking and status for Indian Railways." />
+      </Helmet>
 
       {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">

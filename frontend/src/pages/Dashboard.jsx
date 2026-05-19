@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import api from '../utils/api';
 import IndiaRailwayMap, { STATIONS } from '../components/IndiaRailwayMap';
+import { Helmet } from 'react-helmet-async';
 
 const iv = { hidden: { y: 16, opacity: 0 }, visible: { y: 0, opacity: 1, transition: { duration: 0.45, ease: 'easeOut' } } };
 const cv = { hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.07 } } };
@@ -205,6 +206,10 @@ export default React.memo(function Dashboard() {
   // ── Render ────────────────────────────────────────────────────────────────────
   return (
     <motion.div initial="hidden" animate="visible" variants={cv} className="space-y-5">
+      <Helmet>
+        <title>Dashboard | Indian Railways AI</title>
+        <meta name="description" content="Command Center and National Network Overview for Indian Railways." />
+      </Helmet>
 
       {/* ── Page header ── */}
       <motion.div variants={iv} className="flex items-center justify-between">

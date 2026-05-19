@@ -5,6 +5,7 @@ import { useShallow } from 'zustand/react/shallow';
 import { useToast } from '../components/ToastProvider';
 import EmptyState from '../components/EmptyState';
 import Modal from '../components/Modal';
+import { Helmet } from 'react-helmet-async';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -126,6 +127,11 @@ export default React.memo(function Alerts() {
   // ── Render ───────────────────────────────────────────────────────────────────
   return (
     <motion.div initial="hidden" animate="visible" variants={containerVariants} className="flex-1 space-y-6 relative">
+      <Helmet>
+        <title>Alerts | Indian Railways AI</title>
+        <meta name="description" content="Live alerts and command center for Indian Railways." />
+      </Helmet>
+
       {/* Decorative glows */}
       <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-[#FF9933]/3 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-red-500/3 rounded-full blur-[150px] pointer-events-none" />

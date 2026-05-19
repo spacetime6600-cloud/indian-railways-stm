@@ -4,6 +4,7 @@ import api from '../utils/api';
 import Modal from '../components/Modal';
 import EmptyState from '../components/EmptyState';
 import { useToast } from '../components/ToastProvider';
+import { Helmet } from 'react-helmet-async';
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 const ALL_ZONES = [
@@ -358,6 +359,10 @@ export default React.memo(function Platforms() {
   // ── Render ─────────────────────────────────────────────────────────────────
   return (
     <div className="space-y-5">
+      <Helmet>
+        <title>Platforms | Indian Railways AI</title>
+        <meta name="description" content="Manage and monitor platform allocation and occupancy across Indian Railways." />
+      </Helmet>
 
       {/* ── Header ── */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">

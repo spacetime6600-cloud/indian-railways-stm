@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useStore } from '../store/useStore';
 import api from '../utils/api';
 import { useToast } from '../components/ToastProvider';
+import { Helmet } from 'react-helmet-async';
 
 const containerVariants = {
   hidden:  { opacity: 0 },
@@ -55,6 +56,10 @@ export default function Settings() {
 
   return (
     <motion.div initial="hidden" animate="visible" variants={containerVariants} className="flex-1 space-y-8 max-w-4xl">
+      <Helmet>
+        <title>Settings | Indian Railways AI</title>
+        <meta name="description" content="System settings and account preferences." />
+      </Helmet>
 
       <motion.div variants={itemVariants}>
         <h2 className="text-3xl font-headline font-bold text-on-surface tracking-tight uppercase drop-shadow-[0_0_8px_rgba(255,153,51,0.3)]">System Parameters</h2>

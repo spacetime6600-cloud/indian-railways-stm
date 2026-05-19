@@ -21,6 +21,7 @@ export function recomputeAnalytics(trains) {
 export const useStore = create((set, get) => ({
   user:            null,
   isAuthenticated: !!localStorage.getItem('token'),
+  isInitialized:   false,
   trains:          [],
   platforms:       [],
   alerts:          [],
@@ -152,7 +153,7 @@ export const useStore = create((set, get) => ({
   logout: () => {
     localStorage.removeItem('token');
     set({
-      user: null, isAuthenticated: false,
+      user: null, isAuthenticated: false, isInitialized: false,
       trains: [], platforms: [], alerts: [], maintenance: [], error: null,
     });
     window.location.href = '/login';
@@ -360,6 +361,9 @@ export const useStore = create((set, get) => ({
         get().fetchAnalytics(),
         get().fetchMaintenance(),
       ]);
+      set({ isInitialized: true });
+    } else {
+      set({ isInitialized: true });
     }
   },
 }));
