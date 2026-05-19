@@ -168,11 +168,10 @@ export default React.memo(function LiveTrains() {
         `${import.meta.env.VITE_API_URL}/api/trains`,
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
       );
-
       const data = await res.json();
 
       console.log("🔥 DIRECT API DATA:", data);
