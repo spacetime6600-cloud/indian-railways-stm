@@ -159,10 +159,32 @@ export default React.memo(function LiveTrains() {
 
   // Fetch with current filters
   const doFetch = useCallback(async (overrides = {}) => {
-    setIsLoading(true);
-    await fetchTrains({ search, status: filterStatus, zone: filterZone, type: filterType, sortBy, sortDir, page: 1, limit: LIMIT, ...overrides });
-    setIsLoading(false);
-  }, [search, filterStatus, filterZone, filterType, sortBy, sortDir, fetchTrains]);
+    try {
+      setIsLoading(true);
+
+      const token = localStorage.getItem("token");
+
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/trains`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const data = await res.json();
+
+      console.log("🔥 DIRECT API DATA:", data);
+
+      setTrains(data);
+
+    } catch (err) {
+      console.error("ERROR:", err);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
 
   const isFirstSearchRender = useRef(true);
   // Debounce search
