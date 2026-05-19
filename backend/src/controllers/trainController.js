@@ -4,60 +4,29 @@ const sm   = require('../socket/socketManager');
 const { writeAudit } = require('../utils/audit');
 
 // ── Param placeholder helper ──────────────────────────────────────────────────
-const p = (n) => `$${n}`;
-
-// ── GET /api/trains ───────────────────────────────────────────────────────────
 const getTrains = async (req, res) => {
   try {
-    const page    = Math.max(1, parseInt(req.query.page)  || 1);
-    const limit   = Math.min(200, Math.max(1, parseInt(req.query.limit) || 50));
-    const offset  = (page - 1) * limit;
-    const search  = (req.query.search  || '').trim();
-    const status  = (req.query.status  || '').trim().toLowerCase();
-    const zone    = (req.query.zone    || '').trim();
-    const type    = (req.query.type    || '').trim();
-    const sortBy  = ['train_number','train_name','status','delay_minutes','speed','zone'].includes(req.query.sortBy)
-                    ? req.query.sortBy : 'train_number';
-    const sortDir = req.query.sortDir === 'desc' ? 'DESC' : 'ASC';
+    const page = parseInt(req.query.page) || 1;
+    const limit = Math.min(200, parseInt(req.query.limit) || 50);
+    const offset = (page - 1) * limit;
 
-    const conds = [], params = [];
-    let idx = 1;
-    const scope = req.scope || { type: 'national' };
+    // Allow only safe sorting columns
+    const allowedSortFields = ['train_number', 'train_name', 'speed', 'delay_minutes', 'created_at'];
+    const sortBy = allowedSortFields.includes(req.query.sortBy) ? req.query.sortBy : 'created_at';
+    const sortDir = req.query.sortDir === 'asc' ? 'ASC' : 'DESC';
 
-    if (scope.type === 'station') {
-      conds.push(`(t.source ILIKE ${p(idx)} OR t.destination ILIKE ${p(idx)} OR t.current_location ILIKE ${p(idx)})`);
-      params.push('%' + scope.station + '%'); idx++;
-    } else if (scope.type === 'zone') {
-      conds.push(`t.zone = ${p(idx++)}`); params.push(scope.zone);
-    }
-    if (search) {
-      const s = p(idx);
-      conds.push(`(t.train_number ILIKE ${s} OR t.train_name ILIKE ${s} OR t.route ILIKE ${s} OR t.source ILIKE ${s} OR t.destination ILIKE ${s} OR t.current_location ILIKE ${s})`);
-      params.push('%' + search + '%'); idx++;
-    }
-    if (status) { conds.push(`t.status = ${p(idx++)}`); params.push(status); }
-    if (zone && scope.type === 'national') { conds.push(`t.zone = ${p(idx++)}`); params.push(zone); }
-    if (type)  { conds.push(`t.train_type = ${p(idx++)}`); params.push(type); }
-
-    const where = conds.length ? 'WHERE ' + conds.join(' AND ') : '';
-    const [cnt, data] = await Promise.all([
-      pool.query(`SELECT COUNT(*) FROM trains t ${where}`, params),
-      pool.query(
-        `SELECT t.id,t.train_number,t.train_name,t.route,t.source,t.destination,
-                t.current_location,t.zone,t.train_type,t.speed,t.eta,t.delay_minutes,
-                t.status,t.delay_predictions,t.risk_scores,t.created_at,t.updated_at,
-                p.platform_number,p.station_name
-         FROM trains t
-         LEFT JOIN platforms p ON t.assigned_platform_id = p.id
-         ${where}
-         ORDER BY t.${sortBy} ${sortDir}
-         LIMIT ${p(idx)} OFFSET ${p(idx + 1)}`,
-        [...params, limit, offset]
-      ),
-    ]);
-    const total = parseInt(cnt.rows[0].count);
-    res.json({ data: data.rows, pagination: { page, limit, total, totalPages: Math.ceil(total / limit) } });
-  } catch (e) { res.status(500).json({ message: e.message }); }
+    const query = `
+      SELECT id, train_number, train_name, route, source, destination,
+             current_location, zone, train_type, speed, delay_minutes, status
+      FROM trains
+      ORDER BY ${sortBy} ${sortDir}
+      LIMIT $1 OFFSET $2`;
+    const result = await pool.query(query, [limit, offset]);
+    res.json({ data: result.rows, pagination: { page, limit, total: result.rowCount, totalPages: Math.ceil(result.rowCount / limit) } });
+  } catch (e) {
+    console.error('TRAIN API ERROR:', e);
+    res.status(500).json({ error: e.message });
+  }
 };
 
 // ── GET /api/trains/stats ─────────────────────────────────────────────────────
