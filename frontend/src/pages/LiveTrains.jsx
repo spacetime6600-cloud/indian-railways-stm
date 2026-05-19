@@ -9,20 +9,20 @@ import VirtualList from '../components/VirtualList';
 import { useToast } from '../components/ToastProvider';
 import { Helmet } from 'react-helmet-async';
 
-const ZONES = ['Northern','North Eastern','North Western','North Central','Eastern','East Central','East Coast','Western','West Central','Southern','South Central','South Eastern','South East Central','South Western','Central'];
-const TRAIN_TYPES = ['Vande Bharat Express','Rajdhani Express','Shatabdi Express','Duronto Express','Tejas Express','Superfast Express','Mail Express','Intercity Express','MEMU','DEMU','Passenger','Suburban Local','Container Freight','Coal Freight','Parcel Train','Goods Train','Tanker Freight','Festival Special','Military Special','Medical Relief Train'];
-const STATIONS = ['New Delhi (NDLS)','Mumbai Central (BCT)','Howrah Jn. (HWH)','Chennai Central (MAS)','Ahmedabad (ADI)','Patna Jn. (PNBE)','Jaipur (JP)','Bengaluru (SBC)','Varanasi (BSB)','Kolkata (KOAA)','Sealdah (SDAH)','Secunderabad (SC)','Bhubaneswar (BBS)','Guwahati (GHY)','Lucknow (LKO)','Pune Jn. (PUNE)'];
-const STATUSES = ['running','delayed','scheduled','halted'];
+const ZONES = ['Northern', 'North Eastern', 'North Western', 'North Central', 'Eastern', 'East Central', 'East Coast', 'Western', 'West Central', 'Southern', 'South Central', 'South Eastern', 'South East Central', 'South Western', 'Central'];
+const TRAIN_TYPES = ['Vande Bharat Express', 'Rajdhani Express', 'Shatabdi Express', 'Duronto Express', 'Tejas Express', 'Superfast Express', 'Mail Express', 'Intercity Express', 'MEMU', 'DEMU', 'Passenger', 'Suburban Local', 'Container Freight', 'Coal Freight', 'Parcel Train', 'Goods Train', 'Tanker Freight', 'Festival Special', 'Military Special', 'Medical Relief Train'];
+const STATIONS = ['New Delhi (NDLS)', 'Mumbai Central (BCT)', 'Howrah Jn. (HWH)', 'Chennai Central (MAS)', 'Ahmedabad (ADI)', 'Patna Jn. (PNBE)', 'Jaipur (JP)', 'Bengaluru (SBC)', 'Varanasi (BSB)', 'Kolkata (KOAA)', 'Sealdah (SDAH)', 'Secunderabad (SC)', 'Bhubaneswar (BBS)', 'Guwahati (GHY)', 'Lucknow (LKO)', 'Pune Jn. (PUNE)'];
+const STATUSES = ['running', 'delayed', 'scheduled', 'halted'];
 
 const TYPE_COLOR = {
   'Vande Bharat Express': 'bg-blue-500/20 text-blue-300 border-blue-500/30',
-  'Rajdhani Express':     'bg-[#FF9933]/20 text-[#FF9933] border-[#FF9933]/30',
-  'Shatabdi Express':     'bg-purple-500/20 text-purple-300 border-purple-500/30',
-  'Duronto Express':      'bg-cyan-500/20 text-cyan-300 border-cyan-500/30',
-  'Tejas Express':        'bg-yellow-500/20 text-yellow-300 border-yellow-500/30',
-  'Freight':              'bg-zinc-500/20 text-zinc-400 border-zinc-500/30',
-  'MEMU':                 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
-  'DEMU':                 'bg-teal-500/20 text-teal-300 border-teal-500/30',
+  'Rajdhani Express': 'bg-[#FF9933]/20 text-[#FF9933] border-[#FF9933]/30',
+  'Shatabdi Express': 'bg-purple-500/20 text-purple-300 border-purple-500/30',
+  'Duronto Express': 'bg-cyan-500/20 text-cyan-300 border-cyan-500/30',
+  'Tejas Express': 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30',
+  'Freight': 'bg-zinc-500/20 text-zinc-400 border-zinc-500/30',
+  'MEMU': 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
+  'DEMU': 'bg-teal-500/20 text-teal-300 border-teal-500/30',
 };
 const getTypeColor = (t) => {
   for (const [k, v] of Object.entries(TYPE_COLOR)) if (t?.includes(k.split(' ')[0])) return v;
@@ -31,11 +31,11 @@ const getTypeColor = (t) => {
 
 const statusStyle = (s) => {
   switch (s?.toLowerCase()) {
-    case 'delayed':   return 'bg-red-500/10 text-red-400 border-red-500/20';
-    case 'running':   return 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20';
-    case 'halted':    return 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20';
+    case 'delayed': return 'bg-red-500/10 text-red-400 border-red-500/20';
+    case 'running': return 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20';
+    case 'halted': return 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20';
     case 'scheduled': return 'bg-primary/10 text-primary border-primary/20';
-    default:          return 'bg-white/5 text-zinc-400 border-white/10';
+    default: return 'bg-white/5 text-zinc-400 border-white/10';
   }
 };
 
@@ -45,8 +45,8 @@ const LIMIT = 50;
 const TrainRow = React.memo(function TrainRow({ train, idx, onEdit, onDelete }) {
   return (
     <motion.div
-      initial={{ opacity:0 }} animate={{ opacity:1 }} transition={{ delay: idx * 0.01 }}
-      whileHover={{ backgroundColor:'rgba(255,255,255,0.02)' }}
+      initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: idx * 0.01 }}
+      whileHover={{ backgroundColor: 'rgba(255,255,255,0.02)' }}
       className="group transition-colors flex items-center text-sm border-b border-white/5"
       style={{ height: '52px' }}
     >
@@ -54,39 +54,39 @@ const TrainRow = React.memo(function TrainRow({ train, idx, onEdit, onDelete }) 
       <div className="px-4 flex-shrink-0" style={{ width: '120px' }}>
         <span className="text-[#FF9933] font-black font-headline text-sm group-hover:text-white transition-colors">{train.id}</span>
       </div>
-      
+
       {/* Name */}
       <div className="px-4 flex-1 min-w-[180px] overflow-hidden">
         <span className="text-white font-medium text-xs truncate block">{train.name || '—'}</span>
       </div>
-      
+
       {/* Type */}
       <div className="px-4 flex-shrink-0" style={{ width: '140px' }}>
         <span className={`text-[9px] font-bold px-2 py-0.5 rounded border uppercase tracking-wide ${getTypeColor(train.trainType)}`}>
           {train.trainType?.split(' ')[0] || '—'}
         </span>
       </div>
-      
+
       {/* Zone */}
       <div className="px-4 flex-shrink-0" style={{ width: '140px' }}>
         <span className="text-[10px] text-zinc-400 font-bold">{train.zone || '—'}</span>
       </div>
-      
+
       {/* Route */}
       <div className="px-4 flex-1 min-w-[140px] overflow-hidden">
         <span className="text-zinc-400 text-xs truncate block">{train.route}</span>
       </div>
-      
+
       {/* Current Station */}
       <div className="px-4 flex-1 min-w-[140px] overflow-hidden">
         <span className="text-zinc-400 text-xs truncate block">{train.currentLocation || '—'}</span>
       </div>
-      
+
       {/* Speed */}
       <div className="px-4 flex-shrink-0 text-center" style={{ width: '100px' }}>
         <span className="text-primary font-bold text-xs">{train.speed} <span className="text-[9px] text-zinc-600">km/h</span></span>
       </div>
-      
+
       {/* Delay */}
       <div className="px-4 flex-shrink-0 text-center flex flex-col justify-center" style={{ width: '100px' }}>
         <span className={train.delay === 'None' ? 'text-zinc-600 text-xs' : 'text-red-400 font-bold text-xs'}>{train.delay}</span>
@@ -94,18 +94,18 @@ const TrainRow = React.memo(function TrainRow({ train, idx, onEdit, onDelete }) 
           <span className="text-[9px] text-[#FF9933] font-bold">🤖 +{Number(train.predictedDelay).toFixed(1)}m</span>
         )}
       </div>
-      
+
       {/* Platform */}
       <div className="px-4 flex-shrink-0 text-center" style={{ width: '100px' }}>
         <span className="bg-surface-container-highest px-2 py-0.5 rounded text-xs font-bold text-white border border-white/5 group-hover:border-[#FF9933]/30 transition-colors">
           {train.platform}
         </span>
       </div>
-      
+
       {/* Status */}
       <div className="px-4 flex-shrink-0 text-right" style={{ width: '120px' }}>
         <div className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-widest border ${statusStyle(train.status)}`}>
-          <div className={`w-1 h-1 rounded-full ${train.status?.toLowerCase()==='running'?'bg-emerald-400 animate-pulse':train.status?.toLowerCase()==='delayed'?'bg-red-400':'bg-[#FF9933]'}`} />
+          <div className={`w-1 h-1 rounded-full ${train.status?.toLowerCase() === 'running' ? 'bg-emerald-400 animate-pulse' : train.status?.toLowerCase() === 'delayed' ? 'bg-red-400' : 'bg-[#FF9933]'}`} />
           {train.status}
         </div>
       </div>
@@ -143,17 +143,17 @@ export default React.memo(function LiveTrains() {
   const { showToast } = useToast();
 
   // Local filter state (debounced before sending to server)
-  const [search,       setSearch]       = useState('');
+  const [search, setSearch] = useState('');
   const [filterStatus, setFilterStatus] = useState('');
-  const [filterZone,   setFilterZone]   = useState('');
-  const [filterType,   setFilterType]   = useState('');
-  const [sortBy,       setSortBy]       = useState('train_number');
-  const [sortDir,      setSortDir]      = useState('asc');
-  const [isLoading,    setIsLoading]    = useState(false);
+  const [filterZone, setFilterZone] = useState('');
+  const [filterType, setFilterType] = useState('');
+  const [sortBy, setSortBy] = useState('train_number');
+  const [sortDir, setSortDir] = useState('asc');
+  const [isLoading, setIsLoading] = useState(false);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isEditMode,  setIsEditMode]  = useState(false);
-  const [formData,    setFormData]    = useState({ id:'', trainNumber:'', trainName:'', route:'', source:'', destination:'', speed:0, status:'scheduled', zone:'Northern', trainType:'Mail Express' });
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [formData, setFormData] = useState({ id: '', trainNumber: '', trainName: '', route: '', source: '', destination: '', speed: 0, status: 'scheduled', zone: 'Northern', trainType: 'Mail Express' });
 
   const searchTimer = useRef(null);
 
@@ -166,6 +166,10 @@ export default React.memo(function LiveTrains() {
 
   const isFirstSearchRender = useRef(true);
   // Debounce search
+  useEffect(() => {
+    doFetch({ page: 1 });
+  }, []);
+
   useEffect(() => {
     if (isFirstSearchRender.current) {
       isFirstSearchRender.current = false;
@@ -224,13 +228,13 @@ export default React.memo(function LiveTrains() {
     }
   }, [doFetch, fetchTrainStats, showToast, trainPagination.page]);
 
-  const openAdd = useCallback(() => { setIsEditMode(false); setFormData({ id:'', trainNumber:'', trainName:'', route:'', source:'', destination:'', speed:0, status:'scheduled', zone:'Northern', trainType:'Mail Express' }); setIsModalOpen(true); }, []);
-  const openEdit = useCallback((t) => { setIsEditMode(true); setFormData({ id: t.rawId, trainNumber: t.id, trainName: t.name||'', route: t.route, source: t.source||'', destination: t.destination||'', speed: t.speed, status: t.status?.toLowerCase()||'running', zone: t.zone||'Northern', trainType: t.trainType||'Mail Express' }); setIsModalOpen(true); }, []);
+  const openAdd = useCallback(() => { setIsEditMode(false); setFormData({ id: '', trainNumber: '', trainName: '', route: '', source: '', destination: '', speed: 0, status: 'scheduled', zone: 'Northern', trainType: 'Mail Express' }); setIsModalOpen(true); }, []);
+  const openEdit = useCallback((t) => { setIsEditMode(true); setFormData({ id: t.rawId, trainNumber: t.id, trainName: t.name || '', route: t.route, source: t.source || '', destination: t.destination || '', speed: t.speed, status: t.status?.toLowerCase() || 'running', zone: t.zone || 'Northern', trainType: t.trainType || 'Mail Express' }); setIsModalOpen(true); }, []);
 
   const { page, totalPages, total } = trainPagination;
 
   return (
-    <motion.div initial={{ opacity:0 }} animate={{ opacity:1 }} className="space-y-5">
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-5">
       <Helmet>
         <title>Live Trains | Indian Railways AI</title>
         <meta name="description" content="Real-time live train tracking and status for Indian Railways." />
@@ -244,7 +248,7 @@ export default React.memo(function LiveTrains() {
             {total.toLocaleString()} trains across all zones · Indian Railways Network
           </p>
         </div>
-        <motion.button whileHover={{ scale:1.05 }} whileTap={{ scale:0.95 }} onClick={openAdd}
+        <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={openAdd}
           className="bg-gradient-to-r from-[#FF9933] to-[#ff7300] px-5 py-2.5 rounded-lg text-black font-bold text-xs uppercase tracking-widest flex items-center gap-2 shadow-[0_0_20px_rgba(255,153,51,0.3)]">
           <span className="material-symbols-outlined text-sm">add</span> Register Train
         </motion.button>
@@ -253,11 +257,11 @@ export default React.memo(function LiveTrains() {
       {/* KPI Strip */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
         {[
-          { label:'Total Trains',  value: (analytics.totalTrains||total||0).toLocaleString(), icon:'train',        color:'text-white' },
-          { label:'Running',       value: (analytics.activeTrains||0).toLocaleString(),        icon:'check_circle', color:'text-emerald-400' },
-          { label:'Delayed',       value: (analytics.delayedTrains||0).toLocaleString(),       icon:'schedule',     color:'text-red-400' },
-          { label:'Avg Delay',     value: `${analytics.avgDelay||0} min`,                      icon:'timer',        color:'text-[#FF9933]' },
-          { label:'Avg Speed',     value: `${analytics.avgSpeed||0} km/h`,                     icon:'speed',        color:'text-primary' },
+          { label: 'Total Trains', value: (analytics.totalTrains || total || 0).toLocaleString(), icon: 'train', color: 'text-white' },
+          { label: 'Running', value: (analytics.activeTrains || 0).toLocaleString(), icon: 'check_circle', color: 'text-emerald-400' },
+          { label: 'Delayed', value: (analytics.delayedTrains || 0).toLocaleString(), icon: 'schedule', color: 'text-red-400' },
+          { label: 'Avg Delay', value: `${analytics.avgDelay || 0} min`, icon: 'timer', color: 'text-[#FF9933]' },
+          { label: 'Avg Speed', value: `${analytics.avgSpeed || 0} km/h`, icon: 'speed', color: 'text-primary' },
         ].map(k => (
           <div key={k.label} className="bg-surface-container-low border border-white/5 rounded-xl p-4 flex items-center gap-3">
             <span className={`material-symbols-outlined ${k.color} text-xl`}>{k.icon}</span>
@@ -309,7 +313,7 @@ export default React.memo(function LiveTrains() {
           <select value={filterStatus} onChange={e => setFilterStatus(e.target.value)}
             className="bg-surface/50 border border-white/10 text-xs px-3 h-10 rounded-lg text-on-surface focus:ring-1 focus:ring-[#FF9933]/50 outline-none cursor-pointer min-w-[140px] w-full sm:w-auto">
             <option value="">All Status</option>
-            {STATUSES.map(s => <option key={s} value={s} className="capitalize">{s.charAt(0).toUpperCase()+s.slice(1)}</option>)}
+            {STATUSES.map(s => <option key={s} value={s} className="capitalize">{s.charAt(0).toUpperCase() + s.slice(1)}</option>)}
           </select>
         </div>
 
@@ -335,7 +339,7 @@ export default React.memo(function LiveTrains() {
             {isLoading && <div className="w-4 h-4 border-2 border-[#FF9933]/30 border-t-[#FF9933] rounded-full animate-spin" />}
           </div>
           <div className="text-[9px] text-zinc-500 font-bold uppercase tracking-widest">
-            Page {page} of {totalPages.toLocaleString()} · IST {new Date().toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit' })}
+            Page {page} of {totalPages.toLocaleString()} · IST {new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}
           </div>
         </div>
 
@@ -404,35 +408,35 @@ export default React.memo(function LiveTrains() {
         {totalPages > 1 && (
           <div className="px-6 py-4 border-t border-white/5 flex items-center justify-between">
             <span className="text-[10px] text-zinc-500 uppercase tracking-widest">
-              Showing {((page-1)*LIMIT+1).toLocaleString()}–{Math.min(page*LIMIT, total).toLocaleString()} of {total.toLocaleString()} trains
+              Showing {((page - 1) * LIMIT + 1).toLocaleString()}–{Math.min(page * LIMIT, total).toLocaleString()} of {total.toLocaleString()} trains
             </span>
             <div className="flex items-center gap-2">
-              <button onClick={() => goToPage(1)} disabled={page===1}
+              <button onClick={() => goToPage(1)} disabled={page === 1}
                 className="px-2 py-1 rounded bg-white/5 border border-white/10 text-zinc-400 hover:text-white disabled:opacity-30 text-xs transition-all">
                 <span className="material-symbols-outlined text-sm">first_page</span>
               </button>
-              <button onClick={() => goToPage(page-1)} disabled={page===1}
+              <button onClick={() => goToPage(page - 1)} disabled={page === 1}
                 className="px-2 py-1 rounded bg-white/5 border border-white/10 text-zinc-400 hover:text-white disabled:opacity-30 text-xs transition-all">
                 <span className="material-symbols-outlined text-sm">chevron_left</span>
               </button>
 
               {/* Page number pills */}
               {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-                const start = Math.max(1, Math.min(page-2, totalPages-4));
+                const start = Math.max(1, Math.min(page - 2, totalPages - 4));
                 const p = start + i;
                 return (
                   <button key={p} onClick={() => goToPage(p)}
-                    className={`w-8 h-8 rounded text-xs font-bold transition-all ${p===page ? 'bg-[#FF9933] text-black' : 'bg-white/5 border border-white/10 text-zinc-400 hover:text-white'}`}>
+                    className={`w-8 h-8 rounded text-xs font-bold transition-all ${p === page ? 'bg-[#FF9933] text-black' : 'bg-white/5 border border-white/10 text-zinc-400 hover:text-white'}`}>
                     {p}
                   </button>
                 );
               })}
 
-              <button onClick={() => goToPage(page+1)} disabled={page===totalPages}
+              <button onClick={() => goToPage(page + 1)} disabled={page === totalPages}
                 className="px-2 py-1 rounded bg-white/5 border border-white/10 text-zinc-400 hover:text-white disabled:opacity-30 text-xs transition-all">
                 <span className="material-symbols-outlined text-sm">chevron_right</span>
               </button>
-              <button onClick={() => goToPage(totalPages)} disabled={page===totalPages}
+              <button onClick={() => goToPage(totalPages)} disabled={page === totalPages}
                 className="px-2 py-1 rounded bg-white/5 border border-white/10 text-zinc-400 hover:text-white disabled:opacity-30 text-xs transition-all">
                 <span className="material-symbols-outlined text-sm">last_page</span>
               </button>
@@ -449,37 +453,37 @@ export default React.memo(function LiveTrains() {
           {!isEditMode && (
             <div className="space-y-1">
               <label className="text-[10px] font-bold text-zinc-500 uppercase">Train Number</label>
-              <input required value={formData.trainNumber} onChange={e => setFormData({...formData, trainNumber: e.target.value})}
+              <input required value={formData.trainNumber} onChange={e => setFormData({ ...formData, trainNumber: e.target.value })}
                 className="w-full bg-surface/50 border border-white/10 rounded px-3 py-2 text-sm text-white focus:border-[#FF9933]/50 outline-none" placeholder="e.g. 12301" />
             </div>
           )}
           <div className="space-y-1">
             <label className="text-[10px] font-bold text-zinc-500 uppercase">Train Name</label>
-            <input required value={formData.trainName} onChange={e => setFormData({...formData, trainName: e.target.value})}
+            <input required value={formData.trainName} onChange={e => setFormData({ ...formData, trainName: e.target.value })}
               className="w-full bg-surface/50 border border-white/10 rounded px-3 py-2 text-sm text-white focus:border-[#FF9933]/50 outline-none" placeholder="e.g. Howrah Rajdhani Express" />
           </div>
           <div className="space-y-1">
             <label className="text-[10px] font-bold text-zinc-500 uppercase">Train Type</label>
-            <select value={formData.trainType} onChange={e => setFormData({...formData, trainType: e.target.value})}
+            <select value={formData.trainType} onChange={e => setFormData({ ...formData, trainType: e.target.value })}
               className="w-full bg-surface/50 border border-white/10 rounded px-3 py-2 text-sm text-white focus:border-[#FF9933]/50 outline-none">
               {TRAIN_TYPES.map(t => <option key={t}>{t}</option>)}
             </select>
           </div>
           <div className="space-y-1">
             <label className="text-[10px] font-bold text-zinc-500 uppercase">Zone</label>
-            <select value={formData.zone} onChange={e => setFormData({...formData, zone: e.target.value})}
+            <select value={formData.zone} onChange={e => setFormData({ ...formData, zone: e.target.value })}
               className="w-full bg-surface/50 border border-white/10 rounded px-3 py-2 text-sm text-white focus:border-[#FF9933]/50 outline-none">
               {ZONES.map(z => <option key={z}>{z}</option>)}
             </select>
           </div>
           <div className="col-span-2 space-y-1">
             <label className="text-[10px] font-bold text-zinc-500 uppercase">Route</label>
-            <input required value={formData.route} onChange={e => setFormData({...formData, route: e.target.value})}
+            <input required value={formData.route} onChange={e => setFormData({ ...formData, route: e.target.value })}
               className="w-full bg-surface/50 border border-white/10 rounded px-3 py-2 text-sm text-white focus:border-[#FF9933]/50 outline-none" placeholder="e.g. HWH - NDLS" />
           </div>
           <div className="space-y-1">
             <label className="text-[10px] font-bold text-zinc-500 uppercase">Source</label>
-            <select value={formData.source} onChange={e => setFormData({...formData, source: e.target.value})}
+            <select value={formData.source} onChange={e => setFormData({ ...formData, source: e.target.value })}
               className="w-full bg-surface/50 border border-white/10 rounded px-3 py-2 text-sm text-white focus:border-[#FF9933]/50 outline-none">
               <option value="">Select...</option>
               {STATIONS.map(s => <option key={s}>{s}</option>)}
@@ -487,7 +491,7 @@ export default React.memo(function LiveTrains() {
           </div>
           <div className="space-y-1">
             <label className="text-[10px] font-bold text-zinc-500 uppercase">Destination</label>
-            <select value={formData.destination} onChange={e => setFormData({...formData, destination: e.target.value})}
+            <select value={formData.destination} onChange={e => setFormData({ ...formData, destination: e.target.value })}
               className="w-full bg-surface/50 border border-white/10 rounded px-3 py-2 text-sm text-white focus:border-[#FF9933]/50 outline-none">
               <option value="">Select...</option>
               {STATIONS.map(s => <option key={s}>{s}</option>)}
@@ -495,14 +499,14 @@ export default React.memo(function LiveTrains() {
           </div>
           <div className="space-y-1">
             <label className="text-[10px] font-bold text-zinc-500 uppercase">Status</label>
-            <select value={formData.status} onChange={e => setFormData({...formData, status: e.target.value})}
+            <select value={formData.status} onChange={e => setFormData({ ...formData, status: e.target.value })}
               className="w-full bg-surface/50 border border-white/10 rounded px-3 py-2 text-sm text-white focus:border-[#FF9933]/50 outline-none">
-              {STATUSES.map(s => <option key={s} value={s}>{s.charAt(0).toUpperCase()+s.slice(1)}</option>)}
+              {STATUSES.map(s => <option key={s} value={s}>{s.charAt(0).toUpperCase() + s.slice(1)}</option>)}
             </select>
           </div>
           <div className="space-y-1">
             <label className="text-[10px] font-bold text-zinc-500 uppercase">Speed (km/h)</label>
-            <input type="number" value={formData.speed} onChange={e => setFormData({...formData, speed: parseInt(e.target.value)||0})}
+            <input type="number" value={formData.speed} onChange={e => setFormData({ ...formData, speed: parseInt(e.target.value) || 0 })}
               className="w-full bg-surface/50 border border-white/10 rounded px-3 py-2 text-sm text-white focus:border-[#FF9933]/50 outline-none" min={0} max={250} />
           </div>
         </div>
