@@ -353,6 +353,15 @@ export const useStore = create((set, get) => ({
   // ── Boot ──────────────────────────────────────────────────────────────────
   initApp: async () => {
     if (get().isAuthenticated) {
+      try {
+        const profile = await api.get('/auth/profile');
+        set({ user: profile.data });
+      } catch (err) {
+        // If fetching profile fails (e.g. invalid/expired token), logout
+        get().logout();
+        return;
+      }
+
       await Promise.allSettled([
         get().fetchTrains({ page: 1, limit: 50 }),
         get().fetchTrainStats(),
