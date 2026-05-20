@@ -214,6 +214,89 @@ const StationTable = React.memo(function StationTable({ stationName, platforms, 
   );
 });
 
+// ── CustomDropdown ─────────────────────────────────────────────────────────────
+function CustomDropdown({ value, onChange, options, placeholder, showDot }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const selectedOpt = options.find(o => o.value === value);
+
+  return (
+    <div className="relative w-full font-sans" ref={dropdownRef}>
+      <button
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full flex items-center justify-between gap-2 bg-[#0c0c0c] border border-white/10 hover:border-[#FF9933]/50 focus:border-[#FF9933]/70 text-xs text-zinc-300 hover:text-white px-3 h-[38px] rounded-lg transition-all cursor-pointer text-left outline-none"
+      >
+        <div className="flex items-center gap-2 truncate">
+          {selectedOpt && showDot && selectedOpt.dot && (
+            <span className={`w-2 h-2 rounded-full ${selectedOpt.dot}`} />
+          )}
+          {selectedOpt && selectedOpt.icon && (
+            <span className="material-symbols-outlined text-[16px] text-zinc-400">{selectedOpt.icon}</span>
+          )}
+          <span className="truncate font-medium">{selectedOpt ? selectedOpt.label : placeholder}</span>
+        </div>
+        <span
+          className="material-symbols-outlined text-zinc-500 text-sm transition-transform duration-200"
+          style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
+        >
+          keyboard_arrow_down
+        </span>
+      </button>
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.15, ease: 'easeOut' }}
+            className="absolute z-50 left-0 right-0 mt-1.5 max-h-60 overflow-y-auto bg-[#0c0c0c]/98 border border-white/10 rounded-lg shadow-[0_10px_30px_rgba(0,0,0,0.8)] backdrop-blur-md custom-scrollbar py-1"
+          >
+            {options.map((opt) => {
+              const isSelected = opt.value === value;
+              return (
+                <button
+                  key={opt.value}
+                  type="button"
+                  onClick={() => {
+                    onChange(opt.value);
+                    setIsOpen(false);
+                  }}
+                  className={`w-full flex items-center gap-2 px-3 py-2.5 text-xs text-left hover:bg-white/5 transition-colors ${
+                    isSelected ? 'text-[#FF9933] font-bold bg-[#FF9933]/5' : 'text-zinc-400 hover:text-white'
+                  }`}
+                >
+                  {showDot && opt.dot && (
+                    <span className={`w-2 h-2 rounded-full ${opt.dot}`} />
+                  )}
+                  {opt.icon && (
+                    <span className={`material-symbols-outlined text-[16px] ${isSelected ? 'text-[#FF9933]' : 'text-zinc-400'}`}>
+                      {opt.icon}
+                    </span>
+                  )}
+                  <span className="truncate font-medium">{opt.label}</span>
+                </button>
+              );
+            })}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
 // ── Main Page ─────────────────────────────────────────────────────────────────
 export default React.memo(function Platforms() {
   const { showToast } = useToast();
@@ -268,6 +351,24 @@ export default React.memo(function Platforms() {
   // ── Derived data ───────────────────────────────────────────────────────────
   // All unique stations from data
   const allStations = [...new Set(rawPlatforms.map(p => p.station_name))].sort();
+
+  const statusOptions = [
+    { value: '', label: 'All Statuses' },
+    ...PLATFORM_STATUSES.map(s => ({
+      value: s,
+      label: s,
+      dot: STATUS_META[s].dot,
+      icon: STATUS_META[s].icon,
+    }))
+  ];
+
+  const stationOptions = [
+    { value: '', label: 'All Stations' },
+    ...allStations.map(s => ({
+      value: s,
+      label: s,
+    }))
+  ];
 
   // Filter pipeline
   const filtered = rawPlatforms.filter(p => {
@@ -423,19 +524,19 @@ export default React.memo(function Platforms() {
       </div>
 
       {/* ── Filter Bar ── */}
-      <div className="bg-surface-container-low border border-white/5 rounded-xl p-4 flex flex-wrap gap-3 items-end">
+      <div className="bg-surface-container-low border border-white/5 rounded-xl p-4 flex flex-wrap gap-4 items-end">
         {/* Search */}
         <div className="flex-1 min-w-[200px]">
-          <label className="text-[9px] font-bold text-zinc-500 uppercase tracking-widest block mb-1">Search</label>
+          <label className="text-[9px] font-bold text-zinc-500 uppercase tracking-widest block mb-1.5">Search</label>
           <div className="relative">
             <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 text-sm">search</span>
             <input
               value={search} onChange={e => setSearch(e.target.value)}
-              className="w-full bg-surface/50 border border-white/10 rounded-lg pl-9 pr-4 py-2 text-sm text-white placeholder:text-zinc-600 focus:border-[#FF9933]/50 outline-none"
+              className="w-full bg-[#0c0c0c] border border-white/10 rounded-lg pl-9 pr-4 py-2 text-xs text-white placeholder:text-zinc-600 focus:border-[#FF9933]/50 outline-none h-[38px] transition-all"
               placeholder="Platform, station, train no., train name..."
             />
             {search && (
-              <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white">
+              <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white flex items-center">
                 <span className="material-symbols-outlined text-sm">close</span>
               </button>
             )}
@@ -443,41 +544,41 @@ export default React.memo(function Platforms() {
         </div>
 
         {/* Station */}
-        <div>
-          <label className="text-[9px] font-bold text-zinc-500 uppercase tracking-widest block mb-1">Station</label>
-          <select
-            value={filterStation} onChange={e => setFilterStation(e.target.value)}
-            className="bg-surface/50 border border-white/10 text-xs px-3 py-2 rounded-lg text-on-surface focus:ring-1 focus:ring-[#FF9933]/50 outline-none cursor-pointer min-w-[180px]"
-          >
-            <option value="">All Stations</option>
-            {allStations.map(s => <option key={s} value={s}>{s}</option>)}
-          </select>
+        <div className="w-full sm:w-[190px]">
+          <label className="text-[9px] font-bold text-zinc-500 uppercase tracking-widest block mb-1.5">Station</label>
+          <CustomDropdown
+            value={filterStation}
+            onChange={setFilterStation}
+            options={stationOptions}
+            placeholder="All Stations"
+            showDot={false}
+          />
         </div>
 
         {/* Status */}
-        <div>
-          <label className="text-[9px] font-bold text-zinc-500 uppercase tracking-widest block mb-1">Status</label>
-          <select
-            value={filterStatus} onChange={e => setFilterStatus(e.target.value)}
-            className="bg-surface/50 border border-white/10 text-xs px-3 py-2 rounded-lg text-on-surface focus:ring-1 focus:ring-[#FF9933]/50 outline-none cursor-pointer"
-          >
-            <option value="">All Statuses</option>
-            {PLATFORM_STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
-          </select>
+        <div className="w-full sm:w-[160px]">
+          <label className="text-[9px] font-bold text-zinc-500 uppercase tracking-widest block mb-1.5">Status</label>
+          <CustomDropdown
+            value={filterStatus}
+            onChange={setFilterStatus}
+            options={statusOptions}
+            placeholder="All Statuses"
+            showDot={true}
+          />
         </div>
 
         {/* Clear */}
         {(search || filterStation || filterStatus) && (
           <button
             onClick={() => { setSearch(''); setFilterStation(''); setFilterStatus(''); }}
-            className="self-end px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-zinc-400 hover:text-white text-xs font-bold uppercase tracking-widest transition-all"
+            className="px-4 h-[38px] rounded-lg bg-white/5 border border-white/10 text-zinc-400 hover:text-white text-xs font-bold uppercase tracking-widest transition-all cursor-pointer flex items-center justify-center"
           >
             Clear
           </button>
         )}
 
         {/* Results count */}
-        <div className="self-end ml-auto text-[9px] text-zinc-500 uppercase tracking-widest">
+        <div className="self-center sm:self-end ml-auto text-[9px] text-zinc-500 uppercase tracking-widest">
           {filtered.length} platform{filtered.length !== 1 ? 's' : ''} shown
         </div>
       </div>
