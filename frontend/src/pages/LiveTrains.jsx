@@ -141,20 +141,20 @@ const TrainRow = React.memo(function TrainRow({ train, idx, onEdit, onDelete }) 
 });
 
 export default React.memo(function LiveTrains() {
-  const [trains, setTrains] = useState([]);
-
   const {
     trainPagination,
     trainFilters,
     fetchTrains,
     fetchTrainStats,
-    analytics
+    analytics,
+    trains
   } = useStore(useShallow((s) => ({
     trainPagination: s.trainPagination,
     trainFilters: s.trainFilters,
     fetchTrains: s.fetchTrains,
     fetchTrainStats: s.fetchTrainStats,
-    analytics: s.analytics
+    analytics: s.analytics,
+    trains: s.trains
   })));
   const { showToast } = useToast();
 
@@ -177,35 +177,24 @@ export default React.memo(function LiveTrains() {
   const doFetch = useCallback(async (overrides = {}) => {
     try {
       setIsLoading(true);
-
-      const token = localStorage.getItem("token");
-
-      const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/trains`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-      const data = await res.json();
-
-      console.log("🔥 DIRECT API DATA:", data);
-
-      setTrains(Array.isArray(data) ? data : data?.data || []);
-
+      const params = {
+        search,
+        status: filterStatus,
+        zone: filterZone,
+        type: filterType,
+        sortBy,
+        sortDir,
+        ...overrides
+      };
+      await fetchTrains(params);
     } catch (err) {
       console.error("ERROR:", err);
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [fetchTrains, search, filterStatus, filterZone, filterType, sortBy, sortDir]);
 
   const isFirstSearchRender = useRef(true);
-  // Debounce search
-  useEffect(() => {
-    doFetch({ page: 1 });
-  }, []);
 
   useEffect(() => {
     if (isFirstSearchRender.current) {
@@ -217,7 +206,7 @@ export default React.memo(function LiveTrains() {
     return () => clearTimeout(searchTimer.current);
   }, [search]);
 
-  // Immediate filter changes (also fires on mount, which is the 1 initial fetch we want)
+  // Immediate filter changes (also fires on mount, which handles the initial fetch)
   useEffect(() => { doFetch({ status: filterStatus, zone: filterZone, type: filterType, sortBy, sortDir, page: 1 }); }, [filterStatus, filterZone, filterType, sortBy, sortDir]);
 
   // Stats for KPI row

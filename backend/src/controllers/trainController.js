@@ -6,8 +6,8 @@ const { writeAudit } = require('../utils/audit');
 // ── Param placeholder helper ──────────────────────────────────────────────────
 const getTrains = async (req, res) => {
   try {
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 50;
+    const page = Math.max(1, parseInt(req.query.page) || 1);
+    const limit = Math.min(200, Math.max(1, parseInt(req.query.limit) || 50));
     const offset = (page - 1) * limit;
 
     // ✅ safe sorting
@@ -20,35 +20,70 @@ const getTrains = async (req, res) => {
     ];
 
     let sortBy = req.query.sortBy || 'created_at';
-    let sortDir = req.query.sortDir === 'asc' ? 'ASC' : 'DESC';
+    let sortDir = req.query.sortDir === 'asc' || req.query.sortDir === 'ASC' ? 'ASC' : 'DESC';
 
     if (!allowedSort.includes(sortBy)) {
       sortBy = 'created_at';
     }
 
-    const result = await pool.query(
-      `
-      SELECT 
-        id,
-        train_number,
-        train_name,
-        route,
-        source,
-        destination,
-        current_location,
-        zone,
-        train_type,
-        speed,
-        delay_minutes,
-        status
-      FROM trains
-      ORDER BY ${sortBy} ${sortDir}
-      LIMIT $1 OFFSET $2
-      `,
-      [limit, offset]
-    );
+    // Build filters dynamically
+    const search = req.query.search ? req.query.search.trim() : '';
+    const status = req.query.status ? req.query.status.trim() : '';
+    const zone = req.query.zone ? req.query.zone.trim() : '';
+    const type = req.query.type ? req.query.type.trim() : '';
 
-    res.json(result.rows);
+    const conds = [];
+    const params = [];
+    let idx = 1;
+
+    if (search) {
+      conds.push(`(train_number ILIKE $${idx} OR train_name ILIKE $${idx} OR route ILIKE $${idx} OR source ILIKE $${idx} OR destination ILIKE $${idx} OR current_location ILIKE $${idx})`);
+      params.push(`%${search}%`);
+      idx++;
+    }
+    if (status) {
+      conds.push(`status = $${idx++}`);
+      params.push(status.toLowerCase());
+    }
+    if (zone) {
+      conds.push(`zone = $${idx++}`);
+      params.push(zone);
+    }
+    if (type) {
+      conds.push(`train_type = $${idx++}`);
+      params.push(type);
+    }
+
+    const where = conds.length ? `WHERE ${conds.join(' AND ')}` : '';
+
+    const [cnt, data] = await Promise.all([
+      pool.query(`SELECT COUNT(*) FROM trains ${where}`, params),
+      pool.query(
+        `SELECT 
+          id,
+          train_number,
+          train_name,
+          route,
+          source,
+          destination,
+          current_location,
+          zone,
+          train_type,
+          speed,
+          delay_minutes,
+          status
+         FROM trains ${where}
+         ORDER BY ${sortBy} ${sortDir}
+         LIMIT $${idx} OFFSET $${idx + 1}`,
+        [...params, limit, offset]
+      ),
+    ]);
+
+    const total = parseInt(cnt.rows[0].count);
+    res.json({
+      data: data.rows,
+      pagination: { page, limit, total, totalPages: Math.ceil(total / limit) },
+    });
 
   } catch (err) {
     console.error("🔥 TRAIN API ERROR:", err);
